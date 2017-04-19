@@ -1,0 +1,11 @@
+剩余能量
+
+As can be seen from the figure, the solid lines represent the always forwarding strategy while the dotted lines represent the energy-aware forwarding strategy. It's obvious that the survival time of the network with energy-aware 
+forwarding strategy is longer than that with always forwarding strategy. With the always forwarding strategy, consumer will only choose relay node 4 to forward interet packets. As a result, energy of node 4 is consumed faster than
+node 1 and node 2. With the energy-aware forwarding strategy, relay nodes probabilisticly forward interest packets depending on the remaining energy. Therefore, the consumption rate of three relay nodes is quite similar. In summary, 
+the strategy we proposed can prolong the life of wireless network compared to the always forwarding strategy.
+
+转发兴趣包数
+
+As can be seen from the figure, when adopting always forwarding strategy, relay nodes forward all the interest packets the received, so the number of the forwarding interest is proportional to simulation time. While applying the 
+energy-aware forwarding strategy, the relay nodes will forward interest packets with a lower probability with the reducing of energy. Thus, the increasing rate of the forwarding interest number gets lower over time. 
