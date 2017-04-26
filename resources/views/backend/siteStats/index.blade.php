@@ -629,6 +629,8 @@
                         @endif
 
                     </td>
+
+
                     <td>
                         @if(isset($site_fee_stats))
                             @foreach($site_fee_stats as $site_fee_stat)
@@ -3399,11 +3401,11 @@
                             @endforeach
                         @endif
 
+
                     </td>
 
                     <td></td>
                 </tr>
-
                 <tr>
 
                     <th rowspan="2">
@@ -3842,6 +3844,9 @@
                         @endif
 
                     </td>
+
+
+
                     <td>
                         @if(isset($site_fee_stats))
                             @foreach($site_fee_stats as $site_fee_stat)

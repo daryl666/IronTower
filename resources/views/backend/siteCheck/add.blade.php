@@ -68,7 +68,7 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <table class="inputTable tabContent">
             <tr>
-                <th>地市</th>
+                <th>地市(*必填项)：</th>
                 <td>
                     @if(Auth::user()->area_level == '湖北省' || Auth::user()->area_level == 'admin')
                         <select name="region" id="region">
@@ -264,18 +264,18 @@
                 </td>
             </tr>
             <tr>
-                <th>站址编码</th>
+                <th>站址编码(*必填项)：</th>
                 <td>
                     <input type="text" name="siteCode" id="siteCode">
                 </td>
             </tr>
             <tr>
-                <th>上站申请时间</th>
+                <th>上站申请时间(*必填项)：</th>
                 <td><input type="text" name="checkReqTime" id="checkReqTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly value="{{date('Y-m-d H:i:s', time())}}">
                 </td>
             </tr>
             <tr>
-                <th>上站类型</th>
+                <th>上站类型(*必填项)：</th>
                 <td>
                     <select name="checkType" id="checkType">
                         <option>紧急上站</option>
@@ -305,9 +305,10 @@
         });
 
         function doBack() {
-            var listForm = document.getElementById('listForm');
-            listForm.action = "{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}";
-            listForm.submit();
+            {{--var listForm = document.getElementById('listForm');--}}
+            {{--listForm.action = "{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}";--}}
+            {{--listForm.submit();--}}
+            window.history.back();
         }
 
         function doSiteCheckPage() {

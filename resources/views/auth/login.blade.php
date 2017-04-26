@@ -2,7 +2,7 @@
 <html lang="utf-8">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>铁塔服务费用核算系统</title>
+    <title>铁塔综合服务管理平台</title>
     <link href="{{ asset('/admin/css/login.css') }}" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="{{ asset('/common/js/jquery.js') }}"></script>
     <script type="text/javascript">
@@ -57,7 +57,7 @@
     <div class="logincontent animation" id="logincontent">
         <div class="top">
             <div style="color: white; font-size: 25px; padding-top: 25px; margin-left: auto; margin-right: auto; width: 300px; text-align: center">
-                铁塔服务费用核算系统
+                铁塔综合服务管理平台
             </div>
         </div>
         <div class="con">
@@ -86,7 +86,7 @@
             <div class="brnlogin" id="registerBtn" onclick="doReset()">修改密码</div>
         </div>
     </div>
-    <div class="copy">© 铁塔服务费用核算系统  版权所有</div>
+    <div class="copy">© 铁塔综合服务管理平台  版权所有</div>
 </form>
 </body>
 

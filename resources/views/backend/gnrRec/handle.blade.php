@@ -97,7 +97,7 @@
                 </tr>
                 <tr>
                     <th>
-                        发电结果:
+                        发电结果(*必填项)：
                     </th>
                     <td>
                         <select name="gnrResult">
@@ -108,7 +108,7 @@
                 </tr>
                 <tr>
                     <th>
-                        发电起始时间:
+                        发电起始时间(*必填项)：
                     </th>
                     <td>
                         <input type="text" name="gnrStartTime" style="width:130px;padding-left:5px"
@@ -118,7 +118,7 @@
                 </tr>
                 <tr>
                     <th>
-                        发电终止时间:
+                        发电终止时间(*必填项)：
                     </th>
                     <td>
                         <input type="text" name="gnrEndTime" style="width:130px;padding-left:5px"
@@ -166,9 +166,10 @@
         }
 
         function doBack() {
-            var listForm = document.getElementById("listForm");
-            listForm.action = "{{url('backend/gnrRec')}}";
-            listForm.submit();
+            window.history.back();
+            // var listForm = document.getElementById("listForm");
+            // listForm.action = "{{url('backend/gnrRec')}}";
+            // listForm.submit();
         }
 
         function doImport() {

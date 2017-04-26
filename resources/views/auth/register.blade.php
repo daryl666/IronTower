@@ -95,6 +95,26 @@
                                     </td>
                                 </div>
                             </tr>
+                                                        <tr>
+
+                                <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
+                                    <th><label for="phone_number" class="col-md-4 control-label">手机号</label></th>
+                                    <td>
+                                        <div class="col-md-6">
+                                            <input id="phone_number" type="text" class="form-control" name="phone_number" value="{{ old('name') }}">
+
+                                            @if ($errors->has('phone_number'))
+                                                <span class="help-block">
+                                        <strong>{{ $errors->first('phone_number') }}</strong>
+                                    </span>
+                                            @endif
+                                        </div>
+                                    </td>
+
+
+                                </div>
+                            </tr>
+
                             <tr>
                                 <div>
                                     <th>
@@ -132,11 +152,12 @@
                                     <label for="password-confirm" class="col-md-4 control-label">权限</label>
                                 </th>
                                 <td>
-                                    <input type="checkbox" name="permission[]" value="view">查看
+                                    <input type="checkbox" name="permission[]" value="view_basic">查看基础信息
+                                    <input type="checkbox" name="permission[]" value="view_advance">查看价格相关信息
                                     <input type="checkbox" name="permission[]" value="delete">删除
                                     <input type="checkbox" name="permission[]" value="bulk_import">批量导入
                                     <input type="checkbox" name="permission[]" value="bulk_export">批量导出
-                                    <input type="checkbox" name="permission[]" value="bulk_update">批量修改
+                                    {{-- <input type="checkbox" name="permission[]" value="bulk_update">批量修改 --}}
                                     <input type="checkbox" name="permission[]" value="single_update">逐个修改
                                     <input type="checkbox" name="permission[]" value="account_out">出账
                                 </td>

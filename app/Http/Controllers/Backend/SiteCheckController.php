@@ -35,8 +35,8 @@ class SiteCheckController extends Controller
                 }
                 $siteChecks = $siteCheckDB->getSiteChecks($region, $checkStatus, $beginDate, $endDate)->paginate(15);
                 return view('backend/siteCheck/index')
-                    ->with('siteChecks', $siteChecks)
-                    ->with('filter', $filter);
+                ->with('siteChecks', $siteChecks)
+                ->with('filter', $filter);
             } else {
                 $regionName = $request->get('region');
                 $checkStatus = $request->get('checkStatus');
@@ -45,12 +45,12 @@ class SiteCheckController extends Controller
                 $siteChecks = $siteCheckDB->getSiteChecks($regionName, $checkStatus, $beginDate, $endDate)->paginate(15);
                 if ($checkStatus == 0) {
                     return view('backend/siteCheck/index')
-                        ->with('siteChecks', $siteChecks)
-                        ->with('filter', $filter);
+                    ->with('siteChecks', $siteChecks)
+                    ->with('filter', $filter);
                 } else {
                     return view('backend/siteCheck/index-handled')
-                        ->with('siteChecks', $siteChecks)
-                        ->with('filter', $filter);
+                    ->with('siteChecks', $siteChecks)
+                    ->with('filter', $filter);
                 }
 
             }
@@ -64,11 +64,11 @@ class SiteCheckController extends Controller
     {
         $filter = $request->all();
         $siteCheck = DB::table('site_check')
-            ->where('id', $id)
-            ->get();
+        ->where('id', $id)
+        ->get();
         return view('backend/siteCheck/handle')
-            ->with('siteCheck', $siteCheck)
-            ->with('filter', $filter);
+        ->with('siteCheck', $siteCheck)
+        ->with('filter', $filter);
     }
 
 
@@ -82,18 +82,19 @@ class SiteCheckController extends Controller
     //添加上站申请
     function add(Request $request)
     {
+        $filter = $request->all();
         $eventLogDB = new EventLog();
         $siteCode = $request->get('siteCode');
         $siteInfo = DB::table('site_info')
-            ->where('site_code', $siteCode)
-            ->get();
+        ->where('site_code', $siteCode)
+        ->where('region_id', transRegion($filter['region']))
+        ->get();
         if (empty($siteInfo)) {
             echo "<script language=javascript>alert('该站址不存在！');history.back();</script>";
         } else {
             $checkReqTime = $request->get('checkReqTime');
             $checkType = $request->get('checkType');
             $regionName = $request->get('region');
-            $filter = $request->all();
             $siteCheckDB = new SiteCheck();
             $siteCheckTimeValidate = $siteCheckDB->siteCheckTimeValidate($checkReqTime, $siteCode);
             if ($siteCheckTimeValidate == false) {
@@ -108,13 +109,13 @@ class SiteCheckController extends Controller
                     $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报上站申请',
                         'site_check', '');
                     return redirect('backend/siteCheck')
-                        ->with('filter', $filter)
-                        ->with('region', $filter['region'])
-                        ->with('beginDate', $filter['beginDate'])
-                        ->with('endDate', $filter['endDate'])
-                        ->with('checkStatus', $filter['checkStatus'])
-                        ->with('siteChecks', 1)
-                        ->with('flag', 'add');
+                    ->with('filter', $filter)
+                    ->with('region', $filter['region'])
+                    ->with('beginDate', $filter['beginDate'])
+                    ->with('endDate', $filter['endDate'])
+                    ->with('checkStatus', $filter['checkStatus'])
+                    ->with('siteChecks', 1)
+                    ->with('flag', 'add');
                 } else {
                     echo "<script language=javascript>alert('添加失败！');history.back();</script>";
                 }
@@ -133,22 +134,22 @@ class SiteCheckController extends Controller
         $id = $request->get('id');
         $checkResult = $request->get('checkResult');
         $updateResult = DB::table('site_check')
-            ->where('id', $id)
-            ->update([
-                'check_result' => transSiteCheckResult($checkResult),
-                'check_status' => 1
-            ]);
+        ->where('id', $id)
+        ->update([
+            'check_result' => transSiteCheckResult($checkResult),
+            'check_status' => 1
+        ]);
         if (!empty($updateResult)) {
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报上站结果',
                 'site_check', '');
             return redirect('backend/siteCheck')
-                ->with('filter', $filter)
-                ->with('region', $filter['region'])
-                ->with('beginDate', $filter['beginDate'])
-                ->with('endDate', $filter['endDate'])
-                ->with('checkStatus', $filter['checkStatus'])
-                ->with('siteChecks', 1)
-                ->with('flag', 'update');
+            ->with('filter', $filter)
+            ->with('region', $filter['region'])
+            ->with('beginDate', $filter['beginDate'])
+            ->with('endDate', $filter['endDate'])
+            ->with('checkStatus', $filter['checkStatus'])
+            ->with('siteChecks', 1)
+            ->with('flag', 'update');
         } else {
             echo "<script language=javascript>alert('填报失败！');history.back();</script>";
         }

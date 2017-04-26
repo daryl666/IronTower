@@ -53,7 +53,7 @@ class ExcepHandleController extends Controller
     {
         $filter = $request->all();
         $excepHandleDB = new ExcepHandle();
-        $excepSiteInfo = DB::table('import_site_excep')
+        $excepSiteInfo = DB::table('import_site_exception')
             ->where('id', $id)
             ->get();
         $updateResult = $excepHandleDB->updateSiteInfo($excepSiteInfo);
@@ -62,7 +62,7 @@ class ExcepHandleController extends Controller
             $siteInfos = $excepHandleDB->getExcepSiteInfos($regionName);
             $excepSiteInfos = $siteInfos[0];
             $origSiteInfos = $siteInfos[1];
-            return redirect('backend/excepHandle')
+            return redirect('backend/excepHandle/importSiteInfo')
                 ->with('excepSiteInfos', $excepSiteInfos)
                 ->with('origSiteInfos', $origSiteInfos)
                 ->with('filter', $filter);
@@ -81,7 +81,7 @@ class ExcepHandleController extends Controller
             $siteInfos = $excepHandleDB->getExcepSiteInfos($regionName);
             $excepSiteInfos = $siteInfos[0];
             $origSiteInfos = $siteInfos[1];
-            return redirect('backend/excepHandle')
+            return redirect('backend/excepHandle/importSiteInfo')
                 ->with('excepSiteInfos', $excepSiteInfos)
                 ->with('origSiteInfos', $origSiteInfos)
                 ->with('filter', $filter);

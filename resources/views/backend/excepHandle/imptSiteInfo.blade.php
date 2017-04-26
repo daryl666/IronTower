@@ -323,6 +323,12 @@
                         <a href="#" class="sort" name="" hidefocus>记录类型</a>
                     </th>
                     <th>
+                        <a href="#" class="sort" name="" hidefocus>产品业务确认单编号</a>
+                    </th>
+                    <th>
+                        <a href="#" class="sort" name="" hidefocus>需求确认单编号</a>
+                    </th>
+                    <th>
                         <a href="#" class="sort" name="" hidefocus>站址编码</a>
                     </th>
                     <th>
@@ -353,78 +359,50 @@
                         <a href="#" class="sort" name="" hidefocus>覆盖场景</a>
                     </th>
                     <th class="scanStopTime">
-                        <a href="#" class="sort" name="" hidefocus>系统数量</a>
+                        <a href="#" class="sort" name="" hidefocus>系统数量1</a>
                     </th>
-                    {{--<th class="scanStopTime">--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>系统挂高(米)</a>--}}
-                    {{--</th>--}}
+                    <th class="scanStopTime">
+                    <a href="#" class="sort" name="" hidefocus>系统1挂高(米)</a>
+                    </th>
+                    <th class="scanStopTime">
+                        <a href="#" class="sort" name="" hidefocus>系统数量2</a>
+                    </th>
+                    <th class="scanStopTime">
+                    <a href="#" class="sort" name="" hidefocus>系统2挂高(米)</a>
+                    </th>
+                    <th class="scanStopTime">
+                        <a href="#" class="sort" name="" hidefocus>系统数量3</a>
+                    </th>
+                    <th class="scanStopTime">
+                    <a href="#" class="sort" name="" hidefocus>系统3挂高(米)</a>
+                    </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>铁塔共享类型</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>铁塔基准价格（元/月）（不含折扣）</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>铁塔基准价格（元/月）（含折扣）</a>
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>机房共享类型</a>
                     </th>
                     <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>机房基准价格（元/月）（不含折扣）</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>机房基准价格（元/月）（含折扣）</a>
-                    </th>
-                    <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>配套共享类型</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>配套基准价格（元/月）（不含折扣）</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>配套基准价格（元/月）（含折扣）</a>
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>维修共享类型</a>
                     </th>
                     <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>维修基准价格（元/月）（不含折扣）</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>维修基准价格（元/月）（含折扣）</a>
-                    </th>
-                    {{--<th class="freqMode">--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>站址所在地区类型</a>--}}
-                    {{--</th>--}}
-                    {{--<th class="freqMode">--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>是否RRU拉远</a>--}}
-                    {{--</th>--}}
-                    <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>场地费共享类型</a>
                     </th>
-
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>场地费（元/月）（不含折扣）</a>
-                    </th>
-                    <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>场地费（元/月）（含折扣）</a>
-                    </th>
-                    {{--<th class="freqMode">--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>引电类型</a>--}}
-                    {{--</th>--}}
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>电力引入费共享类型</a>
                     </th>
-
                     <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>电力引入费（元/月）（不含折扣）</a>
+                    <a href="#" class="sort" name="" hidefocus>站址所在地区类型</a>
                     </th>
                     <th class="freqMode">
-                        <a href="#" class="sort" name="" hidefocus>电力引入费（元/月）（含折扣）</a>
+                    <a href="#" class="sort" name="" hidefocus>是否RRU拉远</a>
                     </th>
-
-
+                    <th class="freqMode">
+                    <a href="#" class="sort" name="" hidefocus>引电类型</a>
+                    </th>
                 </tr>
                 @if(isset($excepSiteInfos))
                     @foreach($excepSiteInfos as $excepSiteInfo)
@@ -436,70 +414,77 @@
                             <td>
                                 冲突记录
                             </td>
+                            <td>{{$excepSiteInfo->business_code}}</td>
+                            <td>{{$excepSiteInfo->req_code}}</td>
                             <td>{{$excepSiteInfo->site_code}}</td>
                             <td>{{$excepSiteInfo->established_time}}</td>
                             <td>{{$excepSiteInfo->region_name}}</td>
-                            <td>{{$excepSiteInfo->tower_type}}</td>
-                            <td>{{$excepSiteInfo->is_new_tower}}</td>
-                            <td>{{$excepSiteInfo->product_type}}</td>
-                            <td>{{$excepSiteInfo->is_co_opetition}}</td>
-                            <td>{{$excepSiteInfo->is_newly_added}}</td>
-                            <td>{{$excepSiteInfo->user_type}}</td>
-                            <td>{{$excepSiteInfo->land_form}}</td>
+                            <td>{{transTowerType($excepSiteInfo->tower_type)}}</td>
+                            <td>{{transIsNewTower($excepSiteInfo->is_new_tower)}}</td>
+                            <td>{{transProductType($excepSiteInfo->product_type)}}</td>
+                            <td>{{transIsCoOpetition($excepSiteInfo->is_co_opetition)}}</td>
+                            <td>{{transIsNewlyAdded($excepSiteInfo->is_newly_added)}}</td>
+                            <td>{{transUserType($excepSiteInfo->user_type)}}</td>
+                            <td>{{transLandForm($excepSiteInfo->land_form)}}</td>
 
-                            <td>{{$excepSiteInfo->sys_num}}</td>
-                            {{--<td>{{$excepSiteInfo->sys1_height}}</td>--}}
-                            <td>{{$excepSiteInfo->share_num_tower}}</td>
+                            <td>{{$excepSiteInfo->sys_num1}}</td>
+                            <td>{{transSysHeight($excepSiteInfo->sys1_height)}}</td>
+                            <td>{{$excepSiteInfo->sys_num2}}</td>
+                            <td>{{transSysHeight($excepSiteInfo->sys2_height)}}</td>
+                            <td>{{$excepSiteInfo->sys_num3}}</td>
+                            <td>{{transSysHeight($excepSiteInfo->sys3_height)}}</td>
+                            <td>{{transShareType($excepSiteInfo->share_num_tower)}}</td>
 
-                            <td>{{$excepSiteInfo->share_num_house}}</td>
+                            <td>{{transShareType($excepSiteInfo->share_num_house)}}</td>
 
-                            <td>{{$excepSiteInfo->share_num_support}}</td>
+                            <td>{{transShareType($excepSiteInfo->share_num_support)}}</td>
 
-                            <td>{{$excepSiteInfo->share_num_maintain}}</td>
+                            <td>{{transShareType($excepSiteInfo->share_num_maintain)}}</td>
+                            <td>{{transShareType($excepSiteInfo->share_num_site)}}</td>
+                            <td>{{transShareType($excepSiteInfo->share_num_import)}}</td>
+                            <td>{{transSiteDistType($excepSiteInfo->site_district_type)}}</td>
+                            <td>{{transIsRRUAway($excepSiteInfo->is_rru_away)}}</td>
+                            
 
-                            {{--<td>{{$excepSiteInfo->site_district_type}}</td>--}}
-                            {{--<td>{{$excepSiteInfo->is_rru_away}}</td>--}}
-                            <td>{{$excepSiteInfo->share_num_site}}</td>
-                            {{--<td>{{$excepSiteInfo->site_sha_dis}}</td>--}}
-
-                            {{--<td>{{$excepSiteInfo->elec_introduced_type}}</td>--}}
-                            <td>{{$excepSiteInfo->share_num_import}}</td>
-                            {{--<td>{{$excepSiteInfo->import_sha_dis}}</td>--}}
+                            <td>{{transElecType($excepSiteInfo->elec_introduced_type)}}</td>
                         </tr>
                         @foreach($origSiteInfos as $origSiteInfo)
                             @if($origSiteInfo->id == $excepSiteInfo->site_info_id)
                                 <tr>
                                     <td></td>
                                     <td>原有记录</td>
+                                    <td>{{$origSiteInfo->business_code}}</td>
+                                    <td>{{$origSiteInfo->req_code}}</td>
                                     <td>{{$origSiteInfo->site_code}}</td>
                                     <td>{{$origSiteInfo->established_time}}</td>
                                     <td>{{$origSiteInfo->region_name}}</td>
-                                    <td>{{$origSiteInfo->tower_type}}</td>
-                                    <td>{{$origSiteInfo->is_new_tower}}</td>
-                                    <td>{{$origSiteInfo->product_type}}</td>
-                                    <td>{{$origSiteInfo->is_co_opetition}}</td>
-                                    <td>{{$origSiteInfo->is_newly_added}}</td>
-                                    <td>{{$origSiteInfo->user_type}}</td>
-                                    <td>{{$origSiteInfo->land_form}}</td>
+                                    <td>{{transTowerType($origSiteInfo->tower_type)}}</td>
+                                    <td>{{transIsNewTower($origSiteInfo->is_new_tower)}}</td>
+                                    <td>{{transProductType($origSiteInfo->product_type)}}</td>
+                                    <td>{{transIsCoOpetition($origSiteInfo->is_co_opetition)}}</td>
+                                    <td>{{transIsNewlyAdded($origSiteInfo->is_newly_added)}}</td>
+                                    <td>{{transUserType($origSiteInfo->user_type)}}</td>
+                                    <td>{{transLandForm($origSiteInfo->land_form)}}</td>
 
-                                    <td>{{$origSiteInfo->sys_num}}</td>
-                                    {{--<td>{$origSiteInfo->sys1_height}}</td>--}}
-                                    <td>{{$origSiteInfo->share_num_tower}}</td>
+                                    <td>{{$origSiteInfo->sys_num1}}</td>
+                                    <td>{{transSysHeight($origSiteInfo->sys1_height)}}</td>
+                                    <td>{{$origSiteInfo->sys_num2}}</td>
+                                    <td>{{transSysHeight($origSiteInfo->sys2_height)}}</td>
+                                    <td>{{$origSiteInfo->sys_num3}}</td>
+                                    <td>{{transSysHeight($origSiteInfo->sys3_height)}}</td>
 
-                                    <td>{{$origSiteInfo->share_num_house}}</td>
+                                    <td>{{transShareType($origSiteInfo->share_num_tower)}}</td>
 
-                                    <td>{{$origSiteInfo->share_num_support}}</td>
+                                    <td>{{transShareType($origSiteInfo->share_num_house)}}</td>
 
-                                    <td>{{$origSiteInfo->share_num_maintain}}</td>
+                                    <td>{{transShareType($origSiteInfo->share_num_support)}}</td>
 
-                                    {{--<td>{$origSiteInfo->site_district_type}}</td>--}}
-                                    {{--<td>{$origSiteInfo->is_rru_away}}</td>--}}
-                                    <td>{{$origSiteInfo->share_num_site}}</td>
-                                    {{--<td>{$origSiteInfo->site_sha_dis}}</td>--}}
-
-                                    {{--<td>{$origSiteInfo->elec_introduced_type}}</td>--}}
-                                    <td>{{$origSiteInfo->share_num_import}}</td>
-                                    {{--<td>{$origSiteInfo->import_sha_dis}}</td>--}}
+                                    <td>{{transShareType($origSiteInfo->share_num_maintain)}}</td>
+                                    <td>{{transShareType($origSiteInfo->share_num_site)}}</td>
+                                    <td>{{transShareType($origSiteInfo->share_num_import)}}</td>
+                                    <td>{{transSiteDistType($origSiteInfo->site_district_type)}}</td>
+                                    <td>{{transIsRRUAway($origSiteInfo->is_rru_away)}}</td>
+                                    <td>{{transElecType($origSiteInfo->elec_introduced_type)}}</td>
                                 </tr>
                                 <tr>
                                     <td>&nbsp;</td>

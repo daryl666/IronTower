@@ -89,7 +89,7 @@
                 <td>{{$siteCheck[0]->check_type}}</td>
             </tr>
            <tr>
-               <th>上站结果</th>
+               <th>上站结果(*必填项)：</th>
                <td>
                    <input type="radio" name="checkResult" value="成功" checked="checked">成功
                    <input type="radio" name="checkResult" value="失败">失败
@@ -117,9 +117,10 @@
         });
 
         function doBack() {
-            var listForm = document.getElementById('listForm');
-            listForm.action = "{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}";
-            listForm.submit();
+            {{--var listForm = document.getElementById('listForm');--}}
+            {{--listForm.action = "{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}";--}}
+            {{--listForm.submit();--}}
+            window.history.back();
         }
 
         function doSiteCheckPage() {

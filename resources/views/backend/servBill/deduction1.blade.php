@@ -35,7 +35,7 @@
             <form id="listForm" method="post" target="_self">
                 <div class="listBar">
                     <label>【地市】: </label>
-                    <input type="text" id="region" disabled="disabled" value="{{$bill->region_name}}">
+                    <input type="text" id="region" disabled="disabled" value="{{transRegion($bill->region_id)}}">
                     <label>【账单月份】: </label>
                     <input type="text" id="region" disabled="disabled"
                            value="{{$bill->month}}">

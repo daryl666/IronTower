@@ -66,8 +66,11 @@
                                     <td>{{$user->area_level}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>
-                                        <input type="checkbox" name="permission_{{$user->id}}[]" value="view"
-                                               @if($user->view == 1) checked="checked"@endif>查看
+                                       <input type="checkbox" name="permission_{{$user->id}}[]" value="view_basic"
+                                               @if($user->view_basic == 1) checked="checked"@endif>查看基础信息
+                                               <input type="checkbox" name="permission_{{$user->id}}[]" value="view_advance"
+                                               @if($user->view_advance == 1) checked="checked"@endif>查看价格相关信息
+
                                         <input type="checkbox" name="permission_{{$user->id}}[]" value="single_update"
                                                @if($user->single_update == 1) checked="checked"@endif>逐个修改
                                         <input type="checkbox" name="permission_{{$user->id}}[]" value="delete"

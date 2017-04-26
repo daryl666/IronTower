@@ -357,19 +357,19 @@
 
                         {{formatNumber($feeout->fee_gnr * 1.06)}}
                     </td>
-                    <td>{{$feeout->deduc_1}}
-                        @if($feeout->deduc_1 != 0)
+                    <td>{{$feeout->deduction_1}}
+                        @if($feeout->deduction_1 != 0)
                             <a href="javascript:viewBillDed1('{{$feeout->id}}')">明细</a>
                         @endif
                     </td>
                     <td>
-                        {{formatNumber($feeout->deduc_1 * 1.06)}}
+                        {{formatNumber($feeout->deduction_1 * 1.06)}}
                     </td>
-                    <td>{{$feeout->deduc_2}}
-                        @if($feeout->deduc_2 != 0)
+                    <td>{{$feeout->deduction_2}}
+                        @if($feeout->deduction_2 != 0)
                             <a href="javascript:viewBillDed2('{{$feeout->id}}')">明细</a>
                         @endif</td>
-                    <td>{{formatNumber($feeout->deduc_2 * 1.06)}}</td>
+                    <td>{{formatNumber($feeout->deduction_2 * 1.06)}}</td>
                     <td>{{$feeout->fee_total_allincharge}}</td>
                     <td>{{formatNumber($feeout->fee_total_allincharge * 1.06)}}</td>
                     <td>{{$feeout->fee_total_succ}}</td>

@@ -23,7 +23,7 @@
                         <a href="{{url('backend/servBill')}}">账单管理</a>
                     </li>
                     <li class="active">
-                        <a href="#">扣费2明细</a>
+                        <a href="#">省内指标扣费明细</a>
                     </li>
                 </ul>
             </div>
@@ -35,7 +35,7 @@
             <form id="listForm" method="post" target="_self">
                 <div class="listBar">
                     <label>【地市】: </label>
-                    <input type="text" id="region" disabled="disabled" value="{{$bill->region_name}}">
+                    <input type="text" id="region" disabled="disabled" value="{{transRegion($bill->region_id)}}">
                     <label>【账单月份】: </label>
                     <input type="text" id="region" disabled="disabled"
                            value="{{$bill->month}}">
@@ -72,7 +72,7 @@
                     <td>{{$deduction2[$i]->avg_site_os_rate}}</td>
                     <td>{{$deduction2[$i]->timely_pow_gen_rate}}</td>
                     <td>{{$deduction2[$i]->check_success_rate}}</td>
-                    <td>{{$deduction2[$i]->site_dem_rate}}</td>
+                    <td>{{$deduction2[$i]->site_demolition_rate}}</td>
                     <td>{{$deduction2[$i]->deduction_2}}</td>
 
                 </tr>

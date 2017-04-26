@@ -370,6 +370,7 @@
                                 @if(Auth::user()->area_level == '湖北省')
                                     <button class="buttonNextStep" onclick="doApprove({{$siteShield->id}})">通过</button>
                                     <button class="buttonNextStep" onclick="doDeny({{$siteShield->id}})">驳回</button>
+                                    <button class="buttonNextStep" onclick="doDownloadAttachment({{$siteShield->id}})">下载附件</button>
                                 @endif
                             </td>
                             <td>{{$siteShield->region_name}}</td>
@@ -491,6 +492,13 @@
             var region = $('#region').val();
             var listForm = document.getElementById('listForm');
             url = "{{url('backend/siteInfo/editPage')}}" + '/' + id + '/' + region;
+            listForm.action = url;
+            listForm.submit();
+        }
+
+        function doDownloadAttachment(id){
+            var listForm = document.getElementById("listForm");
+            var url = "{{url('backend/siteShield/downloadAttachment')}}" + '/' + id;
             listForm.action = url;
             listForm.submit();
         }

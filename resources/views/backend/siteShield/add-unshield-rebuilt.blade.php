@@ -92,7 +92,7 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <table class="inputTable tabContent">
             <tr>
-                <th>地市</th>
+                <th>地市：</th>
                 <td>
                     @if(Auth::user()->area_level == '湖北省' || Auth::user()->area_level == 'admin')
                         <select name="region" id="region">
@@ -288,56 +288,56 @@
                 </td>
             </tr>
             <tr>
-                <th>基站编号</th>
+                <th>基站编号：</th>
                 <td>
                     <input type="text" name="stationCode" value="{{$siteShields[0]->station_code}}" readonly>
                 </td>
             </tr>
             <tr>
-                <th>基站名称</th>
+                <th>基站名称：</th>
                 <td>
                     <input type="text" name="stationName" value="{{$siteShields[0]->station_name}}" readonly>
                 </td>
             </tr>
             <tr>
-                <th>基站等级</th>
+                <th>基站等级：</th>
                 <td>
-                    <input type="text" name="stationLevel" value="{{$siteShields[0]->station_level}}" readonly>
+                    <input type="text" name="stationLevel" value="{{transStationLevel($siteShields[0]->station_level)}}" readonly>
                 </td>
             </tr>
             <tr>
-                <th>屏蔽开始时间</th>
+                <th>屏蔽开始时间(*必填项)：</th>
                 <td>
                     <input type="text" name="shield_start_time" value="{{$siteShields[0]->shield_start_time}}" readonly>
                 </td>
             </tr>
             <tr>
-                <th>屏蔽申请理由</th>
+                <th>屏蔽申请理由(*必填项)：</th>
                 <td>
-                    <input type="text" name="checkTime" value="{{$siteShields[0]->shield_reason}}" readonly>
+                    <input type="text" name="checkTime" value="{{transShieldReason($siteShields[0]->shield_reason)}}" readonly>
                 </td>
             </tr>
             <tr>
-                <th>解屏蔽时间</th>
+                <th>解屏蔽时间(*必填项)：</th>
                 <td>
                     <input type="text" name="shieldEndTime" id="shieldEndTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" readonly
                            value="{{date('Y-m-d H:i:s', time())}}">
                 </td>
             </tr>
             <tr>
-                <th>新基站编号</th>
+                <th>新基站编号(*必填项)：</th>
                 <td>
                     <input type="text" name="newStationCode" id="newStationCode">
                 </td>
             </tr>
             <tr>
-                <th>新基站名称</th>
+                <th>新基站名称(*必填项)：</th>
                 <td>
                     <input type="text" name="newStationName" id="newStationName">
                 </td>
             </tr>
             <tr>
-                <th>新站址编码</th>
+                <th>新站址编码(*必填项)：</th>
                 <td>
                     <input type="text" name="newSiteCode" id="newSiteCode">
                 </td>

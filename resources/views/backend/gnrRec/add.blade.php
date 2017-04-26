@@ -166,7 +166,7 @@
             </div>
             <table class="inputTable tabContent">
                 <tr>
-                    <th>地市</th>
+                    <th>地市(*必填项)：</th>
                     <td>
                         @if(Auth::user()->area_level == '湖北省' || Auth::user()->area_level == 'admin')
                             <select name="region" id="region">
@@ -362,14 +362,32 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>基站编号：</th>
+                    <th>基站编号(*必填项)：</th>
                     <td>
                         <input type="text" name="stationCode" id="stationCode">
                     </td>
                 </tr>
                 <tr>
+                    <th>基站名称(*必填项)：</th>
+                    <td>
+                        <input type="text" name="stationName" id="stationName">
+                    </td>
+                </tr>
+                <tr>
+                    <th>站址编码(*必填项)：</th>
+                    <td>
+                        <input type="text" name="siteCode" id="siteCode">
+                    </td>
+                </tr>
+                <tr>
+                    <th>站址名称(*必填项)：</th>
+                    <td>
+                        <input type="text" name="siteName" id="siteName">
+                    </td>
+                </tr>
+                <tr>
                     <th>
-                        发电申请时间:
+                        发电申请时间(*必填项):
                     </th>
                     <td>
 
@@ -382,7 +400,7 @@
                 </tr>
                 <tr>
                     <th>
-                        发电申请发起方:
+                        发电申请发起方(*必填项):
                     </th>
                     <td>
                         <select name="gnrRaiseSide">
@@ -413,8 +431,23 @@
 
         function doAdd() {
             var stationCode = $('#stationCode').val();
+            var stationName = $('#stationName').val();
+            var siteCode = $('#siteCode').val();
+            var siteName = $('#siteName').val();
             if (stationCode == ''){
                 alert('请输入基站编号！');
+                return;
+            }
+            if (stationName == ''){
+                alert('请输入基站名称！');
+                return;
+            }
+            if (siteCode == ''){
+                alert('请输入站址编码！');
+                return;
+            }
+            if (siteName == ''){
+                alert('请输入站址名称！');
                 return;
             }
             if (confirm('确认提交吗？')) {
@@ -427,9 +460,10 @@
         }
 
         function doBack() {
-            var listForm = document.getElementById("listForm");
-            listForm.action = "{{url('backend/gnrRec')}}";
-            listForm.submit();
+            // var listForm = document.getElementById("listForm");
+            // listForm.action = "{{url('backend/gnrRec')}}";
+            // listForm.submit();
+            window.history.back();
         }
 
         function doImport() {

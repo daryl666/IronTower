@@ -15,7 +15,7 @@ class SiteShield extends Model
                 $query = DB::table('shield_info')
                     ->where('region_name', $region)
                     ->where('shield_req_proc_state', $checkStatus)
-                    ->where('unshield_req_proc_state', null)
+                    // ->where('unshield_req_proc_state', null)
                     ->orderBy('shield_start_time', 'DESC');
                 if ($startDate != '') {
                     $query->where('shield_start_time', '>=', $startDate . '00:00:00');
@@ -39,7 +39,7 @@ class SiteShield extends Model
             if ($reqType == 0) {
                 $query = DB::table('shield_info')
                     ->where('shield_req_proc_state', $checkStatus)
-                    ->where('unshield_req_proc_state', null)
+                    // ->where('unshield_req_proc_state', null)
                     ->orderBy('shield_start_time', 'DESC');
                 if ($startDate != '') {
                     $query->where('shield_start_time', '>=', $startDate . '00:00:00');
@@ -63,10 +63,10 @@ class SiteShield extends Model
     }
 
     function addSiteShield($regionName, $stationCode, $stationName, $stationLevel, $shieldStartTime,
-                           $shieldReason, $demStartTime, $estDemEndTime, $demReason)
+                           $shieldReason, $demStartTime, $estDemEndTime, $demReason, $clientName)
     {
         $addResult = DB::table('shield_info')
-            ->insert([
+            ->insertGetId([
                 'region_name' => $regionName,
                 'station_code' => $stationCode,
                 'station_name' => $stationName,
@@ -77,7 +77,8 @@ class SiteShield extends Model
                 'est_demolition_end_time' => $estDemEndTime,
                 'demolition_reason' => transDemReason($demReason),
                 'shield_state' => 1,
-                'shield_req_proc_state' => 1
+                'shield_req_proc_state' => 1,
+                'atta_name' => $clientName
             ]);
         return $addResult;
     }
@@ -98,4 +99,6 @@ class SiteShield extends Model
             ]);
         return $addResult;
     }
+
+    
 }

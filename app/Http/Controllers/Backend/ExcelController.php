@@ -2,73 +2,72 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\ServCost;
-use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
-use Excel;
-use App\Models\SiteInfo;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use App\Models\GnrRec;
+use App\Models\ServCost;
+use App\Models\SiteInfo;
 use Auth;
+use Excel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use PHPExcel;
-
 
 class ExcelController extends Controller
 {
-    function exportSiteInfo(Request $request)
+    public function exportSiteInfo(Request $request)
     {
-        $region = $request->get('region');
+        $region     = $request->get('region');
         $siteinfoDB = new SiteInfo();
-        $infoSites = $siteinfoDB->searchInfoSite($region)->get();
+        $infoSites  = $siteinfoDB->searchInfoSite($region)->get();
         foreach ($infoSites as $infoSite) {
             $export[] = array(
-                '产品业务确认单编号' => $infoSite->business_code,
-                '站址编码' => $infoSite->site_code,
-                '站址名称' => $infoSite->site_name,
-                'C网网管编号' => $infoSite->cdma_code,
-                'L网网管编号' => $infoSite->lte_code,
-                '需求确认单编号' => $infoSite->req_code,
-                '地市' => $infoSite->region_name,
-                '产品配套类型' => transProductType($infoSite->product_type),
-                '服务起始日期' => $infoSite->established_time,
-                '是否为新建站' => transIsNewTower($infoSite->is_new_tower) ,
-                '铁塔类型' => transTowerType($infoSite->tower_type) ,
-                '系统数量1' => $infoSite->sys_num1,
-                '系统1挂高' => transSysHeight($infoSite->sys1_height) ,
-                '系统数量2' => $infoSite->sys_num2,
-                '系统2挂高' => transSysHeight($infoSite->sys2_height),
-                '系统数量3' => $infoSite->sys_num3,
-                '系统3挂高' => transSysHeight($infoSite->sys3_height),
-                '站址位置' => transLandForm($infoSite->land_form) ,
-                '是否为竞合站点' => transIsCoOpetition($infoSite->is_co_opetition) ,
-                '机房共享用户数' => transShareType($infoSite->share_num_house) ,
-                '机房共享运营商1的起租日期' => $infoSite->user1_rent_house_date,
-                '机房共享运营商2的起租日期' => $infoSite->user2_rent_house_date,
-                '铁塔共享用户数' => transShareType($infoSite->share_num_tower) ,
-                '铁塔共享运营商1的起租日期' => $infoSite->user1_rent_tower_date,
-                '铁塔共享运营商2的起租日期' => $infoSite->user2_rent_tower_date,
-                '配套共享用户数' => transShareType($infoSite->share_num_support) ,
-                '配套共享运营商1的起租日期' => $infoSite->user1_rent_support_date,
-                '配套共享运营商2的起租日期' => $infoSite->user2_rent_support_date,
-                '维护费共享用户数' => transShareType($infoSite->share_num_maintain) ,
-                '维护费共享运营商1的起租日期' => $infoSite->user1_rent_maintain_date,
-                '维护费共享运营商2的起租日期' => $infoSite->user2_rent_maintain_date,
-                '场地费共享用户数' => transShareType($infoSite->share_num_site) ,
-                '场地费共享运营商1的起租日期' => $infoSite->user1_rent_site_date,
-                '场地费共享运营商2的起租日期' => $infoSite->user2_rent_site_date,
-                '电力引入费共享用户数' => transShareType($infoSite->share_num_import) ,
-                '电力引入费共享运营商1的起租日期' => $infoSite->user1_rent_import_date,
-                '电力引入费共享运营商2的起租日期' => $infoSite->user2_rent_import_date,
-                '覆盖场景' => transSiteDistType($infoSite->site_district_type) ,
-                'RRU是否拉远' => transIsRRUAway($infoSite->is_rru_away) ,
-                '用户类型' => transUserType($infoSite->user_type) ,
-                '引电类型' => transElecType($infoSite->elec_introduced_type) ,
-                'WLAN费用' => $infoSite->fee_wlan,
-                '微波费用' => $infoSite->fee_microwave,
+                '产品业务确认单编号'           => $infoSite->business_code,
+                '站址编码'                => $infoSite->site_code,
+                '站址名称'                => $infoSite->site_name,
+                'C网网管编号'              => $infoSite->cdma_code,
+                'L网网管编号'              => $infoSite->lte_code,
+                '需求确认单编号'             => $infoSite->req_code,
+                '地市'                  => $infoSite->region_name,
+                '产品配套类型'              => transProductType($infoSite->product_type),
+                '服务起始日期'              => $infoSite->established_time,
+                '是否为新建站'              => transIsNewTower($infoSite->is_new_tower),
+                '铁塔类型'                => transTowerType($infoSite->tower_type),
+                '系统数量1'               => $infoSite->sys_num1,
+                '系统1挂高'               => transSysHeight($infoSite->sys1_height),
+                '系统数量2'               => $infoSite->sys_num2,
+                '系统2挂高'               => transSysHeight($infoSite->sys2_height),
+                '系统数量3'               => $infoSite->sys_num3,
+                '系统3挂高'               => transSysHeight($infoSite->sys3_height),
+                '站址位置'                => transLandForm($infoSite->land_form),
+                '是否为竞合站点'             => transIsCoOpetition($infoSite->is_co_opetition),
+                '机房共享用户数'             => transShareType($infoSite->share_num_house),
+                '机房共享运营商1的起租日期'       => $infoSite->user1_rent_house_date,
+                '机房共享运营商2的起租日期'       => $infoSite->user2_rent_house_date,
+                '铁塔共享用户数'             => transShareType($infoSite->share_num_tower),
+                '铁塔共享运营商1的起租日期'       => $infoSite->user1_rent_tower_date,
+                '铁塔共享运营商2的起租日期'       => $infoSite->user2_rent_tower_date,
+                '配套共享用户数'             => transShareType($infoSite->share_num_support),
+                '配套共享运营商1的起租日期'       => $infoSite->user1_rent_support_date,
+                '配套共享运营商2的起租日期'       => $infoSite->user2_rent_support_date,
+                '维护费共享用户数'            => transShareType($infoSite->share_num_maintain),
+                '维护费共享运营商1的起租日期'      => $infoSite->user1_rent_maintain_date,
+                '维护费共享运营商2的起租日期'      => $infoSite->user2_rent_maintain_date,
+                '场地费共享用户数'            => transShareType($infoSite->share_num_site),
+                '场地费共享运营商1的起租日期'      => $infoSite->user1_rent_site_date,
+                '场地费共享运营商2的起租日期'      => $infoSite->user2_rent_site_date,
+                '电力引入费共享用户数'          => transShareType($infoSite->share_num_import),
+                '电力引入费共享运营商1的起租日期'    => $infoSite->user1_rent_import_date,
+                '电力引入费共享运营商2的起租日期'    => $infoSite->user2_rent_import_date,
+                '覆盖场景'                => transSiteDistType($infoSite->site_district_type),
+                'RRU是否拉远'             => transIsRRUAway($infoSite->is_rru_away),
+                '用户类型'                => transUserType($infoSite->user_type),
+                '引电类型'                => transElecType($infoSite->elec_introduced_type),
+                'WLAN费用'              => $infoSite->fee_wlan,
+                '微波费用'                => $infoSite->fee_microwave,
                 '超过10%高等级服务站址额外维护服务费' => $infoSite->fee_add,
-                '蓄电池额外保障费' => $infoSite->fee_battery,
-                'bbu安装在铁塔机房费' => $infoSite->fee_bbu,
+                '蓄电池额外保障费'            => $infoSite->fee_battery,
+                'bbu安装在铁塔机房费'         => $infoSite->fee_bbu,
             );
         }
         Excel::create('站址属性信息', function ($excel) use ($export) {
@@ -78,13 +77,13 @@ class ExcelController extends Controller
         })->export('xls');
     }
 
-    function exportServCost(Request $request)
+    public function exportServCost(Request $request)
     {
-        $region = $request->get('region');
-        $beginDate = $request->get('beginDate');
-        $endDate = $request->get('endDate');
+        $region     = $request->get('region');
+        $beginDate  = $request->get('beginDate');
+        $endDate    = $request->get('endDate');
         $servCostDB = new ServCost();
-        $servCosts = $servCostDB->searchServCost($region, $beginDate, $endDate);
+        $servCosts  = $servCostDB->searchServCost($region, $beginDate, $endDate);
         if (!empty($servCosts)) {
             foreach ($servCosts as $servCost) {
                 if (!isset($servCost->fee_basic)) {
@@ -112,18 +111,18 @@ class ExcelController extends Controller
                     $servCost->fee_electricity_taxed = '';
                 }
                 $export[] = array(
-                    '地市' => $servCost->region_name,
-                    '提交时间' => $servCost->created_at,
-                    '服务费用日期' => $servCost->month,
-                    '站址总数' => $servCost->site_num,
-                    '基准价格（万元/不含税）' => $servCost->fee_basic,
-                    '基准价格（万元/含税）' => $servCost->fee_basic_taxed,
-                    '场地费（万元/不含税）' => $servCost->fee_site,
-                    '场地费（万元/含税）' => $servCost->fee_site_taxed,
+                    '地市'            => $servCost->region_name,
+                    '提交时间'          => $servCost->created_at,
+                    '服务费用日期'        => $servCost->month,
+                    '站址总数'          => $servCost->site_num,
+                    '基准价格（万元/不含税）'  => $servCost->fee_basic,
+                    '基准价格（万元/含税）'   => $servCost->fee_basic_taxed,
+                    '场地费（万元/不含税）'   => $servCost->fee_site,
+                    '场地费（万元/含税）'    => $servCost->fee_site_taxed,
                     '电力引入费（万元/不含税）' => $servCost->fee_import,
-                    '电力引入费（万元/含税）' => $servCost->fee_import_taxed,
-                    '日常电费（万元/不含税）' => $servCost->fee_electricity,
-                    '日常电费（万元/含税）' => $servCost->fee_electricity_taxed,
+                    '电力引入费（万元/含税）'  => $servCost->fee_import_taxed,
+                    '日常电费（万元/不含税）'  => $servCost->fee_electricity,
+                    '日常电费（万元/含税）'   => $servCost->fee_electricity_taxed,
 
                 );
             }
@@ -138,15 +137,15 @@ class ExcelController extends Controller
 
     }
 
-    function exportBasicFee(Request $request)
+    public function exportBasicFee(Request $request)
     {
         $basicFees = DB::table('fee_basic_table')->get();
         foreach ($basicFees as $basicFee) {
             $export[] = array(
-                '塔型' => $basicFee->tower_type,
-                '系统挂高（米）' => $basicFee->sys_height,
-                '配套类型' => $basicFee->product_type,
-                '是否为新建站' => $basicFee->is_new_tower,
+                '塔型'             => $basicFee->tower_type,
+                '系统挂高（米）'        => $basicFee->sys_height,
+                '配套类型'           => $basicFee->product_type,
+                '是否为新建站'         => $basicFee->is_new_tower,
                 '基准价格（元/天）（不含税）' => $basicFee->fee_basic,
 
             );
@@ -159,7 +158,7 @@ class ExcelController extends Controller
 
     }
 
-    function exportSiteFee(Request $request)
+    public function exportSiteFee(Request $request)
     {
         $region = $request->get('region');
         if ($region == '湖北省') {
@@ -169,9 +168,9 @@ class ExcelController extends Controller
         }
         foreach ($siteFees as $siteFee) {
             $export[] = array(
-                '地市' => $siteFee->region_name,
-                '站址所在地区类型' => $siteFee->site_district_type,
-                '是否RRU拉远' => $siteFee->is_rru_away,
+                '地市'            => $siteFee->region_name,
+                '站址所在地区类型'      => $siteFee->site_district_type,
+                '是否RRU拉远'       => $siteFee->is_rru_away,
                 '场地费（元/天）（不含税）' => $siteFee->fee_site,
 
             );
@@ -185,7 +184,7 @@ class ExcelController extends Controller
 
     }
 
-    function exportElecImportFee(Request $request)
+    public function exportElecImportFee(Request $request)
     {
         $region = $request->get('region');
         if ($region == '湖北省') {
@@ -196,8 +195,8 @@ class ExcelController extends Controller
 
         foreach ($elecImportFees as $elecImportFee) {
             $export[] = array(
-                '地市' => $elecImportFee->region_name,
-                '引电类型' => $elecImportFee->elec_introduced_type,
+                '地市'              => $elecImportFee->region_name,
+                '引电类型'            => $elecImportFee->elec_introduced_type,
                 '电力引入费（元/天）（不含税）' => $elecImportFee->fee_import,
 
             );
@@ -211,19 +210,19 @@ class ExcelController extends Controller
 
     }
 
-    function exportDiscount(Request $request)
+    public function exportDiscount(Request $request)
     {
-        $feeType = $request->get('fee_type');
+        $feeType   = $request->get('fee_type');
         $discounts = DB::table('share_discount')->get();
         foreach ($discounts as $discount) {
             $export[] = array(
-                '是否为新建站' => $discount->is_new_tower,
-                '共享类型' => $discount->share_type,
-                '用户类型' => $discount->user_type,
+                '是否为新建站'   => $discount->is_new_tower,
+                '共享类型'     => $discount->share_type,
+                '用户类型'     => $discount->user_type,
                 '是否存在新增共享' => $discount->is_newly_added,
-                '基准价格折扣' => $discount->discount_basic,
-                '场地费折扣' => $discount->discount_site,
-                '电力引入费折扣' => $discount->discount_import,
+                '基准价格折扣'   => $discount->discount_basic,
+                '场地费折扣'    => $discount->discount_site,
+                '电力引入费折扣'  => $discount->discount_import,
 
             );
         }
@@ -236,22 +235,22 @@ class ExcelController extends Controller
 
     }
 
-    function exportGnrRec(Request $request)
+    public function exportGnrRec(Request $request)
     {
-        $region = $request->get('region_export');
+        $region    = $request->get('region_export');
         $site_code = $request->get('siteCode_export');
-        $gnrRecs = DB::table('fee_out_gnr')->where('region_name', $region)->where('site_code', $site_code)->get();
+        $gnrRecs   = DB::table('fee_out_gnr')->where('region_name', $region)->where('site_code', $site_code)->get();
         if (!empty($gnrRecs)) {
             foreach ($gnrRecs as $gnrRec) {
                 $export[] = array(
-                    '地市' => $gnrRec->region_name,
-                    '站址编码' => $gnrRec->site_code,
-                    '提交时间' => $gnrRec->created_at,
-                    '发电起始时间' => $gnrRec->gnr_start_time,
-                    '发电终止时间' => $gnrRec->gnr_stop_time,
-                    '发电时长' => $gnrRec->gnr_len,
+                    '地市'           => $gnrRec->region_name,
+                    '站址编码'         => $gnrRec->site_code,
+                    '提交时间'         => $gnrRec->created_at,
+                    '发电起始时间'       => $gnrRec->gnr_start_time,
+                    '发电终止时间'       => $gnrRec->gnr_stop_time,
+                    '发电时长'         => $gnrRec->gnr_len,
                     '发电费用（元）（不含税）' => $gnrRec->gnr_fee,
-                    '发电费用（元）（含税）' => $gnrRec->gnr_fee_taxed,
+                    '发电费用（元）（含税）'  => $gnrRec->gnr_fee_taxed,
 
                 );
             }
@@ -266,40 +265,36 @@ class ExcelController extends Controller
         }
     }
 
-
     public function importSiteInfo(Request $request)
     {
-        $filter = $request->all();
-        $region = $request->input('region', '');
-        $file = $request->file('siteInfoFile');
-        if ($region != "请选择...") {
-            $clientName = $file->getClientOriginalName();
-            $file_types = explode(".", $clientName);
-            $file_type = $file_types [count($file_types) - 1];
-            if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
-                echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
-            } else {
-                $savePath = 'storage/app';
-                $str = date('Ymdhis');
-                $file_name = $str . "." . $file_type;
-                $path = $file->move($savePath, $file_name);
-                $filePath = "public/storage/app/";
+        $filter     = $request->all();
+        $region     = $request->input('region', '');
+        $file       = $request->file('siteInfoFile');
+        $clientName = $file->getClientOriginalName();
+        $file_types = explode(".", $clientName);
+        $file_type  = $file_types[count($file_types) - 1];
+        if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
+            echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
+        } else {
+            $savePath  = 'storage/app';
+            $str       = date('Ymdhis');
+            $file_name = $str . "." . $file_type;
+            $path      = $file->move($savePath, $file_name);
+            $filePath  = "public/storage/app/";
 //        $reader->setOutputEncoding('UTF-8');
-                Excel::load($filePath . $file_name, function ($reader) {
+            Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
-                    $reader = $reader->getSheet(0);
+                $reader = $reader->getSheet(0);
 //            获取表中的数据
-                    $results = $reader->toArray();
-                    $siteInfoDB = new SiteInfo();
-                    $area_level = Auth::user()->area_level;
-                    $siteInfoDB->addInfoSiteByArray($results, $area_level);
+                $results    = $reader->toArray();
+                $siteInfoDB = new SiteInfo();
+                $area_level = Auth::user()->area_level;
+                $siteInfoDB->addInfoSiteByArray($results, $area_level);
 
-                });
-                $siteinfoDB = new SiteInfo();
-                $infoSites = $siteinfoDB->searchInfoSite($region);
-                return view('backend/siteInfo/index')->with('infoSites', $infoSites)
-                    ->with('filter', $filter);
-            }
+            });
+            return redirect('backend/siteInfo')
+                ->with('filter', $filter)
+                ->with('flag', 'add');
         }
     }
 
@@ -307,56 +302,55 @@ class ExcelController extends Controller
     {
         $filter = $request->all();
         $region = $request->input('region', '');
-        $file = $request->file('siteInfoToUpdateFile');
+        $file   = $request->file('siteInfoToUpdateFile');
         if ($region != "请选择...") {
             $clientName = $file->getClientOriginalName();
             $file_types = explode(".", $clientName);
-            $file_type = $file_types [count($file_types) - 1];
+            $file_type  = $file_types[count($file_types) - 1];
             if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
                 echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
             } else {
-                $savePath = 'storage/app';
-                $str = date('Ymdhis');
+                $savePath  = 'storage/app';
+                $str       = date('Ymdhis');
                 $file_name = $str . "." . $file_type;
-                $path = $file->move($savePath, $file_name);
-                $filePath = "public\storage\app\\";
+                $path      = $file->move($savePath, $file_name);
+                $filePath  = "public\storage\app\\";
 //        $reader->setOutputEncoding('UTF-8');
                 Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
                     $reader = $reader->getSheet(0);
 //            获取表中的数据
-                    $results = $reader->toArray();
+                    $results    = $reader->toArray();
                     $area_level = Auth::user()->area_level;
                     $siteInfoDB = new SiteInfo();
                     $siteInfoDB->updateInfoSiteByArray($results, $area_level);
 
                 });
                 $siteinfoDB = new SiteInfo();
-                $infoSites = $siteinfoDB->searchInfoSite($region);
+                $infoSites  = $siteinfoDB->searchInfoSite($region);
                 return view('backend/siteInfo/index')->with('infoSites', $infoSites)
                     ->with('filter', $filter);
             }
-
 
         } else {
 
             $clientName = $file->getClientOriginalName();
             $file_types = explode(".", $clientName);
-            $file_type = $file_types [count($file_types) - 1];
+            $file_type  = $file_types[count($file_types) - 1];
             if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
                 echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
             } else {
-                $savePath = 'storage/app';
-                $str = date('Ymdhis');
+                $savePath  = 'storage/app';
+                $str       = date('Ymdhis');
                 $file_name = $str . "." . $file_type;
-                $path = $file->move($savePath, $file_name);
-                $filePath = "public\storage\app\\";
+                $path      = $file->move($savePath, $file_name);
+                $filePath  = "public\storage\app\\";
 //        $reader->setOutputEncoding('UTF-8');
                 Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
                     $reader = $reader->getSheet(0);
 //            获取表中的数据
-                    $results = $reader->toArray();
+                    $results    = $reader->toArray();
                     $siteInfoDB = new SiteInfo();
                     $siteInfoDB->addInfoSiteByArray($results);
                 });
@@ -368,44 +362,44 @@ class ExcelController extends Controller
 
     public function importGnrRec(Request $request)
     {
-        $file = $request->file('gnrRecFile');
+        $file       = $request->file('gnrRecFile');
         $clientName = $file->getClientOriginalName();
         $file_types = explode(".", $clientName);
-        $file_type = $file_types [count($file_types) - 1];
+        $file_type  = $file_types[count($file_types) - 1];
         if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
             echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
         } else {
-            $savePath = 'storage/app';
-            $str = date('Ymdhis');
+            $savePath  = 'storage/app';
+            $str       = date('Ymdhis');
             $file_name = $str . "." . $file_type;
-            $path = $file->move($savePath, $file_name);
-            $filePath = "public\storage\app\\";
+            $path      = $file->move($savePath, $file_name);
+            $filePath  = "public\storage\app\\";
 //        $reader->setOutputEncoding('UTF-8');
             Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
                 $reader = $reader->getSheet(0);
 //            获取表中的数据
-                $results = $reader->toArray();
+                $results  = $reader->toArray();
                 $gnrRecDB = new GnrRec();
                 $gnrRecDB->addGnrRecByArray($results);
 
             });
-            $filter = $request->all();
+            $filter   = $request->all();
             $siteCode = $request->get('siteCode');
 
-            $gnrRecDB = new GnrRec();
-            $siteInfos = DB::table('site_info')->where('site_code', $siteCode)->where('is_valid', '是')->get();
-            $gnrRecs = $gnrRecDB->searchGnr($siteCode);
-            $gnr_total_len_minute = DB::table('fee_out_gnr')->where('site_code', $siteCode)->sum('gnr_len_minute');
-            $gnr_total_len_hour = floor($gnr_total_len_minute / 60);
-            $gnr_total_len_minutes = $gnr_total_len_minute % 60;
-            $gnr_total_len = $gnr_total_len_hour . ':' . $gnr_total_len_minutes;
-            $gnr_num = count($gnrRecs);
-            $gnr_total_fee = DB::table('fee_out_gnr')->where('site_code', $siteCode)->sum('gnr_fee');
-            $last_gnr_time = DB::table('fee_out_gnr')->where('site_code', $siteCode)->max('gnr_stop_time');
+            $gnrRecDB                    = new GnrRec();
+            $siteInfos                   = DB::table('site_info')->where('site_code', $siteCode)->where('is_valid', '是')->get();
+            $gnrRecs                     = $gnrRecDB->searchGnr($siteCode);
+            $gnr_total_len_minute        = DB::table('fee_out_gnr')->where('site_code', $siteCode)->sum('gnr_len_minute');
+            $gnr_total_len_hour          = floor($gnr_total_len_minute / 60);
+            $gnr_total_len_minutes       = $gnr_total_len_minute % 60;
+            $gnr_total_len               = $gnr_total_len_hour . ':' . $gnr_total_len_minutes;
+            $gnr_num                     = count($gnrRecs);
+            $gnr_total_fee               = DB::table('fee_out_gnr')->where('site_code', $siteCode)->sum('gnr_fee');
+            $last_gnr_time               = DB::table('fee_out_gnr')->where('site_code', $siteCode)->max('gnr_stop_time');
             $siteInfos[0]->last_gnr_time = $last_gnr_time;
             $siteInfos[0]->gnr_total_len = $gnr_total_len;
-            $siteInfos[0]->gnr_num = $gnr_num;
+            $siteInfos[0]->gnr_num       = $gnr_num;
             $siteInfos[0]->gnr_total_fee = $gnr_total_fee;
             return redirect('backend/gnrRec/indexGnr')->with('siteInfos', $siteInfos)
                 ->with('gnrRecs', $gnrRecs)
@@ -415,90 +409,90 @@ class ExcelController extends Controller
 
     }
 
-    function transIronTowerSiteInfo(Request $request)
+    public function transIronTowerSiteInfo(Request $request)
     {
 
         include '/Applications/XAMPP/xamppfiles/htdocs/IronTower/public/common/PHPExcel-1.8/Classes/PHPExcel.php';
-        $filter = $request->all();
-        $region = $request->input('region', '');
-        $file = $request->file('ironTowerSiteInfoFile');
+        $filter     = $request->all();
+        $region     = $request->input('region', '');
+        $file       = $request->file('ironTowerSiteInfoFile');
         $clientName = $file->getClientOriginalName();
         $file_types = explode(".", $clientName);
-        $file_type = $file_types [count($file_types) - 1];
+        $file_type  = $file_types[count($file_types) - 1];
         if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
             echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
         } else {
-            $savePath = 'storage/app';
-            $str = date('Ymdhis');
+            $savePath  = 'storage/app';
+            $str       = date('Ymdhis');
             $file_name = $str . "." . $file_type;
-            $path = $file->move($savePath, $file_name);
-            $filePath = "public/storage/app/";
+            $path      = $file->move($savePath, $file_name);
+            $filePath  = "public/storage/app/";
 //        $reader->setOutputEncoding('UTF-8');
             Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
                 $reader = $reader->getSheet(0);
 //            获取表中的数据
-                $results = $reader->toArray();
+                $results    = $reader->toArray();
                 $siteInfoDB = new SiteInfo();
                 $area_level = Auth::user()->area_level;
-                $infoSites = $siteInfoDB->transIronTowerSiteInfo($results, $area_level);
+                $infoSites  = $siteInfoDB->transIronTowerSiteInfo($results, $area_level);
                 foreach ($infoSites as $infoSite) {
                     $export[] = array(
 //                        '产品业务确认单编号' => $infoSite[0],
-//                        '站址编码' => $infoSite[1],
-//                        '站址名称' => $infoSite[2],
-//                        'C网网管编号' => $infoSite[3],
-//                        'L网网管编号' => $infoSite[4],
-//                        '需求确认单编号' => $infoSite[5],
-//                        '地市' => $infoSite[6],
-//                        '产品配套类型' => $infoSite[7],
-//                        '服务起始日期' => $infoSite[8],
-//                        '是否为新建站' => $infoSite[9],
-//                        '铁塔类型' => $infoSite[10],
-//                        '系统数量' => $infoSite[11],
-//                        '系统1挂高' => $infoSite[12],
-//                        '系统2挂高' => $infoSite[13],
-//                        '系统3挂高' => $infoSite[14],
-//                        '站址位置' => $infoSite[15],
-//                        '是否为竞合站点' => $infoSite[16],
-//                        '机房共享用户数' => $infoSite[17],
-//                        '机房共享运营商1的起租日期' => $infoSite[18],
-//                        '机房共享运营商2的起租日期' => $infoSite[19],
-//                        '铁塔共享用户数' => $infoSite[20],
-//                        '铁塔共享运营商1的起租日期' => $infoSite[21],
-//                        '铁塔共享运营商2的起租日期' => $infoSite[22],
-//                        '配套共享用户数' => $infoSite[23],
-//                        '配套共享运营商1的起租日期' => $infoSite[24],
-//                        '配套共享运营商2的起租日期' => $infoSite[25],
-//                        '维护费共享用户数' => $infoSite[26],
-//                        '维护费共享运营商1的起租日期' => $infoSite[27],
-//                        '维护费共享运营商2的起租日期' => $infoSite[28],
-//                        '场地费共享用户数' => $infoSite[29],
-//                        '场地费共享运营商1的起租日期' => $infoSite[30],
-//                        '场地费共享运营商2的起租日期' => $infoSite[31],
-//                        '电力引入费共享用户数' => $infoSite[32],
-//                        '电力引入费共享运营商1的起租日期' => $infoSite[33],
-//                        '电力引入费共享运营商2的起租日期' => $infoSite[34],
-//                        '覆盖场景' => $infoSite[35],
-//                        'RRU是否拉远' => $infoSite[36],
-//                        '用户类型' => $infoSite[37],
-//                        '引电类型' => $infoSite[38],
-//                        'WLAN费用' => $infoSite[39],
-//                        '微波费用' => $infoSite[40],
-//                        '超过10%高等级服务站址额外维护服务费' => $infoSite[41],
-//                        '蓄电池额外保障费' => $infoSite[42],
-//                        'bbu安装在铁塔机房费' => $infoSite[43],
-//                        '场地费' => $infoSite[44],
-                        0 => $infoSite[0],
-                        1 => $infoSite[1],
-                        2 => $infoSite[2],
-                        3 => $infoSite[3],
-                        4 => $infoSite[4],
-                        5 => $infoSite[5],
-                        6 => $infoSite[6],
-                        7 => $infoSite[7],
-                        8 => $infoSite[8],
-                        9 => $infoSite[9],
+                        //                        '站址编码' => $infoSite[1],
+                        //                        '站址名称' => $infoSite[2],
+                        //                        'C网网管编号' => $infoSite[3],
+                        //                        'L网网管编号' => $infoSite[4],
+                        //                        '需求确认单编号' => $infoSite[5],
+                        //                        '地市' => $infoSite[6],
+                        //                        '产品配套类型' => $infoSite[7],
+                        //                        '服务起始日期' => $infoSite[8],
+                        //                        '是否为新建站' => $infoSite[9],
+                        //                        '铁塔类型' => $infoSite[10],
+                        //                        '系统数量' => $infoSite[11],
+                        //                        '系统1挂高' => $infoSite[12],
+                        //                        '系统2挂高' => $infoSite[13],
+                        //                        '系统3挂高' => $infoSite[14],
+                        //                        '站址位置' => $infoSite[15],
+                        //                        '是否为竞合站点' => $infoSite[16],
+                        //                        '机房共享用户数' => $infoSite[17],
+                        //                        '机房共享运营商1的起租日期' => $infoSite[18],
+                        //                        '机房共享运营商2的起租日期' => $infoSite[19],
+                        //                        '铁塔共享用户数' => $infoSite[20],
+                        //                        '铁塔共享运营商1的起租日期' => $infoSite[21],
+                        //                        '铁塔共享运营商2的起租日期' => $infoSite[22],
+                        //                        '配套共享用户数' => $infoSite[23],
+                        //                        '配套共享运营商1的起租日期' => $infoSite[24],
+                        //                        '配套共享运营商2的起租日期' => $infoSite[25],
+                        //                        '维护费共享用户数' => $infoSite[26],
+                        //                        '维护费共享运营商1的起租日期' => $infoSite[27],
+                        //                        '维护费共享运营商2的起租日期' => $infoSite[28],
+                        //                        '场地费共享用户数' => $infoSite[29],
+                        //                        '场地费共享运营商1的起租日期' => $infoSite[30],
+                        //                        '场地费共享运营商2的起租日期' => $infoSite[31],
+                        //                        '电力引入费共享用户数' => $infoSite[32],
+                        //                        '电力引入费共享运营商1的起租日期' => $infoSite[33],
+                        //                        '电力引入费共享运营商2的起租日期' => $infoSite[34],
+                        //                        '覆盖场景' => $infoSite[35],
+                        //                        'RRU是否拉远' => $infoSite[36],
+                        //                        '用户类型' => $infoSite[37],
+                        //                        '引电类型' => $infoSite[38],
+                        //                        'WLAN费用' => $infoSite[39],
+                        //                        '微波费用' => $infoSite[40],
+                        //                        '超过10%高等级服务站址额外维护服务费' => $infoSite[41],
+                        //                        '蓄电池额外保障费' => $infoSite[42],
+                        //                        'bbu安装在铁塔机房费' => $infoSite[43],
+                        //                        '场地费' => $infoSite[44],
+                        0  => $infoSite[0],
+                        1  => $infoSite[1],
+                        2  => $infoSite[2],
+                        3  => $infoSite[3],
+                        4  => $infoSite[4],
+                        5  => $infoSite[5],
+                        6  => $infoSite[6],
+                        7  => $infoSite[7],
+                        8  => $infoSite[8],
+                        9  => $infoSite[9],
                         10 => $infoSite[10],
                         11 => $infoSite[11],
                         12 => $infoSite[12],
@@ -580,14 +574,13 @@ class ExcelController extends Controller
                 header("Content-Transfer-Encoding:binary");
                 $write->save('php://output');
 //                Excel::create('站址属性信息', function ($excel) use ($export) {
-//                    $excel->sheet('站址属性信息', function ($sheet) use ($export) {
-//                        $sheet->fromArray($export);
-//                    });
-//                })->export('xlsx');
+                //                    $excel->sheet('站址属性信息', function ($sheet) use ($export) {
+                //                        $sheet->fromArray($export);
+                //                    });
+                //                })->export('xlsx');
             });
         }
 
     }
-
 
 }

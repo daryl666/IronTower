@@ -37,7 +37,7 @@ class SiteShieldController extends Controller
 //                    $siteShields = null;
 //                }
                 return view('backend/siteShield/index-shield-checking')
-                    ->with('siteShields', $siteShields);
+                ->with('siteShields', $siteShields);
             } elseif (!empty(session('siteShieldsApproved'))) {
                 $flag = $request->session()->pull('flag');
                 if ($flag == 'add') {
@@ -52,7 +52,7 @@ class SiteShieldController extends Controller
 //                    $siteShields = null;
 //                }
                 return view('backend/siteShield/index-shield-approved')
-                    ->with('siteShields', $siteShields);
+                ->with('siteShields', $siteShields);
             } elseif (!empty(session('siteUnshieldsChecking'))) {
                 $flag = $request->session()->pull('flag');
                 if ($flag == 'add') {
@@ -67,7 +67,7 @@ class SiteShieldController extends Controller
 //                    $siteShields = null;
 //                }
                 return view('backend/siteShield/index-unshield-checking')
-                    ->with('siteShields', $siteShields);
+                ->with('siteShields', $siteShields);
             } else {
                 $regionName = $request->get('region');
                 $checkStatus = $request->get('checkStatus');
@@ -78,30 +78,30 @@ class SiteShieldController extends Controller
                 if ($reqType == 0) {
                     if ($checkStatus == 1) {
                         return view('backend/siteShield/index-shield-checking')
-                            ->with('siteShields', $siteShields)
-                            ->with('filter', $filter);
+                        ->with('siteShields', $siteShields)
+                        ->with('filter', $filter);
                     } elseif ($checkStatus == 2) {
                         return view('backend/siteShield/index-shield-approved')
-                            ->with('siteShields', $siteShields)
-                            ->with('filter', $filter);
+                        ->with('siteShields', $siteShields)
+                        ->with('filter', $filter);
                     } elseif ($checkStatus == 3) {
                         return view('backend/siteShield/index-shield-denied')
-                            ->with('siteShields', $siteShields)
-                            ->with('filter', $filter);
+                        ->with('siteShields', $siteShields)
+                        ->with('filter', $filter);
                     }
                 } else {
                     if ($checkStatus == 1) {
                         return view('backend/siteShield/index-unshield-checking')
-                            ->with('siteShields', $siteShields)
-                            ->with('filter', $filter);
+                        ->with('siteShields', $siteShields)
+                        ->with('filter', $filter);
                     } elseif ($checkStatus == 2) {
                         return view('backend/siteShield/index-unshield-approved')
-                            ->with('siteShields', $siteShields)
-                            ->with('filter', $filter);
+                        ->with('siteShields', $siteShields)
+                        ->with('filter', $filter);
                     } elseif ($checkStatus == 3) {
                         return view('backend/siteShield/index-unshield-denied')
-                            ->with('siteShields', $siteShields)
-                            ->with('filter', $filter);
+                        ->with('siteShields', $siteShields)
+                        ->with('filter', $filter);
                     }
                 }
             }
@@ -117,17 +117,17 @@ class SiteShieldController extends Controller
     function addUnshieldPage($id)
     {
         $siteShields = DB::table('shield_info')
-            ->where('id', $id)
-            ->get();
+        ->where('id', $id)
+        ->get();
         if ($siteShields[0]->shield_reason == transShieldReason('故障')) {
             return view('backend/siteShield/add-unshield-os')
-                ->with('siteShields', $siteShields);
+            ->with('siteShields', $siteShields);
         } elseif ($siteShields[0]->shield_reason == transShieldReason('拆迁')) {
             return view('backend/siteShield/add-unshield-dem')
-                ->with('siteShields', $siteShields);
+            ->with('siteShields', $siteShields);
         } elseif ($siteShields[0]->shield_reason == transShieldReason('拆迁还建')) {
             return view('backend/siteShield/add-unshield-rebuilt')
-                ->with('siteShields', $siteShields);
+            ->with('siteShields', $siteShields);
         }
 
     }
@@ -149,22 +149,30 @@ class SiteShieldController extends Controller
         $demStartTime = $request->get('demStartTime');
         $estDemEndTime = $request->get('estDemEndTime');
         $demReason = $request->get('demReason');
+        $file       = $request->file('siteShieldAttachment');
+        $clientName = $file->getClientOriginalName();
         $siteShieldDB = new SiteShield();
         $addResult = $siteShieldDB->addSiteShield($regionName, $stationCode, $stationName, $stationLevel, $shieldStartTime, $shieldReason,
-            $demStartTime, $estDemEndTime, $demReason);
+            $demStartTime, $estDemEndTime, $demReason, $clientName);
+
+        // 上传附件
+        $savePath  = 'storage/app/'.$addResult;
+        $path      = $file->move($savePath, $clientName);
 
         if (!empty($addResult)) {
-            $siteShieldsChecking = $siteShieldDB->getSiteShields($regionName, 1, 0)->paginate(15);
-            $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报屏蔽申请',
-                'site_shield', '');
-            return redirect('backend/siteShield/shieldPage')
-                ->with('flag', 'add')
-                ->with('siteShieldsChecking', 1)
-                ->with('region', $regionName)
-                ->with('beginDate', '')
-                ->with('endDate', '')
-                ->with('checkStatus', 1)
-                ->with('filter', $filter);
+            // $siteShieldsChecking = $siteShieldDB->getSiteShields($regionName, 1, 0)->paginate(15);
+            // $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报屏蔽申请',
+            //     'site_shield', '');
+            // // $request->session()->put('key1', 'fsdad');
+            // return redirect('backend/siteShield/shieldPage')
+            // ->with('flag', 'add')
+            // ->with('siteShieldsChecking', 1)
+            // ->with('region', $regionName)
+            // ->with('beginDate', '')
+            // ->with('endDate', '')
+            // ->with('checkStatus', 1)
+            // ->with('filter', $filter);
+            echo "<script language='JavaScript'>alert('申请成功！');history.back()</script>";
 
         } else {
             echo "<script language='JavaScript'>alert('申请失败！');history.back()</script>";
@@ -194,13 +202,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报解屏蔽申请',
                 'site_shield', '');
             return redirect('backend/siteShield/shieldPage')
-                ->with('siteShieldsApproved', 1)
-                ->with('flag', 'add')
-                ->with('region', $regionName)
-                ->with('beginDate', '')
-                ->with('endDate', '')
-                ->with('checkStatus', 2)
-                ->with('filter', $filter);
+            ->with('siteShieldsApproved', 1)
+            ->with('flag', 'add')
+            ->with('region', $regionName)
+            ->with('beginDate', '')
+            ->with('endDate', '')
+            ->with('checkStatus', 2)
+            ->with('filter', $filter);
         } else {
             echo "<script language='JavaScript'>alert('申请失败！');history.back()</script>";
         }
@@ -213,8 +221,8 @@ class SiteShieldController extends Controller
         $filter = $request->all();
         $regionName = Auth::user()->area_level;
         $withdrawResult = DB::table('shield_info')
-            ->where('id', $id)
-            ->delete();
+        ->where('id', $id)
+        ->delete();
         if (!empty($withdrawResult)) {
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
@@ -225,13 +233,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '撤回屏蔽申请',
                 'site_shield', '');
             return redirect('backend/siteShield/shieldPage')
-                ->with('siteShieldsChecking', 1)
-                ->with('flag', 'withdraw')
-                ->with('region', $regionName)
-                ->with('beginDate', $beginDate)
-                ->with('endDate', $endDate)
-                ->with('checkStatus', 1)
-                ->with('filter', $filter);
+            ->with('siteShieldsChecking', 1)
+            ->with('flag', 'withdraw')
+            ->with('region', $regionName)
+            ->with('beginDate', $beginDate)
+            ->with('endDate', $endDate)
+            ->with('checkStatus', 1)
+            ->with('filter', $filter);
         } else {
             echo "<script language='JavaScript'>alert('撤回失败！');history.back()</script>";
         }
@@ -243,19 +251,19 @@ class SiteShieldController extends Controller
         $eventLogDB = new EventLog();
         $filter = $request->all();
         $withdrawResult = DB::table('shield_info')
-            ->where('id', $id)
-            ->update([
-                'os_reason' => null,
-                'os_detail' => null,
-                'response_unit' => null,
-                'unshield_req_proc_state' => null,
-                'shield_end_time' => null,
-                'demolition_reason' => null,
-                'demolition_start_time' => null,
-                'new_station_code' => null,
-                'new_station_name' => null,
-                'new_site_code' => null,
-            ]);
+        ->where('id', $id)
+        ->update([
+            'os_reason' => null,
+            'os_detail' => null,
+            'response_unit' => null,
+            'unshield_req_proc_state' => null,
+            'shield_end_time' => null,
+            'demolition_reason' => null,
+            'demolition_start_time' => null,
+            'new_station_code' => null,
+            'new_station_name' => null,
+            'new_site_code' => null,
+        ]);
         if (!empty($withdrawResult)) {
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
@@ -266,13 +274,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '撤回解屏蔽申请',
                 'site_shield', '');
             return redirect('backend/siteShield/unshieldPage')
-                ->with('flag', 'withdraw')
-                ->with('region', $regionName)
-                ->with('beginDate', $beginDate)
-                ->with('endDate', $endDate)
-                ->with('checkStatus', 1)
-                ->with('filter', $filter)
-                ->with('siteUnshieldsChecking', 1);
+            ->with('flag', 'withdraw')
+            ->with('region', $regionName)
+            ->with('beginDate', $beginDate)
+            ->with('endDate', $endDate)
+            ->with('checkStatus', 1)
+            ->with('filter', $filter)
+            ->with('siteUnshieldsChecking', 1);
         } else {
             echo "<script language='JavaScript'>alert('撤回失败！');history.back()</script>";
         }
@@ -282,15 +290,15 @@ class SiteShieldController extends Controller
     {
         $eventLogDB = new EventLog();
         $approveResult = DB::table('shield_info')
-            ->where('id', $id)
-            ->update([
-                'shield_req_proc_state' => 2,
-                'shield_state' => 2
-            ]);
+        ->where('id', $id)
+        ->update([
+            'shield_req_proc_state' => 2,
+            'shield_state' => 2
+        ]);
         if (!empty($approveResult)) {
             $siteShield = DB::table('shield_info')
-                ->where('id', $id)
-                ->get();
+            ->where('id', $id)
+            ->get();
             $shieldReason = $siteShield[0]->shield_reason;
             $stationCode = $siteShield[0]->station_code;
             $regionName = $siteShield[0]->region_name;
@@ -309,13 +317,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '审核通过屏蔽申请',
                 'site_shield', '');
             return redirect('backend/siteShield/checkShieldPage')
-                ->with('flag', 'check')
-                ->with('region', $regionName)
-                ->with('beginDate', $beginDate)
-                ->with('endDate', $endDate)
-                ->with('checkStatus', 1)
-                ->with('siteShieldsChecking', 1)
-                ->with('filter', $filter);
+            ->with('flag', 'check')
+            ->with('region', $regionName)
+            ->with('beginDate', $beginDate)
+            ->with('endDate', $endDate)
+            ->with('checkStatus', 1)
+            ->with('siteShieldsChecking', 1)
+            ->with('filter', $filter);
         } else {
             echo "<script language='JavaScript'>alert('审核失败！');history.back()</script>";
         }
@@ -326,14 +334,14 @@ class SiteShieldController extends Controller
         $eventLogDB = new EventLog();
         $regionName = Auth::user()->area_level;
         $approveResult = DB::table('shield_info')
-            ->where('id', $id)
-            ->update([
-                'unshield_req_proc_state' => 2,
-                'shield_state' => 3
-            ]);
+        ->where('id', $id)
+        ->update([
+            'unshield_req_proc_state' => 2,
+            'shield_state' => 3
+        ]);
         $siteShield = DB::table('shield_info')
-            ->where('id', $id)
-            ->get();
+        ->where('id', $id)
+        ->get();
         $shieldReason = $siteShield[0]->shield_reason;
         $shieldEndTime = $siteShield[0]->shield_end_time;
         $stationCode = $siteShield[0]->station_code;
@@ -342,12 +350,13 @@ class SiteShieldController extends Controller
         $month = $demTime[0] . '-' . $demTime[1];
         if ($shieldReason == transShieldReason('拆迁')) {
             DB::table('demolition_record')
-                ->insert([
-                    'region_name' => $siteShield[0]->region_name,
-                    'month' => $month,
-                    'station_code' => $stationCode,
-                    'station_name' => $stationName
-                ]);
+            ->insert([
+                'region_name' => $siteShield[0]->region_name,
+                'region_id' => transRegion($siteShield[0]->region_name) ,
+                'month' => $month,
+                'station_code' => $stationCode,
+                'station_name' => $stationName
+            ]);
         } elseif ($shieldReason == transShieldReason('故障')) {
             $currentTime = date('Y-m-d H:i:s', time());
             $currentTime = explode('-', $currentTime);
@@ -359,12 +368,13 @@ class SiteShieldController extends Controller
             $osReason = $siteShield[0]->os_reason;
             $osDetail = $siteShield[0]->os_detail;
             $respUnit = $siteShield[0]->response_unit;
-            if ($currentMonth != $osStartMonth) {
-                $osStartTime = $currentMonth . '-01' . ' 00:00:00';
-            }
+//            if ($currentMonth != $osStartMonth) {
+//                $osStartTime = $currentMonth . '-01' . ' 00:00:00';
+//            }
             $isSuccess = DB::statement('call sh2os(?,?,?,?,?,?,?)', array(transRegion($siteShield[0]->region_name), $siteShield[0]->station_code,
-                $siteShield[0]->station_name, $osStartTime, $osEndTime, transOsReason($osReason), transRespUnit($respUnit)));
+                $siteShield[0]->station_name, $osStartTime, $osEndTime, $osReason, $respUnit));
         } elseif ($shieldReason == transShieldReason('拆迁还建')) {
+
             $demStartTime = $siteShield[0]->dem_start_time;
             $demStartTime = explode('-', $demStartTime);
             $demStartMonth = $demStartTime[0] . '-' . $demStartTime[1];
@@ -397,13 +407,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '审核通过解屏蔽记录',
                 'site_shield', '');
             return redirect('backend/siteShield/checkUnshieldPage')
-                ->with('flag', 'check')
-                ->with('region', $regionName)
-                ->with('beginDate', $beginDate)
-                ->with('endDate', $endDate)
-                ->with('checkStatus', 1)
-                ->with('siteUnshieldsChecking', 1)
-                ->with('filter', $filter);
+            ->with('flag', 'check')
+            ->with('region', $regionName)
+            ->with('beginDate', $beginDate)
+            ->with('endDate', $endDate)
+            ->with('checkStatus', 1)
+            ->with('siteUnshieldsChecking', 1)
+            ->with('filter', $filter);
         } else {
             echo "<script language='JavaScript'>alert('审核失败！');history.back()</script>";
         }
@@ -413,10 +423,10 @@ class SiteShieldController extends Controller
     {
         $eventLogDB = new EventLog();
         $denyResult = DB::table('shield_info')
-            ->where('id', $id)
-            ->update([
-                'shield_req_proc_state' => 3
-            ]);
+        ->where('id', $id)
+        ->update([
+            'shield_req_proc_state' => 3
+        ]);
         if (!empty($denyResult)) {
             $filter = $request->all();
             $regionName = $request->get('region');
@@ -429,13 +439,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '驳回屏蔽申请',
                 'site_shield', '');
             return redirect('backend/siteShield/checkShieldPage')
-                ->with('flag', 'check')
-                ->with('region', $regionName)
-                ->with('beginDate', $beginDate)
-                ->with('endDate', $endDate)
-                ->with('checkStatus', 1)
-                ->with('siteShieldsChecking', 1)
-                ->with('filter', $filter);
+            ->with('flag', 'check')
+            ->with('region', $regionName)
+            ->with('beginDate', $beginDate)
+            ->with('endDate', $endDate)
+            ->with('checkStatus', 1)
+            ->with('siteShieldsChecking', 1)
+            ->with('filter', $filter);
         } else {
             echo "<script language='JavaScript'>alert('审核失败！');history.back()</script>";
         }
@@ -445,10 +455,10 @@ class SiteShieldController extends Controller
     {
         $eventLogDB = new EventLog();
         $denyResult = DB::table('shield_info')
-            ->where('id', $id)
-            ->update([
-                'unshield_req_proc_state' => 3
-            ]);
+        ->where('id', $id)
+        ->update([
+            'unshield_req_proc_state' => 3
+        ]);
         if (!empty($denyResult)) {
             $filter = $request->all();
             $regionName = $request->get('region');
@@ -461,13 +471,13 @@ class SiteShieldController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '驳回解屏蔽申请',
                 'site_shield', '');
             return redirect('backend/siteShield/checkUnshieldPage')
-                ->with('flag', 'check')
-                ->with('region', $regionName)
-                ->with('beginDate', $beginDate)
-                ->with('endDate', $endDate)
-                ->with('checkStatus', 1)
-                ->with('siteUnshieldsChecking', 1)
-                ->with('filter', $filter);
+            ->with('flag', 'check')
+            ->with('region', $regionName)
+            ->with('beginDate', $beginDate)
+            ->with('endDate', $endDate)
+            ->with('checkStatus', 1)
+            ->with('siteUnshieldsChecking', 1)
+            ->with('filter', $filter);
         } else {
             echo "<script language='JavaScript'>alert('审核失败！');history.back()</script>";
         }
@@ -498,17 +508,18 @@ class SiteShieldController extends Controller
                 $endDate = $request->get('endDate');
                 $checkStatus = 1;
             }
-            $siteShields = $siteShieldDB->getSiteShields($regionName, $checkStatus, 0, $beginDate, $endDate)->paginate(15);
+            $siteShields = $siteShieldDB->getSiteShields($regionName, $checkStatus, 0, $beginDate, $endDate)
+            ->paginate(15);
             return view('backend.siteShield.check-shield')
-                ->with('siteShields', $siteShields)
-                ->with('filter', $filter);
+            ->with('siteShields', $siteShields)
+            ->with('filter', $filter);
         } else {
             $regionName = $request->get('region');
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
             $siteShields = $siteShieldDB->getSiteShields($regionName, 1, 0, $beginDate, $endDate);
             return view('backend.siteShield.check-shield')
-                ->with('siteShields', $siteShields);
+            ->with('siteShields', $siteShields);
         }
 
     }
@@ -540,21 +551,22 @@ class SiteShieldController extends Controller
             }
             $siteShields = $siteShieldDB->getSiteShields($regionName, $checkStatus, 1, $beginDate, $endDate)->paginate(15);
             return view('backend.siteShield.check-unshield')
-                ->with('siteShields', $siteShields)
-                ->with('filter', $filter);
+            ->with('siteShields', $siteShields)
+            ->with('filter', $filter);
         } else {
             $regionName = $request->get('region');
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
             $siteShields = $siteShieldDB->getSiteShields($regionName, 1, 1, $beginDate, $endDate);
             return view('backend.siteShield.check-unshield')
-                ->with('siteShields', $siteShields);
+            ->with('siteShields', $siteShields);
         }
 
     }
 
     function shieldPage(Request $request)
     {
+        // dd(session('key1'));
         $siteShieldDB = new SiteShield();
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             if (!empty(session('siteShieldsChecking'))) {
@@ -573,8 +585,8 @@ class SiteShieldController extends Controller
                 }
                 $siteShields = $siteShieldDB->getSiteShields($region, $checkStatus, 0, $beginDate, $endDate)->paginate(15);
                 return view('backend/siteShield/index-shield-checking')
-                    ->with('siteShields', $siteShields)
-                    ->with('filter', $filter);
+                ->with('siteShields', $siteShields)
+                ->with('filter', $filter);
             } elseif (!empty(session('siteShieldsApproved'))) {
                 $flag = $request->session()->pull('flag');
                 $filter = $request->session()->pull('filter');
@@ -591,8 +603,8 @@ class SiteShieldController extends Controller
                 }
                 $siteShields = $siteShieldDB->getSiteShields($region, $checkStatus, 0, $beginDate, $endDate)->paginate(15);
                 return view('backend/siteShield/index-shield-approved')
-                    ->with('siteShields', $siteShields)
-                    ->with('filter', $filter);
+                ->with('siteShields', $siteShields)
+                ->with('filter', $filter);
             } else {
                 $filter = $request->all();
                 $checkStatus = $request->get('checkStatus');
@@ -602,18 +614,18 @@ class SiteShieldController extends Controller
                 if ($checkStatus == 1) {
                     $siteShields = $siteShieldDB->getSiteShields($regionName, 1, 0, $beginDate, $endDate)->paginate(15);
                     return view('backend/siteShield/index-shield-checking')
-                        ->with('siteShields', $siteShields)
-                        ->with('filter', $filter);
+                    ->with('siteShields', $siteShields)
+                    ->with('filter', $filter);
                 } elseif ($checkStatus == 2) {
                     $siteShields = $siteShieldDB->getSiteShields($regionName, 2, 0, $beginDate, $endDate)->paginate(15);
                     return view('backend/siteShield/index-shield-approved')
-                        ->with('siteShields', $siteShields)
-                        ->with('filter', $filter);
+                    ->with('siteShields', $siteShields)
+                    ->with('filter', $filter);
                 } elseif ($checkStatus == 3) {
                     $siteShields = $siteShieldDB->getSiteShields($regionName, 3, 0, $beginDate, $endDate)->paginate(15);
                     return view('backend/siteShield/index-shield-denied')
-                        ->with('siteShields', $siteShields)
-                        ->with('filter', $filter);
+                    ->with('siteShields', $siteShields)
+                    ->with('filter', $filter);
                 }
             }
         }
@@ -639,8 +651,8 @@ class SiteShieldController extends Controller
                 }
                 $siteShields = $siteShieldDB->getSiteShields($region, $checkStatus, 1, $beginDate, $endDate)->paginate(15);
                 return view('backend/siteShield/index-unshield-checking')
-                    ->with('siteShields', $siteShields)
-                    ->with('filter', $filter);
+                ->with('siteShields', $siteShields)
+                ->with('filter', $filter);
             } else {
                 $filter = $request->all();
                 $checkStatus = $request->get('checkStatus');
@@ -650,18 +662,18 @@ class SiteShieldController extends Controller
                 if ($checkStatus == 1) {
                     $siteShields = $siteShieldDB->getSiteShields($regionName, 1, 1, $beginDate, $endDate)->paginate(15);
                     return view('backend/siteShield/index-unshield-checking')
-                        ->with('siteShields', $siteShields)
-                        ->with('filter', $filter);
+                    ->with('siteShields', $siteShields)
+                    ->with('filter', $filter);
                 } elseif ($checkStatus == 2) {
                     $siteShields = $siteShieldDB->getSiteShields($regionName, 2, 1, $beginDate, $endDate)->paginate(15);
                     return view('backend/siteShield/index-unshield-approved')
-                        ->with('siteShields', $siteShields)
-                        ->with('filter', $filter);
+                    ->with('siteShields', $siteShields)
+                    ->with('filter', $filter);
                 } elseif ($checkStatus == 3) {
                     $siteShields = $siteShieldDB->getSiteShields($regionName, 3, 1, $beginDate, $endDate)->paginate(15);
                     return view('backend/siteShield/index-unshield-denied')
-                        ->with('siteShields', $siteShields)
-                        ->with('filter', $filter);
+                    ->with('siteShields', $siteShields)
+                    ->with('filter', $filter);
                 }
             }
         }
@@ -677,17 +689,25 @@ class SiteShieldController extends Controller
             $endDate = $request->get('endDate');
             $siteShields = $siteShieldDB->getSiteShields($regionName, 2, 0, $beginDate, $endDate)->paginate(15);
             return view('backend/siteShield/add-unshield')
-                ->with('siteShields', $siteShields)
-                ->with('filter', $filter);
+            ->with('siteShields', $siteShields)
+            ->with('filter', $filter);
         } else {
             $regionName = $request->get('region');
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
             $siteShields = $siteShieldDB->getSiteShields($regionName, 2, 0, $beginDate, $endDate);
             return view('backend/siteShield/add-unshield')
-                ->with('siteShields', $siteShields);
+            ->with('siteShields', $siteShields);
         }
 
+    }
+
+    function downloadAttachment($id){
+        $atta_name = DB::table('shield_info')
+        ->where('id',$id)
+        ->pluck('atta_name');
+        $path = public_path().'/storage/app/'.$id.'/'.$atta_name[0];
+        return response()->download($path);
     }
 
 

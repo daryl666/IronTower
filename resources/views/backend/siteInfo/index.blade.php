@@ -36,7 +36,9 @@
                         <a href="{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">上站记录管理</a>
                     </li>
                     <li class="inactive">
-                        @if(Auth::user()->area_level == '湖北省')                             <a href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')                             <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
+                        @if(Auth::user()->area_level == '湖北省')                             <a
+                                href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')
+                            <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
                     </li>
                     <li class="inactive">
                         <a href="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">退服原因管理</a>
@@ -324,9 +326,11 @@
             <table class="listTable" style="white-space:nowrap;font-size:12px;">
 
                 <tr>
+                    @if(Auth::user()->single_update == 1)
                     <th>
                         <a href="#" class="sort" name="" hidefocus>操作</a>
                     </th>
+                    @endif
                     <th>
                         <a href="#" class="sort" name="" hidefocus>站址编码</a>
                     </th>
@@ -339,6 +343,7 @@
                     <th>
                         <a href="#" class="sort" name="" hidefocus>地市</a>
                     </th>
+                    @if(Auth::user()->view_advance == 1)
                     <th class="scanStopTime">
                         <a href="#" class="sort" name="" hidefocus>铁塔类型</a>
                     </th>
@@ -367,6 +372,9 @@
                         <a href="#" class="sort" name="" hidefocus>铁塔基准价格（元/月）（折扣前）</a>
                     </th>
                     <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>铁塔共享折扣</a>
+                    </th>
+                    <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>铁塔基准价格（元/月）（折扣后）</a>
                     </th>
                     <th class="freqMode">
@@ -374,6 +382,9 @@
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>机房基准价格（元/月）（折扣前）</a>
+                    </th>
+                    <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>机房共享折扣</a>
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>机房基准价格（元/月）（折扣后）</a>
@@ -385,6 +396,9 @@
                         <a href="#" class="sort" name="" hidefocus>配套基准价格（元/月）（折扣前）</a>
                     </th>
                     <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>配套机房共享折扣</a>
+                    </th>
+                    <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>配套基准价格（元/月）（折扣后）</a>
                     </th>
                     <th class="freqMode">
@@ -392,6 +406,9 @@
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>维护费基准价格（元/月）（折扣前）</a>
+                    </th>
+                    <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>维护费共享折扣</a>
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>维护费基准价格（元/月）（折扣后）</a>
@@ -404,6 +421,9 @@
                         <a href="#" class="sort" name="" hidefocus>场地费（元/月）（折扣前）</a>
                     </th>
                     <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>场地费共享折扣</a>
+                    </th>
+                    <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>场地费（元/月）（折扣后）</a>
                     </th>
                     <th class="freqMode">
@@ -412,6 +432,9 @@
 
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>电力引入费（元/月）（折扣前）</a>
+                    </th>
+                    <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>电力引入费共享折扣</a>
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>电力引入费（元/月）（折扣后）</a>
@@ -432,18 +455,21 @@
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>bbu安装在铁塔机房费(元)</a>
                     </th>
+                    @endif
                 </tr>
                 @if(isset($infoSites))
                     @foreach($infoSites as $infoSite)
                         <tr>
+                            @if(Auth::user()->single_update == 1)
                             <td>
                                 <button class="buttonNextStep" onclick="doEditPage({{$infoSite->id}})">编辑</button>
                             </td>
-
+                            @endif
                             <td>{{$infoSite->site_code}}</td>
                             <td>{{$infoSite->site_name}}</td>
                             <td>{{$infoSite->established_time}}</td>
                             <td>{{$infoSite->region_name}}</td>
+                            @if(Auth::user()->view_advance)
                             <td>{{transTowerType($infoSite->tower_type) }}</td>
                             <td>{{transIsNewTower($infoSite->is_new_tower) }}</td>
                             <td>{{transProductType($infoSite->product_type) }}</td>
@@ -453,26 +479,32 @@
                             <td>{{transLandForm($infoSite->land_form) }}</td>
                             <td>{{transShareType($infoSite->share_num_tower) }}</td>
                             <td>{{$infoSite->fee_tower}}</td>
+                            <td>{{$infoSite->tower_share_discount}}</td>
                             <td>{{$infoSite->fee_tower_discounted}}</td>
 
                             <td>{{transShareType($infoSite->share_num_house) }}</td>
                             <td>{{$infoSite->fee_house}}</td>
+                            <td>{{$infoSite->house_share_discount}}</td>
                             <td>{{$infoSite->fee_house_discounted}}</td>
 
                             <td>{{transShareType($infoSite->share_num_support) }}</td>
                             <td>{{$infoSite->fee_support}}</td>
+                            <td>{{$infoSite->support_share_discount}}</td>
                             <td>{{$infoSite->fee_support_discounted}}</td>
 
                             <td>{{transShareType($infoSite->share_num_maintain) }}</td>
                             <td>{{$infoSite->fee_maintain}}</td>
+                            <td>{{$infoSite->maintain_share_discount}}</td>
                             <td>{{$infoSite->fee_maintain_discounted}}</td>
 
                             <td>{{transShareType($infoSite->share_num_site) }}</td>
                             <td>{{$infoSite->fee_site}}</td>
+                            <td>{{$infoSite->site_share_discount}}</td>
                             <td>{{$infoSite->fee_site_discounted}}</td>
 
                             <td>{{transShareType($infoSite->share_num_import) }}</td>
                             <td>{{$infoSite->fee_import}}</td>
+                            <td>{{$infoSite->import_share_discount}}</td>
                             <td>{{$infoSite->fee_import_discounted}}</td>
 
                             <td>{{$infoSite->fee_wlan}}</td>
@@ -480,6 +512,7 @@
                             <td>{{$infoSite->fee_add}}</td>
                             <td>{{$infoSite->fee_battery}}</td>
                             <td>{{$infoSite->fee_bbu}}</td>
+                            @endif    
 
                         </tr>
                     @endforeach

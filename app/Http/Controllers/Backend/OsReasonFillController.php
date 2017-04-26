@@ -54,7 +54,6 @@ class OsReasonFillController extends Controller
         }
 
     }
-
     /**
      * @param $id
      * @param Request $request
@@ -79,9 +78,9 @@ class OsReasonFillController extends Controller
             ->get();
 
         // 调用存储过程，向os_record表中插入记录
-        $isSuccess = DB::statement('call ty2os(?,?,?,?,?,?,?)', array(transRegion($originOsReasons[0]->region_name), $originOsReasons[0]->station_code,
-            $originOsReasons[0]->station_name, $originOsReasons[0]->orig_os_start_time, $originOsReasons[0]->orig_os_end_time,
-            transOsReason($originOsReasons[0]->os_reason), transRespUnit($originOsReasons[0]->response_unit)));
+//        $isSuccess = DB::statement('call ty2os(?,?,?,?,?,?,?)', array(transRegion($originOsReasons[0]->region_name), $originOsReasons[0]->station_code,
+//            $originOsReasons[0]->station_name, $originOsReasons[0]->orig_os_start_time, $originOsReasons[0]->orig_os_end_time,
+//            transOsReason($originOsReasons[0]->os_reason), transRespUnit($originOsReasons[0]->response_unit)));
         if (!empty($addResult)) {
 
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报退服原因',

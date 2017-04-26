@@ -1,0 +1,14 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+private	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^  "private": true,$/;"	function	line:2
+scripts	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^  "scripts": {$/;"	function	line:3
+prod	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^    "prod": "gulp --production",$/;"	function	line:4
+dev	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^    "dev": "gulp watch"$/;"	function	line:5
+devDependencies	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^  "devDependencies": {$/;"	function	line:7
+gulp	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^    "gulp": "^3.9.1",$/;"	function	line:8
+laravel-elixir	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^    "laravel-elixir": "^5.0.0",$/;"	function	line:9
+bootstrap-sass	/Applications/XAMPP/xamppfiles/htdocs/IronTower/package.json	/^    "bootstrap-sass": "^3.0.0"$/;"	function	line:10

@@ -55,11 +55,13 @@ class AuthController extends Controller
             'name' => 'required|max:255|unique:users',
 //            'email' => 'required|email|max:255|unique:users',
             'password' => 'required|between:6,20|confirmed',
+            'phone_number' => 'required|unique:users',
         ];
 
         $messages = [
             'name.required' => '用户名不能为空',
             'password.required' => '密码不能为空',
+            'phone_number.required' => '手机号码不能为空',
             'between' => '密码必须是6~20位之间',
             'confirmed' => '密码和确认密码不匹配'
         ];
@@ -74,7 +76,8 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $view = 0;
+        $view_basic = 0;
+        $view_advance = 0;
         $bulk_export = 0;
         $bulk_import = 0;
         $bulk_update = 0;
@@ -83,8 +86,11 @@ class AuthController extends Controller
         $account_out = 0;
         if (!empty($data['permission'])) {
             foreach ($data['permission'] as $permission) {
-                if ($permission == 'view') {
-                    $view = 1;
+                if ($permission == 'view_basic') {
+                    $view_basic = 1;
+                }
+                if ($permission == 'view_advance') {
+                    $view_advance = 1;
                 }
                 if ($permission == 'bulk_export') {
                     $bulk_export = 1;
@@ -111,8 +117,10 @@ class AuthController extends Controller
             'name' => $data['name'],
 //            'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'phone_number' => $data['phone_number'],
             'area_level' => $data['area_level'],
-            'view' => $view,
+            'view_basic' => $view_basic,
+            'view_advance' => $view_advance,
             'bulk_export' => $bulk_export,
             'bulk_import' => $bulk_import,
             'bulk_update' => $bulk_update,

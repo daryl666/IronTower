@@ -302,7 +302,7 @@
             <tr>
                 <th>基站等级</th>
                 <td>
-                    <input type="text" name="stationLevel" value="{{$siteShields[0]->station_level}}" readonly>
+                    <input type="text" name="stationLevel" value="{{transStationLevel($siteShields[0]->station_level)}}" readonly>
                 </td>
             </tr>
             <tr>
@@ -314,7 +314,7 @@
             <tr>
                 <th>屏蔽申请理由</th>
                 <td>
-                    <input type="text" name="checkTime" value="{{$siteShields[0]->shield_reason}}" readonly>
+                    <input type="text" name="checkTime" value="{{transShieldReason($siteShields[0]->shield_reason)}}" readonly>
                 </td>
             </tr>
             <tr>

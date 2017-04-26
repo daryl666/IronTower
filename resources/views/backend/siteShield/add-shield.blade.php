@@ -88,11 +88,11 @@
 
     </div>
 
-    <form id="listForm" method="POST" action="{{url('backend/siteCheck/handle')}}" style="display: inline;">
+    <form id="listForm" method="POST" action="{{url('backend/siteCheck/handle')}}" enctype="multipart/form-data"  style="display: inline;">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <table class="inputTable tabContent">
             <tr>
-                <th>地市</th>
+                <th>地市(*必填项)：</th>
                 <td>
                     @if(Auth::user()->area_level == '湖北省' || Auth::user()->area_level == 'admin')
                         <select name="region" id="region">
@@ -288,19 +288,19 @@
                 </td>
             </tr>
             <tr>
-                <th>基站编号</th>
+                <th>基站编号(*必填项)：</th>
                 <td>
                     <input type="text" name="stationCode" id="stationCode">
                 </td>
             </tr>
             <tr>
-                <th>基站名称</th>
+                <th>基站名称(*必填项)：</th>
                 <td>
                     <input type="text" name="stationName" id="stationName">
                 </td>
             </tr>
             <tr>
-                <th>基站等级</th>
+                <th>基站等级(*必填项)：</th>
                 <td>
                     <select name="stationLevel" id="stationLevel">
                         <option>A</option>
@@ -311,14 +311,14 @@
                 </td>
             </tr>
             <tr>
-                <th>屏蔽开始时间</th>
+                <th>屏蔽开始时间(*必填项)：</th>
                 <td>
                     <input type="text" name="shieldStartTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
                            readonly value="{{date('Y-m-d H:i:s', time())}}">
                 </td>
             </tr>
             <tr>
-                <th>屏蔽申请理由</th>
+                <th>屏蔽申请理由(*必填项)：</th>
                 <td>
                     <select name="shieldReason" onchange="doChangeReason(this)">
                         <option>故障</option>
@@ -328,7 +328,7 @@
                 </td>
             </tr>
             <tr name="demTr" style="display: none;">
-                <th>拆迁原因</th>
+                <th>拆迁原因(*必填项)：</th>
                 <td>
                     <select name="demReason" id="demReason" disabled="disabled">
                         <option>物业纠纷</option>
@@ -338,17 +338,23 @@
                 </td>
             </tr>
             <tr name="demTr" style="display: none;">
-                <th>拆迁开始时间</th>
+                <th>拆迁开始时间(*必填项)：</th>
                 <td>
                     <input type="text" name="demStartTime" id="demStartTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" readonly
                            value="{{date('Y-m-d H:00:00', time())}}" disabled="disabled">
                 </td>
             </tr>
             <tr name="demTr" style="display: none;">
-                <th>预计拆迁结束时间</th>
+                <th>预计拆迁结束时间(*必填项)：</th>
                 <td>
                     <input type="text" name="estDemEndTime" id="estDemEndTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:00:00'})" readonly
                            value="{{date('Y-m-d H:00:00', time())}}" disabled="disabled">
+                </td>
+            </tr>
+            <tr>
+                <th>附件(*必填项)：</th>
+                <td>
+                    <input id="siteShieldAttachment" name="siteShieldAttachment" style="width: 170px" type="file">
                 </td>
             </tr>
 

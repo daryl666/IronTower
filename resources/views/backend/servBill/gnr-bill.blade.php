@@ -34,7 +34,7 @@
         <div class="body">
             <div class="listBar">
                 <label>【地市】: </label>
-                <input type="text" id="region" disabled="disabled" value="{{$bill->region_name}}">
+                <input type="text" id="region" disabled="disabled" value="{{transRegion($bill->region_id)}}">
                 <label>【账单月份】: </label>
                 <input type="text" id="region" disabled="disabled" value="{{$bill->month}}">
                 <button onclick="history.back()" class="buttonNextStep" style="float:right">返回</button>

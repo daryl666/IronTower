@@ -18,7 +18,8 @@ class UserManageController extends Controller
     }
 
     public function verifyPermission(Request $request, $id){
-        $view = 0;
+        $view_basic = 0;
+        $view_advance = 0;
         $bulk_export = 0;
         $bulk_import = 0;
         $bulk_update = 0;
@@ -27,8 +28,11 @@ class UserManageController extends Controller
         $account_out = 0;
         if(!empty($request->get('permission_'.$id))){
             foreach ($request->get('permission_'.$id) as $permission){
-                if ($permission == 'view'){
-                    $view = 1;
+                if ($permission == 'view_basic') {
+                    $view_basic = 1;
+                }
+                if ($permission == 'view_advance') {
+                    $view_advance = 1;
                 }
                 if ($permission == 'bulk_export'){
                     $bulk_export = 1;
@@ -51,7 +55,8 @@ class UserManageController extends Controller
             }
         }
         $update_success = DB::table('users')->where('id', $id)->update([
-            'view' => $view,
+            'view_basic' => $view_basic,
+            'view_advance' => $view_advance,
             'bulk_export' => $bulk_export,
             'bulk_import' => $bulk_import,
             'bulk_update' => $bulk_update,
@@ -68,7 +73,8 @@ class UserManageController extends Controller
     }
 
     public function updatePermission(Request $request, $id){
-        $view = 0;
+        $view_basic = 0;
+        $view_advance = 0;
         $bulk_export = 0;
         $bulk_import = 0;
         $bulk_update = 0;
@@ -77,9 +83,13 @@ class UserManageController extends Controller
         $account_out = 0;
         if(!empty($request->get('permission_'.$id))) {
             foreach ($request->get('permission_' . $id) as $permission) {
-                if ($permission == 'view') {
-                    $view = 1;
+                if ($permission == 'view_basic') {
+                    $view_basic = 1;
                 }
+                if ($permission == 'view_advance') {
+                    $view_advance = 1;
+                }
+
                 if ($permission == 'bulk_export') {
                     $bulk_export = 1;
                 }
@@ -101,7 +111,8 @@ class UserManageController extends Controller
             }
         }
         $update_success = DB::table('users')->where('id', $id)->update([
-            'view' => $view,
+            'view_basic' => $view_basic,
+            'view_advance' => $view_advance,
             'bulk_export' => $bulk_export,
             'bulk_import' => $bulk_import,
             'bulk_update' => $bulk_update,

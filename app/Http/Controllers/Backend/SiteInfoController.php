@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\EventLog;
+use App\Models\SiteInfo;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\SiteInfo;
-use App\Models\ServPrice;
 use Redirect;
 use Session;
-use Auth;
 
 class SiteInfoController extends Controller
 {
     public function indexPage(Request $request)
     {
-        $filter = $request->all();
+        $filter     = $request->all();
         $siteinfoDB = new SiteInfo();
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $filter = $request->all();
-            $region = $request->input('region', '');
+            $filter    = $request->all();
+            $region    = $request->input('region', '');
             $infoSites = $siteinfoDB->searchInfoSite($region);
             return view('backend/siteInfo/index')
-                ->with('infoSites', $infoSites)
-                ->with('filter', $filter);
+            ->with('infoSites', $infoSites)
+            ->with('filter', $filter);
         } elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
             $region = $request->get('region');
             if (!empty(session('filter'))) {
@@ -44,22 +43,27 @@ class SiteInfoController extends Controller
             if ($flag == 'import') {
                 echo "<script language=javascript>alert('导入成功！');</script>";
             }
+            if (empty($region)) {
+                $region = Auth::user()->area_level;
+            }
+            if (empty($filter['region'])) {
+                $filter['region'] = Auth::user()->area_level;
+            }
             $infoSites = $siteinfoDB->searchInfoSite($region)->paginate(15);
             return view('backend/siteInfo/index')
-                ->with('infoSites', $infoSites)
-                ->with('filter', $filter);
+            ->with('infoSites', $infoSites)
+            ->with('filter', $filter);
         }
     }
-
 
     public function editPage($id, Request $request)
     {
         $siteInfoDB = new SiteInfo();
-        $filter = $request->all();
-        $siteInfo = $siteInfoDB->searchInfoSiteById($id);
+        $filter     = $request->all();
+        $siteInfo   = $siteInfoDB->searchInfoSiteById($id);
         return view('backend/siteInfo/edit')
-            ->with('siteInfo', $siteInfo[0])
-            ->with('filter', $filter);
+        ->with('siteInfo', $siteInfo[0])
+        ->with('filter', $filter);
     }
 
     public function addNewPage()
@@ -73,21 +77,20 @@ class SiteInfoController extends Controller
     }
     //根据输入的站址属性查询对应的code
 
-
     //将站址属性和站址的服务费用插入到对应的表中
     public function addNewDB(Request $request)
     {
         $eventLogDB = new EventLog();
-        $filter = $request->all();
+        $filter     = $request->all();
         $siteinfoDB = new SiteInfo();
-        $bool = $siteinfoDB->addInfoSiteNew($request);
+        $bool       = $siteinfoDB->addInfoSiteNew($request);
         if ($bool[0] == false) {
             if ($bool[1] == true && $bool[2] == true) {
                 $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name,
                     '新增站址', 'site_info');
                 return redirect('backend/siteInfo')
-                    ->with('filter', $filter)
-                    ->with('flag', 'add');
+                ->with('filter', $filter)
+                ->with('flag', 'add');
             } else {
                 echo "<script language=javascript>alert('提交失败！');history.back();</script>";
             }
@@ -99,16 +102,16 @@ class SiteInfoController extends Controller
     public function addOldDB(Request $request)
     {
         $eventLogDB = new EventLog();
-        $filter = $request->all();
+        $filter     = $request->all();
         $siteinfoDB = new SiteInfo();
-        $bool = $siteinfoDB->addInfoSiteOld($request);
+        $bool       = $siteinfoDB->addInfoSiteOld($request);
         if ($bool[0] == false) {
             if ($bool[1] == true && $bool[2] == true) {
                 $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name,
                     '新增站址', 'site_info');
                 return redirect('backend/siteInfo')
-                    ->with('filter', $filter)
-                    ->with('flag', 'add');
+                ->with('filter', $filter)
+                ->with('flag', 'add');
             } else {
                 echo "<script language=javascript>alert('提交失败！');history.back();</script>";
             }
@@ -121,11 +124,11 @@ class SiteInfoController extends Controller
     {
         $eventLogDB = new EventLog();
         $isSuccess1 = DB::table('site_info')->where('site_code', $id)
-            ->update(['is_valid' => 0
-            ]);
+        ->update(['is_valid' => 0,
+    ]);
         $isSuccess2 = DB::table('fee_out_site_price')->where('site_code', $id)
-            ->update(['is_valid' => 0
-            ]);
+        ->update(['is_valid' => 0,
+    ]);
         if ($isSuccess1 and $isSuccess2) {
             $isSuccess = true;
         } else {
@@ -136,8 +139,8 @@ class SiteInfoController extends Controller
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name,
                 '删除站址', 'site_info', $id);
             return redirect('backend/siteInfo')
-                ->with('filter', $filter)
-                ->with('flag', 'delete');
+            ->with('filter', $filter)
+            ->with('flag', 'delete');
         } else {
             echo "<script language=javascript>alert('删除失败！');history.back();</script>";
         }
@@ -146,11 +149,10 @@ class SiteInfoController extends Controller
     public function update(Request $request)
     {
         $eventLogDB = new EventLog();
-        $filter = $request->all();
-//        dd($filter);
-        $region = $request->input('region', '');
+        $filter     = $request->all();
+        $region     = $request->input('region', '');
         $siteinfoDB = new SiteInfo();
-        $isSuccess = $siteinfoDB->updateDB($request);
+        $isSuccess  = $siteinfoDB->updateDB($request);
         if ($isSuccess == 'error1') {
             echo "<script language=javascript>alert('系统1高度有错误！');history.back()</script>";
         } elseif ($isSuccess == 'error2') {
@@ -162,8 +164,8 @@ class SiteInfoController extends Controller
                 $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '修改站址',
                     'site_info/fee_out_site_price', '');
                 return redirect('backend/siteInfo')
-                    ->with('filter', $filter)
-                    ->with('flag', 'update');
+                ->with('filter', $filter)
+                ->with('flag', 'update');
             } else {
                 echo "<script language=javascript>alert('修改失败！');history.back()</script>";
             }
@@ -172,19 +174,19 @@ class SiteInfoController extends Controller
 
     public function back(Request $request)
     {
-        $filter = $request->all();
-        $region = $request->get('region');
+        $filter     = $request->all();
+        $region     = $request->get('region');
         $siteinfoDB = new SiteInfo();
-        $infoSites = $siteinfoDB->searchInfoSite($region);
+        $infoSites  = $siteinfoDB->searchInfoSite($region);
         return view('backend/siteInfo/index')->with('infoSites', $infoSites)
-            ->with('filter', $filter);
+        ->with('filter', $filter);
     }
 
     public function test()
     {
         $infoSites = DB::table('site_info')
-            ->paginate(3);
+        ->paginate(3);
         return view('backend.siteInfo.test')
-            ->with('infoSites', $infoSites);
+        ->with('infoSites', $infoSites);
     }
 }

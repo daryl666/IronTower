@@ -76,9 +76,9 @@ class ServBillController extends Controller
     public function viewBillGnrPage(Request $request)
     {
         $outId = $request->input('out_id','0');
-        $region = DB::table('fee_out')
+        $regionID = DB::table('fee_out')
             ->where('id',$outId)
-            ->pluck('region_name');
+            ->pluck('region_id');
         $month = DB::table('fee_out')
             ->where('id',$outId)
             ->pluck('month');
@@ -88,7 +88,7 @@ class ServBillController extends Controller
         // xv
 //        $gnrs = $feeOutDB->getBillGnrList($outId);
 //        dd($region.$beginDate.$endDate);
-        $gnrs = $feeOutDB->getBillGnrList($region, $month);
+        $gnrs = $feeOutDB->getBillGnrList($regionID, $month);
         return view('backend/servBill/gnr-bill')
             ->with('gnrs', $gnrs)
             ->with('bill', $bill);
@@ -122,9 +122,10 @@ class ServBillController extends Controller
     public function viewSitePage(Request $request)
     {
         $outId = $request->input('out_id','0');
-        $region = DB::table('fee_out')
+        $region_id = DB::table('fee_out')
             ->where('id',$outId)
-            ->pluck('region_name');
+            ->pluck('region_id');
+        $region = transRegion($region_id[0]);
         $month = DB::table('fee_out')
             ->where('id',$outId)
             ->pluck('month');

@@ -67,11 +67,11 @@ class FeeOut extends Model
         return $query->first();
     }
 
-    public function getBillGnrList($regionName, $month)
+    public function getBillGnrList($region, $month)
     {
         return $query = DB::table('fee_out_gnr')
-            ->where('region_name', $regionName)
-            ->where('gnr_result', '!=', '待处理')
+            ->where('region_id', $region)
+            ->where('gnr_result', '!=', 0)
             ->where('gnr_stop_time', '<=', $month[0].'-31'.' '.'23:59:59')
             ->where('gnr_start_time', '>=', $month[0].'-01'.' '.'00:00:00')
             ->get();
@@ -99,7 +99,7 @@ class FeeOut extends Model
     public function getFeeOuts($region, $beginDay, $endDay, $out)
     {
         if ($region != '湖北省') {
-            $query = self::where('region_name', $region)->where('is_out', $out);
+            $query = self::where('region_id', transRegion($region))->where('is_out', $out);
         } else {
             $query = self::where('is_out', $out);
         }
@@ -182,7 +182,7 @@ class FeeOut extends Model
 //        return DB::table('fee_out_site')->where('region_name', $bill->region_name)->where('start_day', $bill->start_day)->
 //        where('end_day', $bill->end_day)->orderBy('site_code', 'asc')->get();
         return DB::table('fee_out_site')
-            ->where('region_name', $region)
+            ->where('region_id', transRegion($region))
             ->where('start_day', $month);
     }
 

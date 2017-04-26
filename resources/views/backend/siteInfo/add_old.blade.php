@@ -477,8 +477,9 @@
                         用户类型：
                     </th>
                     <td>
-                        <input type="radio" name="userType" id="userType_old" value="锚定用户" checked="checked">锚定用户
-                        <input type="radio" name="userType" id="userType_otheruser" value="其他用户">其他用户
+                        <input type="radio" name="userType" id="userType_old" value="原产权" checked="checked">原产权
+                        <input type="radio" name="userType" id="userType_otheruser" value="既有共享">既有共享
+                        <input type="radio" name="userType" id="userType_otheruser" value="新增共享">新增共享
 
                     </td>
                 </tr>
@@ -519,13 +520,13 @@
                         配套共享类型:
                     </th>
                     <td>
-                        <div name="shareType_1" style="float: left;"><input type="radio" name="shareType_supporting"
+                        <div name="shareType_1" style="float: left;"><input type="radio" name="shareNumSupport"
                                                                             value="电信独享" checked="checked">电信独享
                         </div>
-                        <div name="shareType_2" style="float: left;"><input type="radio" name="shareType_supporting"
+                        <div name="shareType_2" style="float: left;"><input type="radio" name="shareNumSupport"
                                                                             value="两家共享">两家共享
                         </div>
-                        <div name="shareType_3" style="float: left;"><input type="radio" name="shareType_supporting"
+                        <div name="shareType_3" style="float: left;"><input type="radio" name="shareNumSupport"
                                                                             value="三家共享">三家共享
                         </div>
                     </td>
@@ -535,13 +536,13 @@
                         维护共享类型:
                     </th>
                     <td>
-                        <div name="shareType_1" style="float: left;"><input type="radio" name="shareNumSupport"
+                        <div name="shareType_1" style="float: left;"><input type="radio" name="shareNumMaintain"
                                                                             value="电信独享" checked="checked">电信独享
                         </div>
-                        <div name="shareType_2" style="float: left;"><input type="radio" name="shareNumSupport"
+                        <div name="shareType_2" style="float: left;"><input type="radio" name="shareNumMaintain"
                                                                             value="两家共享">两家共享
                         </div>
-                        <div name="shareType_3" style="float: left;"><input type="radio" name="shareNumSupport"
+                        <div name="shareType_3" style="float: left;"><input type="radio" name="shareNumMaintain"
                                                                             value="三家共享">三家共享
                         </div>
                     </td>
@@ -646,9 +647,10 @@
         });
 
         function doBack() {
-            var listForm = document.getElementById('listForm');
-            listForm.action = "{{url('backend/siteInfo/back')}}";
-            listForm.submit();
+            {{--var listForm = document.getElementById('listForm');--}}
+            {{--listForm.action = "{{url('backend/siteInfo/back')}}";--}}
+            {{--listForm.submit();--}}
+            window.history.back();
         }
 
         function doAddSuccess() {
@@ -858,7 +860,7 @@
             }
             if (osel.value == '简易塔') {
                 for (var i = 0; i < h1.length; i++) {
-                    h1[i].style.display = 'none';
+                    h1[i].style.display = 'inline';
                 }
                 for (var i = 0; i < h2.length; i++) {
                     h2[i].style.display = 'none';
@@ -882,7 +884,7 @@
                     h8[i].style.display = 'none';
                 }
                 for (var i = 0; i < h9.length; i++) {
-                    h9[i].style.display = 'inline';
+                    h9[i].style.display = 'none';
                 }
             }
             if (osel.value == '普通楼面塔') {
