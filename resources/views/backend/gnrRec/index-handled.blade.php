@@ -315,6 +315,9 @@
                 <table class="listTable" style="white-space:nowrap;font-size: 12px;">
                     <tr>
                         <th>
+                            <a href="#" class="sort">地市</a>
+                        </th>
+                        <th>
                             <a href="#" class="sort">站址编码</a>
                         </th>
                         <th>
@@ -345,6 +348,7 @@
                         @foreach($gnrRecs as $gnrRec)
 
                             <tr>
+                                <td>{{transRegion($gnrRec->region_id)}}</td>
                                 <td>{{$gnrRec->site_code}}</td>
                                 <td>{{$gnrRec->gnr_req_time}}</td>
                                 <td>{{transGnrRaiseSide($gnrRec->gnr_raise_side)}}</td>

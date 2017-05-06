@@ -17,7 +17,7 @@ class ExcepHandle extends Model
         } else {
             $excepSiteInfos = DB::table('import_site_exception')
             ->where('check_status', '待处理')
-            ->where('region_name', $regionName)
+            ->where('region_id', transRegion($regionName))
             ->orderBy('created_at', 'DESC')
             ->get();
         }

@@ -22,59 +22,57 @@ Route::any('backend', 'HomeController@index');
 Route::any('backend/todoHandlePage/{id}', 'HomeController@todoHandlePage');
 
 Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/siteInfo'], function () {
-    // 基站
+    // 站址信息管理
 
-    Route::any('/', ['uses' => 'SiteInfoController@indexPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::post('editPage/{id}', ['uses' => 'SiteInfoController@editPage', 'permissions' => ['view_basic', 'is_verified']]);
-//    Route::any('addPage', ['uses' => 'SiteInfoController@addPage', 'permissions'=>['view_basic','is_verified']]);
-    Route::any('addNewPage', ['uses' => 'SiteInfoController@addNewPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('addOldPage', ['uses' => 'SiteInfoController@addOldPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::post('addNew', ['uses' => 'SiteInfoController@addNewDB', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::post('addOld', ['uses' => 'SiteInfoController@addOldDB', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::post('update', ['uses' => 'SiteInfoController@update', 'permissions' => ['view_basic', 'single_update', 'is_verified']]);
-    Route::get('delete/{id}', ['uses' => 'SiteInfoController@delete', 'permissions' => ['view_basic', 'delete', 'is_verified']]);
-    Route::post('export', ['uses' => 'ExcelController@exportSiteInfo', 'permissions' => ['view_basic', 'bulk_export', 'is_verified']]);
-    Route::post('import', ['uses' => 'ExcelController@importSiteInfo', 'permissions' => ['view_basic', 'bulk_import', 'is_verified']]);
-    Route::post('importIronTowerSiteInfo', ['uses' => 'ExcelController@transIronTowerSiteInfo', 'permissions' => ['view_basic', 'bulk_import', 'is_verified']]);
-    Route::post('bulkUpdate', ['uses' => 'ExcelController@bulkUpdateSiteInfo', 'permissions' => ['view_basic', 'bulk_update', 'is_verified']]);
-    Route::post('back', ['uses' => 'SiteInfoController@back', 'permissions' => ['view_basic']]);
-    Route::get('test', ['uses' => 'SiteInfoController@test']);
+    Route::any('/', ['uses' => 'SiteInfoController@indexPage', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::post('editPage/{id}', ['uses' => 'SiteInfoController@editPage', 'permissions' => ['site_modify', 'is_verified']]);
+    Route::any('addNewPage', ['uses' => 'SiteInfoController@addNewPage', 'permissions' => ['site_add', 'is_verified']]);
+    Route::any('addOldPage', ['uses' => 'SiteInfoController@addOldPage', 'permissions' => ['site_add', 'is_verified']]);
+    Route::post('addNew', ['uses' => 'SiteInfoController@addNewDB', 'permissions' => ['site_add', 'is_verified']]);
+    Route::post('addOld', ['uses' => 'SiteInfoController@addOldDB', 'permissions' => ['site_add', 'is_verified']]);
+    Route::post('update', ['uses' => 'SiteInfoController@update', 'permissions' => ['site_modify', 'is_verified']]);
+    Route::get('delete/{id}', ['uses' => 'SiteInfoController@delete', 'permissions' => ['site_delete', 'is_verified']]);
+    Route::post('export', ['uses' => 'ExcelController@exportSiteInfo', 'permissions' => ['site_batch_export', 'is_verified']]);
+    Route::post('import', ['uses' => 'ExcelController@importSiteInfo', 'permissions' => ['site_batch_import', 'is_verified']]);
+    // Route::post('importIronTowerSiteInfo', ['uses' => 'ExcelController@transIronTowerSiteInfo', 'permissions' => ['site_view_basic', 'bulk_import', 'is_verified']]);
+    // Route::post('bulkUpdate', ['uses' => 'ExcelController@bulkUpdateSiteInfo', 'permissions' => ['site_view_basic', 'bulk_update', 'is_verified']]);
+    Route::post('back', ['uses' => 'SiteInfoController@back', 'permissions' => ['site_view_basic']]);
 
 
 });
 
 
-Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/gnrRec'], function () {
+Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['gnr_manage', 'is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/gnrRec'], function () {
 
-    // 发电记录列表
+    // 发电记录管理
 
-    Route::any('/', ['uses' => 'GnrRecController@indexPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('indexGnr', ['uses' => 'GnrRecController@indexPage_gnr', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('addPage', ['uses' => 'GnrRecController@addPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('handlePage/{id}', ['uses' => 'GnrRecController@handlePage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('handleGnr/{id}', ['uses' => 'GnrRecController@handleGnr', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('{gnrID}/editPage/{siteID}/{siteChoose}/{lastGnrTime}', ['uses' => 'GnrRecController@editPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('add', ['uses' => 'GnrRecController@addGnr', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('update', ['uses' => 'GnrRecController@update', 'permissions' => ['view_basic', 'single_update', 'is_verified']]);
+    Route::any('/', ['uses' => 'GnrRecController@indexPage']);
+    Route::any('indexGnr', ['uses' => 'GnrRecController@indexPage_gnr']);
+    Route::any('addPage', ['uses' => 'GnrRecController@addPage']);
+    Route::any('handlePage/{id}', ['uses' => 'GnrRecController@handlePage']);
+    Route::any('handleGnr/{id}', ['uses' => 'GnrRecController@handleGnr']);
+    Route::any('{gnrID}/editPage/{siteID}/{siteChoose}/{lastGnrTime}', ['uses' => 'GnrRecController@editPage']);
+    Route::any('add', ['uses' => 'GnrRecController@addGnr']);
+    Route::any('update', ['uses' => 'GnrRecController@update']);
     Route::any('back', ['uses' => 'GnrRecController@back']);
-    Route::get('delete/{id}', ['uses' => 'GnrRecController@delete', 'permissions' => ['view_basic', 'delete', 'is_verified']]);
-    Route::any('import', ['uses' => 'GnrRecController@importGnrRec', 'permissions' => ['view_basic', 'bulk_import', 'is_verified']]);
-    Route::post('export', ['uses' => 'ExcelController@exportGnrRec', 'permissions' => ['view_basic', 'bulk_export', 'is_verified']]);
+    Route::get('delete/{id}', ['uses' => 'GnrRecController@delete']);
+    Route::any('import', ['uses' => 'GnrRecController@importGnrRec']);
+    Route::post('export', ['uses' => 'ExcelController@exportGnrRec']);
 
 
 });
 
 Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/servBill'], function () {
 
-    // 服务账单列表
-    Route::any('/', ['uses' => 'ServBillController@indexPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::get('freeGnr', ['uses' => 'ServBillController@viewFreeGnrPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::get('billGnr', ['uses' => 'ServBillController@viewBillGnrPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::get('site', ['uses' => 'ServBillController@viewSitePage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::get('deduction1', ['uses' => 'ServBillController@viewDeduction1Page', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::get('deduction2', ['uses' => 'ServBillController@viewDeduction2Page', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::post('createBill', ['uses' => 'ServBillController@createBill', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::post('doOut', ['uses' => 'ServBillController@doOut', 'permissions' => ['view_basic', 'is_verified', 'account_out']]);
+    // 账单管理
+    Route::any('/', ['uses' => 'ServBillController@indexPage', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::get('freeGnr', ['uses' => 'ServBillController@viewFreeGnrPage', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::get('billGnr', ['uses' => 'ServBillController@viewBillGnrPage', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::get('site', ['uses' => 'ServBillController@viewSitePage', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::get('deduction1', ['uses' => 'ServBillController@viewDeduction1Page', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::get('deduction2', ['uses' => 'ServBillController@viewDeduction2Page', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::post('createBill', ['uses' => 'ServBillController@createBill', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::post('doOut', ['uses' => 'ServBillController@doOut', 'permissions' => ['site_view_basic', 'is_verified', 'bill_out']]);
 
 //    Route::get('freeGnr', 'ServBillController@viewFreeGnrPage');
 //    Route::get('billGnr', 'ServBillController@viewBillGnrPage');
@@ -86,7 +84,7 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
 Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/servCost'], function () {
 
     // 服务费用列表
-    Route::any('/', ['uses' => 'ServCostController@indexPage', 'permissions' => ['view_basic', 'is_verified']]);
+    Route::any('/', ['uses' => 'ServCostController@indexPage', 'permissions' => ['site_view_basic', 'is_verified']]);
     Route::any('editPage/{id}/{region}', ['uses' => 'ServCostController@editPage']);
     Route::post('update/{id}', ['uses' => 'ServCostController@update', 'permissions' => ['single_update', 'is_verified']]);
     Route::post('back', ['uses' => 'ServCostController@back']);
@@ -108,12 +106,12 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
 Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/rentStd'], function () {
 
     // 服务价格列表
-    Route::any('/', ['uses' => 'RentStdController@indexPage', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('fee_std_search', ['uses' => 'RentStdController@fee_std_search', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('basic_fee_update/{seq}/{region}/{fee_type}', ['uses' => 'RentStdController@basic_fee_update', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('site_fee_update/{seq}', ['uses' => 'RentStdController@site_fee_update', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('elec_introduced_fee_update/{seq}', ['uses' => 'RentStdController@elec_introduced_fee_update', 'permissions' => ['view_basic', 'is_verified']]);
-    Route::any('share_discount_update/{seq}', ['uses' => 'RentStdController@share_discount_update', 'permissions' => ['view_basic', 'is_verified']]);
+    Route::any('/', ['uses' => 'RentStdController@indexPage', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::any('fee_std_search', ['uses' => 'RentStdController@fee_std_search', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::any('basic_fee_update/{seq}/{region}/{fee_type}', ['uses' => 'RentStdController@basic_fee_update', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::any('site_fee_update/{seq}', ['uses' => 'RentStdController@site_fee_update', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::any('elec_introduced_fee_update/{seq}', ['uses' => 'RentStdController@elec_introduced_fee_update', 'permissions' => ['site_view_basic', 'is_verified']]);
+    Route::any('share_discount_update/{seq}', ['uses' => 'RentStdController@share_discount_update', 'permissions' => ['site_view_basic', 'is_verified']]);
     Route::any('update_basic_fee', ['uses' => 'RentStdController@update_basic_fee', 'permissions' => ['single_update', 'is_verified']]);
     Route::any('update_elec_introduced_fee', ['uses' => 'RentStdController@update_elec_introduced_fee', 'permissions' => ['single_update', 'is_verified']]);
     Route::any('update_site_fee', ['uses' => 'RentStdController@update_site_fee', 'permissions' => ['single_update', 'is_verified']]);
@@ -233,6 +231,8 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
 Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/siteStats'], function () {
 
     Route::any('/', ['uses' => 'SiteStatsController@indexPage']);
+    Route::any('import', ['uses' => 'ExcelController@importBillDetail']);
+    Route::any('test', ['uses' => 'SiteStatsController@test']);
 });
 
 

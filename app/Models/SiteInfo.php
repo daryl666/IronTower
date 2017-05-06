@@ -30,7 +30,7 @@ class SiteInfo extends Model
             ->where('value', '=', $request->get('towerType'))
             ->pluck('code');
         $elec_introduced_type
-        = DB::table('dict_sys_code')
+            = DB::table('dict_sys_code')
             ->where('value', '=', $request->get('elecIntroType'))
             ->pluck('code');
         $code = $region_id[0] . $product_type[0] . $rru_away[0] . $site_district_type[0] . $sys_height[0] .
@@ -41,77 +41,77 @@ class SiteInfo extends Model
     public function addInfoSiteNew(Request $request)
     {
         //插入站址属性信息
-        $business_code        = $request->get('businessCode');
-        $site_code            = $request->get('siteCode');
-        $site_name            = $request->get('siteName');
-        $cdma_code            = $request->get('cdmaCode');
-        $lte_code             = $request->get('lteCode');
-        $req_code             = $request->get('reqCode');
-        $region_name          = $request->get('region');
-        $product_type         = $request->get('productType');
-        $established_time     = $request->get('establishedTime');
-        $is_new_tower         = 1;
-        $is_newly_added       = 0;
-        $tower_type           = $request->get('towerType');
-        $sys_num1             = floatval($request->get('sysNum1'));
-        $sys1_height          = $request->get('sysHeight1');
-        $sys_num2             = floatval($request->get('sysNum2'));
-        $sys2_height          = $request->get('sysHeight2');
-        $sys_num3             = floatval($request->get('sysNum3'));
-        $sys3_height          = $request->get('sysHeight3');
-        $land_form            = $request->get('landForm');
-        $is_co_opetition      = $request->get('isCoOpetition');
-        $share_num_house      = $request->get('shareNumHouse');
-        $share_num_tower      = $request->get('shareNumTower');
-        $share_num_support    = $request->get('shareNumSupport');
-        $share_num_maintain   = $request->get('shareNumMaintain');
-        $share_num_site       = $request->get('shareNumSite');
-        $share_num_import     = $request->get('shareNumImport');
-        $site_district_type   = $request->get('siteDistType');
-        $is_rru_away          = $request->get('rruAway');
-        $user_type            = $request->get('userType');
+        $business_code = $request->get('businessCode');
+        $site_code = $request->get('siteCode');
+        $site_name = $request->get('siteName');
+        $cdma_code = $request->get('cdmaCode');
+        $lte_code = $request->get('lteCode');
+        $req_code = $request->get('reqCode');
+        $region_name = $request->get('region');
+        $product_type = $request->get('productType');
+        $established_time = $request->get('establishedTime');
+        $is_new_tower = 1;
+        $is_newly_added = 0;
+        $tower_type = $request->get('towerType');
+        $sys_num1 = floatval($request->get('sysNum1'));
+        $sys1_height = $request->get('sysHeight1');
+        $sys_num2 = floatval($request->get('sysNum2'));
+        $sys2_height = $request->get('sysHeight2');
+        $sys_num3 = floatval($request->get('sysNum3'));
+        $sys3_height = $request->get('sysHeight3');
+        $land_form = $request->get('landForm');
+        $is_co_opetition = $request->get('isCoOpetition');
+        $share_num_house = $request->get('shareNumHouse');
+        $share_num_tower = $request->get('shareNumTower');
+        $share_num_support = $request->get('shareNumSupport');
+        $share_num_maintain = $request->get('shareNumMaintain');
+        $share_num_site = $request->get('shareNumSite');
+        $share_num_import = $request->get('shareNumImport');
+        $site_district_type = $request->get('siteDistType');
+        $is_rru_away = $request->get('rruAway');
+        $user_type = $request->get('userType');
         $elec_introduced_type = $request->get('elecIntroType');
-        $fee_wlan             = $request->get('feeWlan');
-        $fee_micwav           = $request->get('feeMicwav');
-        $fee_add              = $request->get('feeAdd');
-        $fee_battery          = $request->get('feeBat');
-        $fee_bbu              = $request->get('feeBbu');
+        $fee_wlan = $request->get('feeWlan');
+        $fee_micwav = $request->get('feeMicwav');
+        $fee_add = $request->get('feeAdd');
+        $fee_battery = $request->get('feeBat');
+        $fee_bbu = $request->get('feeBbu');
 
         $siteIsExist = DB::table('site_info')
             ->where('business_code', $request->get('business_code'))
             ->where('is_valid', 1)->get();
         if (empty($siteIsExist)) {
             $insSiteInfo = DB::table('site_info')->insert([
-                'business_code'        => $business_code,
-                'req_code'             => $req_code,
-                'site_code'            => $site_code,
-                'site_name'            => $site_name,
-                'region_name'          => $region_name,
-                'region_id'            => transRegion($region_name),
-                'product_type'         => transProductType($product_type),
-                'share_num_tower'      => transShareType($share_num_tower),
-                'share_num_house'      => transShareType($share_num_house),
-                'share_num_support'    => transShareType($share_num_support),
-                'share_num_maintain'   => transShareType($share_num_maintain),
-                'share_num_site'       => transShareType($share_num_site),
-                'share_num_import'     => transShareType($share_num_import),
-                'established_time'     => $established_time,
-                'effective_date'       => date('Y-m-d', time()),
-                'is_new_tower'         => $is_new_tower,
-                'is_newly_added'       => $is_newly_added,
-                'is_rru_away'          => transIsRRUAway($is_rru_away),
-                'sys_num1'             => $sys_num1,
-                'sys_num2'             => $sys_num2,
-                'sys_num3'             => $sys_num3,
-                'sys1_height'          => transSysHeight($sys1_height),
-                'sys2_height'          => transSysHeight($sys2_height),
-                'sys3_height'          => transSysHeight($sys3_height),
-                'is_co_opetition'      => transIsCoOpetition($is_co_opetition),
-                'is_valid'             => 1,
-                'site_district_type'   => transSiteDistType($site_district_type),
-                'tower_type'           => transTowerType($tower_type),
-                'land_form'            => transLandForm($land_form),
-                'user_type'            => transUserType($user_type),
+                'business_code' => $business_code,
+                'req_code' => $req_code,
+                'site_code' => $site_code,
+                'site_name' => $site_name,
+                'region_name' => $region_name,
+                'region_id' => transRegion($region_name),
+                'product_type' => transProductType($product_type),
+                'share_num_tower' => transShareType($share_num_tower),
+                'share_num_house' => transShareType($share_num_house),
+                'share_num_support' => transShareType($share_num_support),
+                'share_num_maintain' => transShareType($share_num_maintain),
+                'share_num_site' => transShareType($share_num_site),
+                'share_num_import' => transShareType($share_num_import),
+                'established_time' => $established_time,
+                'effective_date' => date('Y-m-d', time()),
+                'is_new_tower' => $is_new_tower,
+                'is_newly_added' => $is_newly_added,
+                'is_rru_away' => transIsRRUAway($is_rru_away),
+                'sys_num1' => $sys_num1,
+                'sys_num2' => $sys_num2,
+                'sys_num3' => $sys_num3,
+                'sys1_height' => transSysHeight($sys1_height),
+                'sys2_height' => transSysHeight($sys2_height),
+                'sys3_height' => transSysHeight($sys3_height),
+                'is_co_opetition' => transIsCoOpetition($is_co_opetition),
+                'is_valid' => 1,
+                'site_district_type' => transSiteDistType($site_district_type),
+                'tower_type' => transTowerType($tower_type),
+                'land_form' => transLandForm($land_form),
+                'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
 
             ]);
@@ -209,9 +209,9 @@ class SiteInfo extends Model
                 }
 
             } else {
-                $fee_tower1    = 0;
-                $fee_house1    = 0;
-                $fee_support1  = 0;
+                $fee_tower1 = 0;
+                $fee_house1 = 0;
+                $fee_support1 = 0;
                 $fee_maintain1 = 0;
             }
             if (!empty($sys2_height) && $sys2_height != '无') {
@@ -225,13 +225,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower2 = 0;
                 }
-                $fee_house2    = $fee_house1;
+                $fee_house2 = $fee_house1;
                 $fee_maintain2 = $fee_maintain1;
-                $fee_support2  = $fee_support1;
+                $fee_support2 = $fee_support1;
             } else {
-                $fee_tower2    = 0;
-                $fee_house2    = 0;
-                $fee_support2  = 0;
+                $fee_tower2 = 0;
+                $fee_house2 = 0;
+                $fee_support2 = 0;
                 $fee_maintain2 = 0;
             }
             if (!empty($sys3_height) && $sys3_height != '无') {
@@ -245,13 +245,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower3 = 0;
                 }
-                $fee_house3    = $fee_house1;
+                $fee_house3 = $fee_house1;
                 $fee_maintain3 = $fee_maintain1;
-                $fee_support3  = $fee_support1;
+                $fee_support3 = $fee_support1;
             } else {
-                $fee_tower3    = 0;
-                $fee_house3    = 0;
-                $fee_support3  = 0;
+                $fee_tower3 = 0;
+                $fee_house3 = 0;
+                $fee_support3 = 0;
                 $fee_maintain3 = 0;
             }
 
@@ -298,65 +298,65 @@ class SiteInfo extends Model
                     $fee_import = 0;
                 }
             } else {
-                $fee_site   = 0;
+                $fee_site = 0;
                 $fee_import = 0;
             }
 
-            $fee_tower               = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
-            $fee_house               = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
-            $fee_support             = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
-            $fee_maintain            = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
-            $fee_tower_discounted    = $fee_tower * $tower_share_discount;
-            $fee_house_discounted    = $fee_house * $house_share_discount;
-            $fee_support_discounted  = $fee_support * $support_share_discount;
+            $fee_tower = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
+            $fee_house = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
+            $fee_support = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
+            $fee_maintain = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
+            $fee_tower_discounted = $fee_tower * $tower_share_discount;
+            $fee_house_discounted = $fee_house * $house_share_discount;
+            $fee_support_discounted = $fee_support * $support_share_discount;
             $fee_maintain_discounted = $fee_maintain * $maintain_share_discount;
-            $fee_site_discounted     = $fee_site * $site_share_discount;
-            $fee_import_discounted   = $fee_import * $import_share_discount;
+            $fee_site_discounted = $fee_site * $site_share_discount;
+            $fee_import_discounted = $fee_import * $import_share_discount;
 
             if (empty($site_price)) {
                 $insSitePrice = DB::table('fee_out_site_price')
                     ->insert([
-                        'site_code'               => $site_code,
-                        'req_code'                => $req_code,
-                        'business_code'           => $business_code,
-                        'fee_tower1'              => $fee_tower1,
-                        'fee_house1'              => $fee_house1,
-                        'fee_support1'            => $fee_support1,
-                        'fee_maintain1'           => $fee_maintain1,
-                        'fee_tower2'              => $fee_tower2,
-                        'fee_house2'              => $fee_house2,
-                        'fee_support2'            => $fee_support2,
-                        'fee_maintain2'           => $fee_maintain2,
-                        'fee_tower3'              => $fee_tower3,
-                        'fee_house3'              => $fee_house3,
-                        'fee_support3'            => $fee_support3,
-                        'fee_maintain3'           => $fee_maintain3,
-                        'fee_tower'               => $fee_tower,
-                        'fee_house'               => $fee_house,
-                        'fee_support'             => $fee_support,
-                        'fee_maintain'            => $fee_maintain,
-                        'fee_wlan'                => $fee_wlan,
-                        'fee_microwave'           => $fee_micwav,
-                        'fee_add'                 => $fee_add,
-                        'fee_battery'             => $fee_battery,
-                        'fee_bbu'                 => $fee_bbu,
-                        'tower_share_discount'    => $tower_share_discount,
-                        'house_share_discount'    => $house_share_discount,
-                        'support_share_discount'  => $support_share_discount,
+                        'site_code' => $site_code,
+                        'req_code' => $req_code,
+                        'business_code' => $business_code,
+                        'fee_tower1' => $fee_tower1,
+                        'fee_house1' => $fee_house1,
+                        'fee_support1' => $fee_support1,
+                        'fee_maintain1' => $fee_maintain1,
+                        'fee_tower2' => $fee_tower2,
+                        'fee_house2' => $fee_house2,
+                        'fee_support2' => $fee_support2,
+                        'fee_maintain2' => $fee_maintain2,
+                        'fee_tower3' => $fee_tower3,
+                        'fee_house3' => $fee_house3,
+                        'fee_support3' => $fee_support3,
+                        'fee_maintain3' => $fee_maintain3,
+                        'fee_tower' => $fee_tower,
+                        'fee_house' => $fee_house,
+                        'fee_support' => $fee_support,
+                        'fee_maintain' => $fee_maintain,
+                        'fee_wlan' => $fee_wlan,
+                        'fee_microwave' => $fee_micwav,
+                        'fee_add' => $fee_add,
+                        'fee_battery' => $fee_battery,
+                        'fee_bbu' => $fee_bbu,
+                        'tower_share_discount' => $tower_share_discount,
+                        'house_share_discount' => $house_share_discount,
+                        'support_share_discount' => $support_share_discount,
                         'maintain_share_discount' => $maintain_share_discount,
-                        'fee_tower_discounted'    => $fee_tower_discounted,
-                        'fee_house_discounted'    => $fee_house_discounted,
-                        'fee_support_discounted'  => $fee_support_discounted,
+                        'fee_tower_discounted' => $fee_tower_discounted,
+                        'fee_house_discounted' => $fee_house_discounted,
+                        'fee_support_discounted' => $fee_support_discounted,
                         'fee_maintain_discounted' => $fee_maintain_discounted,
-                        'fee_site'                => $fee_site,
-                        'site_share_discount'     => $site_share_discount,
-                        'fee_site_discounted'     => $fee_site_discounted,
-                        'fee_import'              => $fee_import,
-                        'import_share_discount'   => $import_share_discount,
-                        'fee_import_discounted'   => $fee_import_discounted,
-                        'is_valid'                => 1,
-                        'effective_date'          => $established_time,
-                        'region_id'               => transRegion($region_name),
+                        'fee_site' => $fee_site,
+                        'site_share_discount' => $site_share_discount,
+                        'fee_site_discounted' => $fee_site_discounted,
+                        'fee_import' => $fee_import,
+                        'import_share_discount' => $import_share_discount,
+                        'fee_import_discounted' => $fee_import_discounted,
+                        'is_valid' => 1,
+                        'effective_date' => $established_time,
+                        'region_id' => transRegion($region_name),
                     ]);
             } else {
                 $updSitePrice = DB::table('fee_out_site_price')
@@ -368,47 +368,47 @@ class SiteInfo extends Model
                     ]);
                 $insSitePrice = DB::table('fee_out_site_price')
                     ->insert([
-                        'site_code'               => $site_code,
-                        'req_code'                => $req_code,
-                        'business_code'           => $business_code,
-                        'fee_tower1'              => $fee_tower1,
-                        'fee_house1'              => $fee_house1,
-                        'fee_support1'            => $fee_support1,
-                        'fee_maintain1'           => $fee_maintain1,
-                        'fee_tower2'              => $fee_tower2,
-                        'fee_house2'              => $fee_house2,
-                        'fee_support2'            => $fee_support2,
-                        'fee_maintain2'           => $fee_maintain2,
-                        'fee_tower3'              => $fee_tower3,
-                        'fee_house3'              => $fee_house3,
-                        'fee_support3'            => $fee_support3,
-                        'fee_maintain3'           => $fee_maintain3,
-                        'fee_tower'               => $fee_tower,
-                        'fee_house'               => $fee_house,
-                        'fee_support'             => $fee_support,
-                        'fee_maintain'            => $fee_maintain,
-                        'fee_wlan'                => $fee_wlan,
-                        'fee_microwave'           => $fee_micwav,
-                        'fee_add'                 => $fee_add,
-                        'fee_battery'             => $fee_battery,
-                        'fee_bbu'                 => $fee_bbu,
-                        'tower_share_discount'    => $tower_share_discount,
-                        'house_share_discount'    => $house_share_discount,
-                        'support_share_discount'  => $support_share_discount,
+                        'site_code' => $site_code,
+                        'req_code' => $req_code,
+                        'business_code' => $business_code,
+                        'fee_tower1' => $fee_tower1,
+                        'fee_house1' => $fee_house1,
+                        'fee_support1' => $fee_support1,
+                        'fee_maintain1' => $fee_maintain1,
+                        'fee_tower2' => $fee_tower2,
+                        'fee_house2' => $fee_house2,
+                        'fee_support2' => $fee_support2,
+                        'fee_maintain2' => $fee_maintain2,
+                        'fee_tower3' => $fee_tower3,
+                        'fee_house3' => $fee_house3,
+                        'fee_support3' => $fee_support3,
+                        'fee_maintain3' => $fee_maintain3,
+                        'fee_tower' => $fee_tower,
+                        'fee_house' => $fee_house,
+                        'fee_support' => $fee_support,
+                        'fee_maintain' => $fee_maintain,
+                        'fee_wlan' => $fee_wlan,
+                        'fee_microwave' => $fee_micwav,
+                        'fee_add' => $fee_add,
+                        'fee_battery' => $fee_battery,
+                        'fee_bbu' => $fee_bbu,
+                        'tower_share_discount' => $tower_share_discount,
+                        'house_share_discount' => $house_share_discount,
+                        'support_share_discount' => $support_share_discount,
                         'maintain_share_discount' => $maintain_share_discount,
-                        'fee_tower_discounted'    => $fee_tower_discounted,
-                        'fee_house_discounted'    => $fee_house_discounted,
-                        'fee_support_discounted'  => $fee_support_discounted,
+                        'fee_tower_discounted' => $fee_tower_discounted,
+                        'fee_house_discounted' => $fee_house_discounted,
+                        'fee_support_discounted' => $fee_support_discounted,
                         'fee_maintain_discounted' => $fee_maintain_discounted,
-                        'fee_site'                => $fee_site,
-                        'site_share_discount'     => $site_share_discount,
-                        'fee_site_discounted'     => $fee_site_discounted,
-                        'fee_import'              => $fee_import,
-                        'import_share_discount'   => $import_share_discount,
-                        'fee_import_discounted'   => $fee_import_discounted,
-                        'is_valid'                => 1,
-                        'effective_date'          => $established_time,
-                        'region_id'               => transRegion($region_name),
+                        'fee_site' => $fee_site,
+                        'site_share_discount' => $site_share_discount,
+                        'fee_site_discounted' => $fee_site_discounted,
+                        'fee_import' => $fee_import,
+                        'import_share_discount' => $import_share_discount,
+                        'fee_import_discounted' => $fee_import_discounted,
+                        'is_valid' => 1,
+                        'effective_date' => $established_time,
+                        'region_id' => transRegion($region_name),
                     ]);
             }
             return array($siteIsExist, $insSiteInfo, $insSitePrice);
@@ -421,77 +421,77 @@ class SiteInfo extends Model
     public function addInfoSiteOld(Request $request)
     {
         //插入站址属性信息
-        $business_code        = $request->get('businessCode');
-        $site_code            = $request->get('siteCode');
-        $site_name            = $request->get('siteName');
-        $cdma_code            = $request->get('cdmaCode');
-        $lte_code             = $request->get('lteCode');
-        $req_code             = $request->get('reqCode');
-        $region_name          = $request->get('region');
-        $product_type         = $request->get('productType');
-        $established_time     = $request->get('establishedTime');
-        $is_new_tower         = '否';
-        $is_newly_added       = $request->get('isNewlyAdded');
-        $tower_type           = $request->get('towerType');
-        $sys_num1             = $request->get('sysNum1');
-        $sys1_height          = $request->get('sysHeight1');
-        $sys_num2             = $request->get('sysNum2');
-        $sys2_height          = $request->get('sysHeight2');
-        $sys_num3             = $request->get('sysNum3');
-        $sys3_height          = $request->get('sysHeight3');
-        $land_form            = $request->get('landForm');
-        $is_co_opetition      = $request->get('isCoOpetition');
-        $share_num_house      = $request->get('shareNumHouse');
-        $share_num_tower      = $request->get('shareNumTower');
-        $share_num_support    = $request->get('shareNumSupport');
-        $share_num_maintain   = $request->get('shareNumMaintain');
-        $share_num_site       = $request->get('shareNumSite');
-        $share_num_import     = $request->get('shareNumImport');
-        $site_district_type   = $request->get('siteDistType');
-        $is_rru_away          = $request->get('rruAway');
-        $user_type            = $request->get('userType');
+        $business_code = $request->get('businessCode');
+        $site_code = $request->get('siteCode');
+        $site_name = $request->get('siteName');
+        $cdma_code = $request->get('cdmaCode');
+        $lte_code = $request->get('lteCode');
+        $req_code = $request->get('reqCode');
+        $region_name = $request->get('region');
+        $product_type = $request->get('productType');
+        $established_time = $request->get('establishedTime');
+        $is_new_tower = '否';
+        $is_newly_added = $request->get('isNewlyAdded');
+        $tower_type = $request->get('towerType');
+        $sys_num1 = $request->get('sysNum1');
+        $sys1_height = $request->get('sysHeight1');
+        $sys_num2 = $request->get('sysNum2');
+        $sys2_height = $request->get('sysHeight2');
+        $sys_num3 = $request->get('sysNum3');
+        $sys3_height = $request->get('sysHeight3');
+        $land_form = $request->get('landForm');
+        $is_co_opetition = $request->get('isCoOpetition');
+        $share_num_house = $request->get('shareNumHouse');
+        $share_num_tower = $request->get('shareNumTower');
+        $share_num_support = $request->get('shareNumSupport');
+        $share_num_maintain = $request->get('shareNumMaintain');
+        $share_num_site = $request->get('shareNumSite');
+        $share_num_import = $request->get('shareNumImport');
+        $site_district_type = $request->get('siteDistType');
+        $is_rru_away = $request->get('rruAway');
+        $user_type = $request->get('userType');
         $elec_introduced_type = $request->get('elecIntroType');
-        $fee_wlan             = $request->get('feeWlan');
-        $fee_micwav           = $request->get('feeMicwav');
-        $fee_add              = $request->get('feeAdd');
-        $fee_battery          = $request->get('feeBat');
-        $fee_bbu              = $request->get('feeBbu');
+        $fee_wlan = $request->get('feeWlan');
+        $fee_micwav = $request->get('feeMicwav');
+        $fee_add = $request->get('feeAdd');
+        $fee_battery = $request->get('feeBat');
+        $fee_bbu = $request->get('feeBbu');
 
         $siteIsExist = DB::table('site_info')
             ->where('business_code', $request->get('business_code'))
             ->where('is_valid', 1)->get();
         if (empty($siteIsExist)) {
             $insSiteInfo = DB::table('site_info')->insert([
-                'business_code'        => $business_code,
-                'req_code'             => $req_code,
-                'site_code'            => $site_code,
-                'site_name'            => $site_name,
-                'region_name'          => $region_name,
-                'region_id'            => transRegion($region_name),
-                'product_type'         => transProductType($product_type),
-                'share_num_tower'      => transShareType($share_num_tower),
-                'share_num_house'      => transShareType($share_num_house),
-                'share_num_support'    => transShareType($share_num_support),
-                'share_num_maintain'   => transShareType($share_num_maintain),
-                'share_num_site'       => transShareType($share_num_site),
-                'share_num_import'     => transShareType($share_num_import),
-                'established_time'     => $established_time,
-                'effective_date'       => date('Y-m-d', time()),
-                'is_new_tower'         => transIsNewTower($is_new_tower),
-                'is_newly_added'       => transIsNewlyAdded($is_newly_added),
-                'is_rru_away'          => transIsRRUAway($is_rru_away),
-                'sys_num1'             => $sys_num1,
-                'sys_num2'             => $sys_num2,
-                'sys_num3'             => $sys_num3,
-                'sys1_height'          => transSysHeight($sys1_height),
-                'sys2_height'          => transSysHeight($sys2_height),
-                'sys3_height'          => transSysHeight($sys3_height),
-                'is_co_opetition'      => transIsCoOpetition($is_co_opetition),
-                'is_valid'             => 1,
-                'site_district_type'   => transSiteDistType($site_district_type),
-                'tower_type'           => transTowerType($tower_type),
-                'land_form'            => transLandForm($land_form),
-                'user_type'            => transUserType($user_type),
+                'business_code' => $business_code,
+                'req_code' => $req_code,
+                'site_code' => $site_code,
+                'site_name' => $site_name,
+                'region_name' => $region_name,
+                'region_id' => transRegion($region_name),
+                'product_type' => transProductType($product_type),
+                'share_num_tower' => transShareType($share_num_tower),
+                'share_num_house' => transShareType($share_num_house),
+                'share_num_support' => transShareType($share_num_support),
+                'share_num_maintain' => transShareType($share_num_maintain),
+                'share_num_site' => transShareType($share_num_site),
+                'share_num_import' => transShareType($share_num_import),
+                'established_time' => $established_time,
+                'effective_date' => date('Y-m-d', time()),
+                'is_new_tower' => transIsNewTower($is_new_tower),
+                'is_newly_added' => transIsNewlyAdded($is_newly_added),
+                'is_rru_away' => transIsRRUAway($is_rru_away),
+                'sys_num1' => $sys_num1,
+                'sys_num2' => $sys_num2,
+                'sys_num3' => $sys_num3,
+                'sys1_height' => transSysHeight($sys1_height),
+                'sys2_height' => transSysHeight($sys2_height),
+                'sys3_height' => transSysHeight($sys3_height),
+                'is_co_opetition' => transIsCoOpetition($is_co_opetition),
+                'is_valid' => 1,
+                'site_district_type' => transSiteDistType($site_district_type),
+                'tower_type' => transTowerType($tower_type),
+                'land_form' => transLandForm($land_form),
+                'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
 
             ]);
@@ -501,41 +501,41 @@ class SiteInfo extends Model
                 ->where('is_valid', 1)
                 ->get();
 
-            $business_code        = $request->get('businessCode');
-            $site_code            = $request->get('siteCode');
-            $site_name            = $request->get('siteName');
-            $cdma_code            = $request->get('cdmaCode');
-            $lte_code             = $request->get('lteCode');
-            $req_code             = $request->get('reqCode');
-            $region_name          = $request->get('region');
-            $product_type         = $request->get('productType');
-            $established_time     = $request->get('establishedTime');
-            $is_new_tower         = 1;
-            $is_newly_added       = $request->get('isNewlyAdded');
-            $tower_type           = $request->get('towerType');
-            $sys_num1             = $request->get('sysNum1');
-            $sys1_height          = $request->get('sysHeight1');
-            $sys_num2             = $request->get('sysNum2');
-            $sys2_height          = $request->get('sysHeight2');
-            $sys_num3             = $request->get('sysNum3');
-            $sys3_height          = $request->get('sysHeight3');
-            $land_form            = $request->get('landForm');
-            $is_co_opetition      = $request->get('isCoOpetition');
-            $share_num_house      = $request->get('shareNumHouse');
-            $share_num_tower      = $request->get('shareNumTower');
-            $share_num_support    = $request->get('shareNumSupport');
-            $share_num_maintain   = $request->get('shareNumMaintain');
-            $share_num_site       = $request->get('shareNumSite');
-            $share_num_import     = $request->get('shareNumImport');
-            $site_district_type   = $request->get('siteDistType');
-            $is_rru_away          = $request->get('rruAway');
-            $user_type            = $request->get('userType');
+            $business_code = $request->get('businessCode');
+            $site_code = $request->get('siteCode');
+            $site_name = $request->get('siteName');
+            $cdma_code = $request->get('cdmaCode');
+            $lte_code = $request->get('lteCode');
+            $req_code = $request->get('reqCode');
+            $region_name = $request->get('region');
+            $product_type = $request->get('productType');
+            $established_time = $request->get('establishedTime');
+            $is_new_tower = 1;
+            $is_newly_added = $request->get('isNewlyAdded');
+            $tower_type = $request->get('towerType');
+            $sys_num1 = $request->get('sysNum1');
+            $sys1_height = $request->get('sysHeight1');
+            $sys_num2 = $request->get('sysNum2');
+            $sys2_height = $request->get('sysHeight2');
+            $sys_num3 = $request->get('sysNum3');
+            $sys3_height = $request->get('sysHeight3');
+            $land_form = $request->get('landForm');
+            $is_co_opetition = $request->get('isCoOpetition');
+            $share_num_house = $request->get('shareNumHouse');
+            $share_num_tower = $request->get('shareNumTower');
+            $share_num_support = $request->get('shareNumSupport');
+            $share_num_maintain = $request->get('shareNumMaintain');
+            $share_num_site = $request->get('shareNumSite');
+            $share_num_import = $request->get('shareNumImport');
+            $site_district_type = $request->get('siteDistType');
+            $is_rru_away = $request->get('rruAway');
+            $user_type = $request->get('userType');
             $elec_introduced_type = $request->get('elecIntroType');
-            $fee_wlan             = $request->get('feeWlan');
-            $fee_micwav           = $request->get('feeMicwav');
-            $fee_add              = $request->get('feeAdd');
-            $fee_battery          = $request->get('feeBat');
-            $fee_bbu              = $request->get('feeBbu');
+            $fee_wlan = $request->get('feeWlan');
+            $fee_micwav = $request->get('feeMicwav');
+            $fee_add = $request->get('feeAdd');
+            $fee_battery = $request->get('feeBat');
+            $fee_bbu = $request->get('feeBbu');
             $tower_share_discount = DB::table('share_discount_std')
                 ->where('is_new_tower', transIsNewTower($is_new_tower))
                 ->where('share_num', transShareType($share_num_tower))
@@ -624,9 +624,9 @@ class SiteInfo extends Model
                 }
 
             } else {
-                $fee_tower1    = 0;
-                $fee_house1    = 0;
-                $fee_support1  = 0;
+                $fee_tower1 = 0;
+                $fee_house1 = 0;
+                $fee_support1 = 0;
                 $fee_maintain1 = 0;
             }
             if (!empty($sys2_height) && $sys2_height != 0) {
@@ -640,13 +640,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower2 = 0;
                 }
-                $fee_house2    = $fee_house1;
+                $fee_house2 = $fee_house1;
                 $fee_maintain2 = $fee_maintain1;
-                $fee_support2  = $fee_support1;
+                $fee_support2 = $fee_support1;
             } else {
-                $fee_tower2    = 0;
-                $fee_house2    = 0;
-                $fee_support2  = 0;
+                $fee_tower2 = 0;
+                $fee_house2 = 0;
+                $fee_support2 = 0;
                 $fee_maintain2 = 0;
             }
             if (!empty($sys3_height) && $sys3_height != 0) {
@@ -660,13 +660,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower3 = 0;
                 }
-                $fee_house3    = $fee_house1;
+                $fee_house3 = $fee_house1;
                 $fee_maintain3 = $fee_maintain1;
-                $fee_support3  = $fee_support1;
+                $fee_support3 = $fee_support1;
             } else {
-                $fee_tower3    = 0;
-                $fee_house3    = 0;
-                $fee_support3  = 0;
+                $fee_tower3 = 0;
+                $fee_house3 = 0;
+                $fee_support3 = 0;
                 $fee_maintain3 = 0;
             }
 
@@ -693,7 +693,7 @@ class SiteInfo extends Model
                 $import_share_discount = 1;
             }
             if ($sys_num1 >= 1) {
-                $fee_site   = $request->get('feeSiteOld');
+                $fee_site = $request->get('feeSiteOld');
                 $fee_import = DB::table('fee_import_std')
                     ->where('region_id', transRegion($region_name))
                     ->where('elec_introduced_type', transElecType($elec_introduced_type))
@@ -704,65 +704,65 @@ class SiteInfo extends Model
                     $fee_import = 0;
                 }
             } else {
-                $fee_site   = 0;
+                $fee_site = 0;
                 $fee_import = 0;
             }
 
-            $fee_tower               = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
-            $fee_house               = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
-            $fee_support             = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
-            $fee_maintain            = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
-            $fee_tower_discounted    = $fee_tower * $tower_share_discount;
-            $fee_house_discounted    = $fee_house * $house_share_discount;
-            $fee_support_discounted  = $fee_support * $support_share_discount;
+            $fee_tower = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
+            $fee_house = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
+            $fee_support = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
+            $fee_maintain = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
+            $fee_tower_discounted = $fee_tower * $tower_share_discount;
+            $fee_house_discounted = $fee_house * $house_share_discount;
+            $fee_support_discounted = $fee_support * $support_share_discount;
             $fee_maintain_discounted = $fee_maintain * $maintain_share_discount;
-            $fee_site_discounted     = $fee_site * $site_share_discount;
-            $fee_import_discounted   = $fee_import * $import_share_discount;
+            $fee_site_discounted = $fee_site * $site_share_discount;
+            $fee_import_discounted = $fee_import * $import_share_discount;
 
             if (empty($site_price)) {
                 $insSitePrice = DB::table('fee_out_site_price')
                     ->insert([
-                        'site_code'               => $site_code,
-                        'req_code'                => $req_code,
-                        'business_code'           => $business_code,
-                        'fee_tower1'              => $fee_tower1,
-                        'fee_house1'              => $fee_house1,
-                        'fee_support1'            => $fee_support1,
-                        'fee_maintain1'           => $fee_maintain1,
-                        'fee_tower2'              => $fee_tower2,
-                        'fee_house2'              => $fee_house2,
-                        'fee_support2'            => $fee_support2,
-                        'fee_maintain2'           => $fee_maintain2,
-                        'fee_tower3'              => $fee_tower3,
-                        'fee_house3'              => $fee_house3,
-                        'fee_support3'            => $fee_support3,
-                        'fee_maintain3'           => $fee_maintain3,
-                        'fee_tower'               => $fee_tower,
-                        'fee_house'               => $fee_house,
-                        'fee_support'             => $fee_support,
-                        'fee_maintain'            => $fee_maintain,
-                        'fee_wlan'                => $fee_wlan,
-                        'fee_microwave'           => $fee_micwav,
-                        'fee_add'                 => $fee_add,
-                        'fee_battery'             => $fee_battery,
-                        'fee_bbu'                 => $fee_bbu,
-                        'tower_share_discount'    => $tower_share_discount,
-                        'house_share_discount'    => $house_share_discount,
-                        'support_share_discount'  => $support_share_discount,
+                        'site_code' => $site_code,
+                        'req_code' => $req_code,
+                        'business_code' => $business_code,
+                        'fee_tower1' => $fee_tower1,
+                        'fee_house1' => $fee_house1,
+                        'fee_support1' => $fee_support1,
+                        'fee_maintain1' => $fee_maintain1,
+                        'fee_tower2' => $fee_tower2,
+                        'fee_house2' => $fee_house2,
+                        'fee_support2' => $fee_support2,
+                        'fee_maintain2' => $fee_maintain2,
+                        'fee_tower3' => $fee_tower3,
+                        'fee_house3' => $fee_house3,
+                        'fee_support3' => $fee_support3,
+                        'fee_maintain3' => $fee_maintain3,
+                        'fee_tower' => $fee_tower,
+                        'fee_house' => $fee_house,
+                        'fee_support' => $fee_support,
+                        'fee_maintain' => $fee_maintain,
+                        'fee_wlan' => $fee_wlan,
+                        'fee_microwave' => $fee_micwav,
+                        'fee_add' => $fee_add,
+                        'fee_battery' => $fee_battery,
+                        'fee_bbu' => $fee_bbu,
+                        'tower_share_discount' => $tower_share_discount,
+                        'house_share_discount' => $house_share_discount,
+                        'support_share_discount' => $support_share_discount,
                         'maintain_share_discount' => $maintain_share_discount,
-                        'fee_tower_discounted'    => $fee_tower_discounted,
-                        'fee_house_discounted'    => $fee_house_discounted,
-                        'fee_support_discounted'  => $fee_support_discounted,
+                        'fee_tower_discounted' => $fee_tower_discounted,
+                        'fee_house_discounted' => $fee_house_discounted,
+                        'fee_support_discounted' => $fee_support_discounted,
                         'fee_maintain_discounted' => $fee_maintain_discounted,
-                        'fee_site'                => $fee_site,
-                        'site_share_discount'     => $site_share_discount,
-                        'fee_site_discounted'     => $fee_site_discounted,
-                        'fee_import'              => $fee_import,
-                        'import_share_discount'   => $import_share_discount,
-                        'fee_import_discounted'   => $fee_import_discounted,
-                        'is_valid'                => 1,
-                        'effective_date'          => $established_time,
-                        'region_id'               => transRegion($region_name),
+                        'fee_site' => $fee_site,
+                        'site_share_discount' => $site_share_discount,
+                        'fee_site_discounted' => $fee_site_discounted,
+                        'fee_import' => $fee_import,
+                        'import_share_discount' => $import_share_discount,
+                        'fee_import_discounted' => $fee_import_discounted,
+                        'is_valid' => 1,
+                        'effective_date' => $established_time,
+                        'region_id' => transRegion($region_name),
                     ]);
             } else {
                 $updSitePrice = DB::table('fee_out_site_price')
@@ -774,47 +774,47 @@ class SiteInfo extends Model
                     ]);
                 $insSitePrice = DB::table('fee_out_site_price')
                     ->insert([
-                        'site_code'               => $site_code,
-                        'req_code'                => $req_code,
-                        'business_code'           => $business_code,
-                        'fee_tower1'              => $fee_tower1,
-                        'fee_house1'              => $fee_house1,
-                        'fee_support1'            => $fee_support1,
-                        'fee_maintain1'           => $fee_maintain1,
-                        'fee_tower2'              => $fee_tower2,
-                        'fee_house2'              => $fee_house2,
-                        'fee_support2'            => $fee_support2,
-                        'fee_maintain2'           => $fee_maintain2,
-                        'fee_tower3'              => $fee_tower3,
-                        'fee_house3'              => $fee_house3,
-                        'fee_support3'            => $fee_support3,
-                        'fee_maintain3'           => $fee_maintain3,
-                        'fee_tower'               => $fee_tower,
-                        'fee_house'               => $fee_house,
-                        'fee_support'             => $fee_support,
-                        'fee_maintain'            => $fee_maintain,
-                        'fee_wlan'                => $fee_wlan,
-                        'fee_microwave'           => $fee_micwav,
-                        'fee_add'                 => $fee_add,
-                        'fee_battery'             => $fee_battery,
-                        'fee_bbu'                 => $fee_bbu,
-                        'tower_share_discount'    => $tower_share_discount,
-                        'house_share_discount'    => $house_share_discount,
-                        'support_share_discount'  => $support_share_discount,
+                        'site_code' => $site_code,
+                        'req_code' => $req_code,
+                        'business_code' => $business_code,
+                        'fee_tower1' => $fee_tower1,
+                        'fee_house1' => $fee_house1,
+                        'fee_support1' => $fee_support1,
+                        'fee_maintain1' => $fee_maintain1,
+                        'fee_tower2' => $fee_tower2,
+                        'fee_house2' => $fee_house2,
+                        'fee_support2' => $fee_support2,
+                        'fee_maintain2' => $fee_maintain2,
+                        'fee_tower3' => $fee_tower3,
+                        'fee_house3' => $fee_house3,
+                        'fee_support3' => $fee_support3,
+                        'fee_maintain3' => $fee_maintain3,
+                        'fee_tower' => $fee_tower,
+                        'fee_house' => $fee_house,
+                        'fee_support' => $fee_support,
+                        'fee_maintain' => $fee_maintain,
+                        'fee_wlan' => $fee_wlan,
+                        'fee_microwave' => $fee_micwav,
+                        'fee_add' => $fee_add,
+                        'fee_battery' => $fee_battery,
+                        'fee_bbu' => $fee_bbu,
+                        'tower_share_discount' => $tower_share_discount,
+                        'house_share_discount' => $house_share_discount,
+                        'support_share_discount' => $support_share_discount,
                         'maintain_share_discount' => $maintain_share_discount,
-                        'fee_tower_discounted'    => $fee_tower_discounted,
-                        'fee_house_discounted'    => $fee_house_discounted,
-                        'fee_support_discounted'  => $fee_support_discounted,
+                        'fee_tower_discounted' => $fee_tower_discounted,
+                        'fee_house_discounted' => $fee_house_discounted,
+                        'fee_support_discounted' => $fee_support_discounted,
                         'fee_maintain_discounted' => $fee_maintain_discounted,
-                        'fee_site'                => $fee_site,
-                        'site_share_discount'     => $site_share_discount,
-                        'fee_site_discounted'     => $fee_site_discounted,
-                        'fee_import'              => $fee_import,
-                        'import_share_discount'   => $import_share_discount,
-                        'fee_import_discounted'   => $fee_import_discounted,
-                        'is_valid'                => 1,
-                        'effective_date'          => $established_time,
-                        'region_id'               => transRegion($region_name),
+                        'fee_site' => $fee_site,
+                        'site_share_discount' => $site_share_discount,
+                        'fee_site_discounted' => $fee_site_discounted,
+                        'fee_import' => $fee_import,
+                        'import_share_discount' => $import_share_discount,
+                        'fee_import_discounted' => $fee_import_discounted,
+                        'is_valid' => 1,
+                        'effective_date' => $established_time,
+                        'region_id' => transRegion($region_name),
                     ]);
             }
             return array($siteIsExist, $insSiteInfo, $insSitePrice);
@@ -828,52 +828,52 @@ class SiteInfo extends Model
     {
         if ($area_level == 'admin' || $area_level == '湖北省') {
             for ($i = 1; $i < count($infoSites); $i++) {
-                $business_code            = $infoSites[$i][0];
-                $site_code                = $infoSites[$i][1];
-                $site_name                = $infoSites[$i][2];
-                $cdma_code                = $infoSites[$i][3];
-                $lte_code                 = $infoSites[$i][4];
-                $req_code                 = $infoSites[$i][5];
-                $region_name              = $infoSites[$i][6];
-                $product_type             = $infoSites[$i][7];
-                $established_time         = $infoSites[$i][8];
-                $is_new_tower             = $infoSites[$i][9];
-                $tower_type               = $infoSites[$i][10];
-                $sys_num1                 = $infoSites[$i][11];
-                $sys1_height              = $infoSites[$i][12];
-                $sys_num2                 = $infoSites[$i][13];
-                $sys2_height              = $infoSites[$i][14];
-                $sys_num3                 = $infoSites[$i][15];
-                $sys3_height              = $infoSites[$i][16];
-                $land_form                = $infoSites[$i][17];
-                $is_co_opetition          = $infoSites[$i][18];
-                $share_num_house          = $infoSites[$i][19];
-                $user1_rent_house_date    = $infoSites[$i][20];
-                $user2_rent_house_date    = $infoSites[$i][21];
-                $share_num_tower          = $infoSites[$i][22];
-                $user1_rent_tower_date    = $infoSites[$i][23];
-                $user2_rent_tower_date    = $infoSites[$i][24];
-                $share_num_support        = $infoSites[$i][25];
-                $user1_rent_support_date  = $infoSites[$i][26];
-                $user2_rent_support_date  = $infoSites[$i][27];
-                $share_num_maintain       = $infoSites[$i][28];
+                $business_code = $infoSites[$i][0];
+                $site_code = $infoSites[$i][1];
+                $site_name = $infoSites[$i][2];
+                $cdma_code = $infoSites[$i][3];
+                $lte_code = $infoSites[$i][4];
+                $req_code = $infoSites[$i][5];
+                $region_name = $infoSites[$i][6];
+                $product_type = $infoSites[$i][7];
+                $established_time = $infoSites[$i][8];
+                $is_new_tower = $infoSites[$i][9];
+                $tower_type = $infoSites[$i][10];
+                $sys_num1 = $infoSites[$i][11];
+                $sys1_height = $infoSites[$i][12];
+                $sys_num2 = $infoSites[$i][13];
+                $sys2_height = $infoSites[$i][14];
+                $sys_num3 = $infoSites[$i][15];
+                $sys3_height = $infoSites[$i][16];
+                $land_form = $infoSites[$i][17];
+                $is_co_opetition = $infoSites[$i][18];
+                $share_num_house = $infoSites[$i][19];
+                $user1_rent_house_date = $infoSites[$i][20];
+                $user2_rent_house_date = $infoSites[$i][21];
+                $share_num_tower = $infoSites[$i][22];
+                $user1_rent_tower_date = $infoSites[$i][23];
+                $user2_rent_tower_date = $infoSites[$i][24];
+                $share_num_support = $infoSites[$i][25];
+                $user1_rent_support_date = $infoSites[$i][26];
+                $user2_rent_support_date = $infoSites[$i][27];
+                $share_num_maintain = $infoSites[$i][28];
                 $user1_rent_maintain_date = $infoSites[$i][29];
                 $user2_rent_maintain_date = $infoSites[$i][30];
-                $share_num_site           = $infoSites[$i][31];
-                $user1_rent_site_date     = $infoSites[$i][32];
-                $user2_rent_site_date     = $infoSites[$i][33];
-                $share_num_import         = $infoSites[$i][34];
-                $user1_rent_import_date   = $infoSites[$i][35];
-                $user2_rent_import_date   = $infoSites[$i][36];
-                $site_district_type       = $infoSites[$i][37];
-                $is_rru_away              = $infoSites[$i][38];
-                $user_type                = $infoSites[$i][39];
-                $elec_introduced_type     = $infoSites[$i][40];
-                $fee_wlan                 = $infoSites[$i][41];
-                $fee_micwav               = $infoSites[$i][42];
-                $fee_add                  = $infoSites[$i][43];
-                $fee_battery              = $infoSites[$i][44];
-                $fee_bbu                  = $infoSites[$i][45];
+                $share_num_site = $infoSites[$i][31];
+                $user1_rent_site_date = $infoSites[$i][32];
+                $user2_rent_site_date = $infoSites[$i][33];
+                $share_num_import = $infoSites[$i][34];
+                $user1_rent_import_date = $infoSites[$i][35];
+                $user2_rent_import_date = $infoSites[$i][36];
+                $site_district_type = $infoSites[$i][37];
+                $is_rru_away = $infoSites[$i][38];
+                $user_type = $infoSites[$i][39];
+                $elec_introduced_type = $infoSites[$i][40];
+                $fee_wlan = $infoSites[$i][41];
+                $fee_micwav = $infoSites[$i][42];
+                $fee_add = $infoSites[$i][43];
+                $fee_battery = $infoSites[$i][44];
+                $fee_bbu = $infoSites[$i][45];
 
                 //推导是否存在新增共享
                 $user_rent_site_date = transShareDisc($user1_rent_site_date, $user2_rent_site_date);
@@ -895,50 +895,50 @@ class SiteInfo extends Model
                 if (empty($origInfoSiteID)) {
                     $addSites = DB::table('site_info')
                         ->insert([
-                            'business_code'            => $business_code,
-                            'site_code'                => $site_code,
-                            'site_name'                => $site_name,
-                            'cdma_code'                => $cdma_code,
-                            'lte_code'                 => $lte_code,
-                            'req_code'                 => $req_code,
-                            'region_name'              => $region_name,
-                            'region_id'                => transRegion($region_name),
-                            'product_type'             => transProductType($product_type),
-                            'established_time'         => $established_time,
-                            'is_new_tower'             => transIsNewTower($is_new_tower),
-                            'is_newly_added'           => $is_newly_added,
-                            'tower_type'               => transTowerType($tower_type),
-                            'sys_num1'                 => $sys_num1,
-                            'sys1_height'              => transSysHeight($sys1_height),
-                            'sys_num2'                 => $sys_num2,
-                            'sys2_height'              => transSysHeight($sys2_height),
-                            'sys_num3'                 => $sys_num3,
-                            'sys3_height'              => transSysHeight($sys3_height),
-                            'land_form'                => transLandForm($land_form),
-                            'is_co_opetition'          => transIsCoOpetition($is_co_opetition),
-                            'share_num_house'          => $share_num_house,
-                            'user1_rent_house_date'    => $user1_rent_house_date,
-                            'user2_rent_house_date'    => $user2_rent_house_date,
-                            'share_num_tower'          => $share_num_tower,
-                            'user1_rent_tower_date'    => $user1_rent_tower_date,
-                            'user2_rent_tower_date'    => $user2_rent_tower_date,
-                            'share_num_support'        => $share_num_support,
-                            'user1_rent_support_date'  => $user1_rent_support_date,
-                            'user2_rent_support_date'  => $user2_rent_support_date,
-                            'share_num_maintain'       => $share_num_maintain,
+                            'business_code' => $business_code,
+                            'site_code' => $site_code,
+                            'site_name' => $site_name,
+                            'cdma_code' => $cdma_code,
+                            'lte_code' => $lte_code,
+                            'req_code' => $req_code,
+                            'region_name' => $region_name,
+                            'region_id' => transRegion($region_name),
+                            'product_type' => transProductType($product_type),
+                            'established_time' => $established_time,
+                            'is_new_tower' => transIsNewTower($is_new_tower),
+                            'is_newly_added' => $is_newly_added,
+                            'tower_type' => transTowerType($tower_type),
+                            'sys_num1' => $sys_num1,
+                            'sys1_height' => transSysHeight($sys1_height),
+                            'sys_num2' => $sys_num2,
+                            'sys2_height' => transSysHeight($sys2_height),
+                            'sys_num3' => $sys_num3,
+                            'sys3_height' => transSysHeight($sys3_height),
+                            'land_form' => transLandForm($land_form),
+                            'is_co_opetition' => transIsCoOpetition($is_co_opetition),
+                            'share_num_house' => $share_num_house,
+                            'user1_rent_house_date' => $user1_rent_house_date,
+                            'user2_rent_house_date' => $user2_rent_house_date,
+                            'share_num_tower' => $share_num_tower,
+                            'user1_rent_tower_date' => $user1_rent_tower_date,
+                            'user2_rent_tower_date' => $user2_rent_tower_date,
+                            'share_num_support' => $share_num_support,
+                            'user1_rent_support_date' => $user1_rent_support_date,
+                            'user2_rent_support_date' => $user2_rent_support_date,
+                            'share_num_maintain' => $share_num_maintain,
                             'user1_rent_maintain_date' => $user1_rent_maintain_date,
                             'user2_rent_maintain_date' => $user2_rent_maintain_date,
-                            'share_num_site'           => $share_num_site,
-                            'user1_rent_site_date'     => $user1_rent_site_date,
-                            'user2_rent_site_date'     => $user2_rent_site_date,
-                            'share_num_import'         => $share_num_import,
-                            'user1_rent_import_date'   => $user1_rent_import_date,
-                            'user2_rent_import_date'   => $user2_rent_import_date,
-                            'site_district_type'       => transSiteDistType($site_district_type),
-                            'is_rru_away'              => transIsRRUAway($is_rru_away),
-                            'user_type'                => transUserType($user_type),
-                            'elec_introduced_type'     => transElecType($elec_introduced_type),
-                            'is_valid'                 => 1,
+                            'share_num_site' => $share_num_site,
+                            'user1_rent_site_date' => $user1_rent_site_date,
+                            'user2_rent_site_date' => $user2_rent_site_date,
+                            'share_num_import' => $share_num_import,
+                            'user1_rent_import_date' => $user1_rent_import_date,
+                            'user2_rent_import_date' => $user2_rent_import_date,
+                            'site_district_type' => transSiteDistType($site_district_type),
+                            'is_rru_away' => transIsRRUAway($is_rru_away),
+                            'user_type' => transUserType($user_type),
+                            'elec_introduced_type' => transElecType($elec_introduced_type),
+                            'is_valid' => 1,
                         ]);
 
                     //插入站址价格
@@ -1038,9 +1038,9 @@ class SiteInfo extends Model
                         }
 
                     } else {
-                        $fee_tower1    = 0;
-                        $fee_house1    = 0;
-                        $fee_support1  = 0;
+                        $fee_tower1 = 0;
+                        $fee_house1 = 0;
+                        $fee_support1 = 0;
                         $fee_maintain1 = 0;
                     }
                     if (!empty($sys2_height)) {
@@ -1054,13 +1054,13 @@ class SiteInfo extends Model
                         } else {
                             $fee_tower2 = 0;
                         }
-                        $fee_house2    = $fee_house1;
+                        $fee_house2 = $fee_house1;
                         $fee_maintain2 = $fee_maintain1;
-                        $fee_support2  = $fee_support1;
+                        $fee_support2 = $fee_support1;
                     } else {
-                        $fee_tower2    = 0;
-                        $fee_house2    = 0;
-                        $fee_support2  = 0;
+                        $fee_tower2 = 0;
+                        $fee_house2 = 0;
+                        $fee_support2 = 0;
                         $fee_maintain2 = 0;
                     }
                     if (!empty($sys3_height)) {
@@ -1074,13 +1074,13 @@ class SiteInfo extends Model
                         } else {
                             $fee_tower3 = 0;
                         }
-                        $fee_house3    = $fee_house1;
+                        $fee_house3 = $fee_house1;
                         $fee_maintain3 = $fee_maintain1;
-                        $fee_support3  = $fee_support1;
+                        $fee_support3 = $fee_support1;
                     } else {
-                        $fee_tower3    = 0;
-                        $fee_house3    = 0;
-                        $fee_support3  = 0;
+                        $fee_tower3 = 0;
+                        $fee_house3 = 0;
+                        $fee_support3 = 0;
                         $fee_maintain3 = 0;
                     }
 
@@ -1128,75 +1128,75 @@ class SiteInfo extends Model
                                 $fee_import = 0;
                             }
                         } else {
-                            $fee_site   = 0;
+                            $fee_site = 0;
                             $fee_import = 0;
                         }
 
                     } else {
                         if ($sys_num1 >= 1) {
-                            $fee_site   = $infoSites[$i][46];
+                            $fee_site = $infoSites[$i][46];
                             $fee_import = 0;
                         } else {
-                            $fee_site   = 0;
+                            $fee_site = 0;
                             $fee_import = 0;
                         }
                     }
 
-                    $fee_tower               = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
-                    $fee_house               = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
-                    $fee_support             = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
-                    $fee_maintain            = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
-                    $fee_tower_discounted    = $fee_tower * $tower_share_discount;
-                    $fee_house_discounted    = $fee_house * $house_share_discount;
-                    $fee_support_discounted  = $fee_support * $support_share_discount;
+                    $fee_tower = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
+                    $fee_house = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
+                    $fee_support = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
+                    $fee_maintain = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
+                    $fee_tower_discounted = $fee_tower * $tower_share_discount;
+                    $fee_house_discounted = $fee_house * $house_share_discount;
+                    $fee_support_discounted = $fee_support * $support_share_discount;
                     $fee_maintain_discounted = $fee_maintain * $maintain_share_discount;
-                    $fee_site_discounted     = $fee_site * $site_share_discount;
-                    $fee_import_discounted   = $fee_import * $import_share_discount;
+                    $fee_site_discounted = $fee_site * $site_share_discount;
+                    $fee_import_discounted = $fee_import * $import_share_discount;
 
                     if (empty($site_price)) {
                         $insSitePrice = DB::table('fee_out_site_price')
                             ->insert([
-                                'site_code'               => $site_code,
-                                'req_code'                => $req_code,
-                                'business_code'           => $business_code,
-                                'fee_tower1'              => $fee_tower1,
-                                'fee_house1'              => $fee_house1,
-                                'fee_support1'            => $fee_support1,
-                                'fee_maintain1'           => $fee_maintain1,
-                                'fee_tower2'              => $fee_tower2,
-                                'fee_house2'              => $fee_house2,
-                                'fee_support2'            => $fee_support2,
-                                'fee_maintain2'           => $fee_maintain2,
-                                'fee_tower3'              => $fee_tower3,
-                                'fee_house3'              => $fee_house3,
-                                'fee_support3'            => $fee_support3,
-                                'fee_maintain3'           => $fee_maintain3,
-                                'fee_tower'               => $fee_tower,
-                                'fee_house'               => $fee_house,
-                                'fee_support'             => $fee_support,
-                                'fee_maintain'            => $fee_maintain,
-                                'fee_wlan'                => $fee_wlan,
-                                'fee_microwave'           => $fee_micwav,
-                                'fee_add'                 => $fee_add,
-                                'fee_battery'             => $fee_battery,
-                                'fee_bbu'                 => $fee_bbu,
-                                'tower_share_discount'    => $tower_share_discount,
-                                'house_share_discount'    => $house_share_discount,
-                                'support_share_discount'  => $support_share_discount,
+                                'site_code' => $site_code,
+                                'req_code' => $req_code,
+                                'business_code' => $business_code,
+                                'fee_tower1' => $fee_tower1,
+                                'fee_house1' => $fee_house1,
+                                'fee_support1' => $fee_support1,
+                                'fee_maintain1' => $fee_maintain1,
+                                'fee_tower2' => $fee_tower2,
+                                'fee_house2' => $fee_house2,
+                                'fee_support2' => $fee_support2,
+                                'fee_maintain2' => $fee_maintain2,
+                                'fee_tower3' => $fee_tower3,
+                                'fee_house3' => $fee_house3,
+                                'fee_support3' => $fee_support3,
+                                'fee_maintain3' => $fee_maintain3,
+                                'fee_tower' => $fee_tower,
+                                'fee_house' => $fee_house,
+                                'fee_support' => $fee_support,
+                                'fee_maintain' => $fee_maintain,
+                                'fee_wlan' => $fee_wlan,
+                                'fee_microwave' => $fee_micwav,
+                                'fee_add' => $fee_add,
+                                'fee_battery' => $fee_battery,
+                                'fee_bbu' => $fee_bbu,
+                                'tower_share_discount' => $tower_share_discount,
+                                'house_share_discount' => $house_share_discount,
+                                'support_share_discount' => $support_share_discount,
                                 'maintain_share_discount' => $maintain_share_discount,
-                                'fee_tower_discounted'    => $fee_tower_discounted,
-                                'fee_house_discounted'    => $fee_house_discounted,
-                                'fee_support_discounted'  => $fee_support_discounted,
+                                'fee_tower_discounted' => $fee_tower_discounted,
+                                'fee_house_discounted' => $fee_house_discounted,
+                                'fee_support_discounted' => $fee_support_discounted,
                                 'fee_maintain_discounted' => $fee_maintain_discounted,
-                                'fee_site'                => $fee_site,
-                                'site_share_discount'     => $site_share_discount,
-                                'fee_site_discounted'     => $fee_site_discounted,
-                                'fee_import'              => $fee_import,
-                                'import_share_discount'   => $import_share_discount,
-                                'fee_import_discounted'   => $fee_import_discounted,
-                                'is_valid'                => 1,
-                                'effective_date'          => $established_time,
-                                'region_id'               => transRegion($region_name),
+                                'fee_site' => $fee_site,
+                                'site_share_discount' => $site_share_discount,
+                                'fee_site_discounted' => $fee_site_discounted,
+                                'fee_import' => $fee_import,
+                                'import_share_discount' => $import_share_discount,
+                                'fee_import_discounted' => $fee_import_discounted,
+                                'is_valid' => 1,
+                                'effective_date' => $established_time,
+                                'region_id' => transRegion($region_name),
                             ]);
                     }
                 } else {
@@ -1215,44 +1215,44 @@ class SiteInfo extends Model
                 $infoSite = DB::table('site_info')->where('site_code', $infoSites[$i][7])->where('is_valid', 1)->get();
                 if (empty($infoSite)) {
                     DB::table('site_info')->insert([
-                        'site_code'            => $infoSites[$i][7],
-                        'region_name'          => $infoSites[$i][0],
-                        'product_type'         => transProductType($infoSites[$i][12]),
-                        'is_new_tower'         => transIsNewTower($infoSites[$i][97]),
-                        'is_newly_added'       => transIsNewlyAdded($infoSites[$i][7]),
-                        'tower_type'           => transTowerType($infoSites[$i][8]),
-                        'sys_num'              => $infoSites[$i][9],
-                        'sys1_height'          => transSysHeight($infoSites[$i][19]),
-                        'land_form'            => transSysHeight($infoSites[$i][14]),
-                        'share_num'            => transSysHeight($infoSites[$i][12]),
-                        'is_co_opetition'      => transSysHeight($infoSites[$i][13]),
-                        'site_district_type'   => transSysHeight($infoSites[$i][14]),
-                        'is_rru_away'          => transLandForm($infoSites[$i][15]),
-                        'user_type'            => transIsCoOpetition($infoSites[$i][16]),
+                        'site_code' => $infoSites[$i][7],
+                        'region_name' => $infoSites[$i][0],
+                        'product_type' => transProductType($infoSites[$i][12]),
+                        'is_new_tower' => transIsNewTower($infoSites[$i][97]),
+                        'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
+                        'tower_type' => transTowerType($infoSites[$i][8]),
+                        'sys_num' => $infoSites[$i][9],
+                        'sys1_height' => transSysHeight($infoSites[$i][19]),
+                        'land_form' => transSysHeight($infoSites[$i][14]),
+                        'share_num' => transSysHeight($infoSites[$i][12]),
+                        'is_co_opetition' => transSysHeight($infoSites[$i][13]),
+                        'site_district_type' => transSysHeight($infoSites[$i][14]),
+                        'is_rru_away' => transLandForm($infoSites[$i][15]),
+                        'user_type' => transIsCoOpetition($infoSites[$i][16]),
                         'elec_introduced_type' => $infoSites[$i][17],
-                        'is_valid'             => 1,
+                        'is_valid' => 1,
                     ]);
                 } else {
                     DB::table('site_info')->where('id', $infoSite[0]->id)->update([
                         'is_valid' => 0,
                     ]);
                     DB::table('site_info')->insert([
-                        'site_code'            => $infoSites[$i][7],
-                        'region_name'          => $infoSites[$i][0],
-                        'product_type'         => transProductType($infoSites[$i][12]),
-                        'is_new_tower'         => transIsNewTower($infoSites[$i][97]),
-                        'is_newly_added'       => transIsNewlyAdded($infoSites[$i][7]),
-                        'tower_type'           => transTowerType($infoSites[$i][8]),
-                        'sys_num'              => $infoSites[$i][9],
-                        'sys1_height'          => transSysHeight($infoSites[$i][19]),
-                        'land_form'            => transSysHeight($infoSites[$i][14]),
-                        'share_num'            => transSysHeight($infoSites[$i][12]),
-                        'is_co_opetition'      => transSysHeight($infoSites[$i][13]),
-                        'site_district_type'   => transSysHeight($infoSites[$i][14]),
-                        'is_rru_away'          => transLandForm($infoSites[$i][15]),
-                        'user_type'            => transIsCoOpetition($infoSites[$i][16]),
+                        'site_code' => $infoSites[$i][7],
+                        'region_name' => $infoSites[$i][0],
+                        'product_type' => transProductType($infoSites[$i][12]),
+                        'is_new_tower' => transIsNewTower($infoSites[$i][97]),
+                        'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
+                        'tower_type' => transTowerType($infoSites[$i][8]),
+                        'sys_num' => $infoSites[$i][9],
+                        'sys1_height' => transSysHeight($infoSites[$i][19]),
+                        'land_form' => transSysHeight($infoSites[$i][14]),
+                        'share_num' => transSysHeight($infoSites[$i][12]),
+                        'is_co_opetition' => transSysHeight($infoSites[$i][13]),
+                        'site_district_type' => transSysHeight($infoSites[$i][14]),
+                        'is_rru_away' => transLandForm($infoSites[$i][15]),
+                        'user_type' => transIsCoOpetition($infoSites[$i][16]),
                         'elec_introduced_type' => $infoSites[$i][17],
-                        'is_valid'             => 1,
+                        'is_valid' => 1,
                     ]);
                 }
 
@@ -1263,44 +1263,44 @@ class SiteInfo extends Model
                     $infoSite = DB::table('site_info')->where('site_code', $infoSites[$i][7])->where('is_valid', 1)->where('region_name', $area_level)->get();
                     if (empty($infoSite)) {
                         DB::table('site_info')->insert([
-                            'site_code'            => $infoSites[$i][7],
-                            'region_name'          => $infoSites[$i][0],
-                            'product_type'         => transProductType($infoSites[$i][12]),
-                            'is_new_tower'         => transIsNewTower($infoSites[$i][97]),
-                            'is_newly_added'       => transIsNewlyAdded($infoSites[$i][7]),
-                            'tower_type'           => transTowerType($infoSites[$i][8]),
-                            'sys_num'              => $infoSites[$i][9],
-                            'sys1_height'          => transSysHeight($infoSites[$i][19]),
-                            'land_form'            => transSysHeight($infoSites[$i][14]),
-                            'share_num'            => transSysHeight($infoSites[$i][12]),
-                            'is_co_opetition'      => transSysHeight($infoSites[$i][13]),
-                            'site_district_type'   => transSysHeight($infoSites[$i][14]),
-                            'is_rru_away'          => transLandForm($infoSites[$i][15]),
-                            'user_type'            => transIsCoOpetition($infoSites[$i][16]),
+                            'site_code' => $infoSites[$i][7],
+                            'region_name' => $infoSites[$i][0],
+                            'product_type' => transProductType($infoSites[$i][12]),
+                            'is_new_tower' => transIsNewTower($infoSites[$i][97]),
+                            'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
+                            'tower_type' => transTowerType($infoSites[$i][8]),
+                            'sys_num' => $infoSites[$i][9],
+                            'sys1_height' => transSysHeight($infoSites[$i][19]),
+                            'land_form' => transSysHeight($infoSites[$i][14]),
+                            'share_num' => transSysHeight($infoSites[$i][12]),
+                            'is_co_opetition' => transSysHeight($infoSites[$i][13]),
+                            'site_district_type' => transSysHeight($infoSites[$i][14]),
+                            'is_rru_away' => transLandForm($infoSites[$i][15]),
+                            'user_type' => transIsCoOpetition($infoSites[$i][16]),
                             'elec_introduced_type' => $infoSites[$i][17],
-                            'is_valid'             => 1,
+                            'is_valid' => 1,
                         ]);
                     } else {
                         DB::table('site_info')->where('id', $infoSite[0]->id)->update([
                             'is_valid' => 0,
                         ]);
                         DB::table('site_info')->insert([
-                            'site_code'            => $infoSites[$i][7],
-                            'region_name'          => $infoSites[$i][0],
-                            'product_type'         => transProductType($infoSites[$i][12]),
-                            'is_new_tower'         => transIsNewTower($infoSites[$i][97]),
-                            'is_newly_added'       => transIsNewlyAdded($infoSites[$i][7]),
-                            'tower_type'           => transTowerType($infoSites[$i][8]),
-                            'sys_num'              => $infoSites[$i][9],
-                            'sys1_height'          => transSysHeight($infoSites[$i][19]),
-                            'land_form'            => transSysHeight($infoSites[$i][14]),
-                            'share_num'            => transSysHeight($infoSites[$i][12]),
-                            'is_co_opetition'      => transSysHeight($infoSites[$i][13]),
-                            'site_district_type'   => transSysHeight($infoSites[$i][14]),
-                            'is_rru_away'          => transLandForm($infoSites[$i][15]),
-                            'user_type'            => transIsCoOpetition($infoSites[$i][16]),
+                            'site_code' => $infoSites[$i][7],
+                            'region_name' => $infoSites[$i][0],
+                            'product_type' => transProductType($infoSites[$i][12]),
+                            'is_new_tower' => transIsNewTower($infoSites[$i][97]),
+                            'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
+                            'tower_type' => transTowerType($infoSites[$i][8]),
+                            'sys_num' => $infoSites[$i][9],
+                            'sys1_height' => transSysHeight($infoSites[$i][19]),
+                            'land_form' => transSysHeight($infoSites[$i][14]),
+                            'share_num' => transSysHeight($infoSites[$i][12]),
+                            'is_co_opetition' => transSysHeight($infoSites[$i][13]),
+                            'site_district_type' => transSysHeight($infoSites[$i][14]),
+                            'is_rru_away' => transLandForm($infoSites[$i][15]),
+                            'user_type' => transIsCoOpetition($infoSites[$i][16]),
                             'elec_introduced_type' => $infoSites[$i][17],
-                            'is_valid'             => 1,
+                            'is_valid' => 1,
                         ]);
                     }
                 }
@@ -1327,9 +1327,9 @@ class SiteInfo extends Model
 
         //插入服务费用信息
         $bool2 = DB::table('fee_site_monthly_rent')->insert(
-            ['site_code'          => $request->get('siteCode'),
-                'site_fee'            => $site_fee[0],
-                'sys1_basic_fee'      => $sys_basic_fee[0],
+            ['site_code' => $request->get('siteCode'),
+                'site_fee' => $site_fee[0],
+                'sys1_basic_fee' => $sys_basic_fee[0],
                 'elec_introduced_fee' => $elec_introduced_fee[0]]
         );
     }
@@ -1448,41 +1448,41 @@ class SiteInfo extends Model
 //                echo "<script language=javascript>alert('系统3高度有错误！');history.back()</script>";
                 return "error3";
             }
-            $business_code        = $request->get('businessCode');
-            $site_code            = $request->get('siteCode');
-            $site_name            = $request->get('siteName');
-            $cdma_code            = $request->get('cdmaCode');
-            $lte_code             = $request->get('lteCode');
-            $req_code             = $request->get('reqCode');
-            $region_name          = $request->get('region');
-            $product_type         = $request->get('productType');
-            $established_time     = $request->get('establishedTime');
-            $is_new_tower         = 1;
-            $is_newly_added       = 0;
-            $tower_type           = $request->get('towerType');
-            $sys_num1             = $request->get('sysNum1');
-            $sys1_height          = $request->get('sysHeight1');
-            $sys_num2             = $request->get('sysNum2');
-            $sys2_height          = $request->get('sysHeight2');
-            $sys_num3             = $request->get('sysNum3');
-            $sys3_height          = $request->get('sysHeight3');
-            $land_form            = $request->get('landForm');
-            $is_co_opetition      = $request->get('isCoOpetition');
-            $share_num_house      = $request->get('shareNumHouse');
-            $share_num_tower      = $request->get('shareNumTower');
-            $share_num_support    = $request->get('shareNumSupport');
-            $share_num_maintain   = $request->get('shareNumMaintain');
-            $share_num_site       = $request->get('shareNumSite');
-            $share_num_import     = $request->get('shareNumImport');
-            $site_district_type   = $request->get('siteDistType');
-            $is_rru_away          = $request->get('rruAway');
-            $user_type            = $request->get('userType');
+            $business_code = $request->get('businessCode');
+            $site_code = $request->get('siteCode');
+            $site_name = $request->get('siteName');
+            $cdma_code = $request->get('cdmaCode');
+            $lte_code = $request->get('lteCode');
+            $req_code = $request->get('reqCode');
+            $region_name = $request->get('region');
+            $product_type = $request->get('productType');
+            $established_time = $request->get('establishedTime');
+            $is_new_tower = 1;
+            $is_newly_added = 0;
+            $tower_type = $request->get('towerType');
+            $sys_num1 = $request->get('sysNum1');
+            $sys1_height = $request->get('sysHeight1');
+            $sys_num2 = $request->get('sysNum2');
+            $sys2_height = $request->get('sysHeight2');
+            $sys_num3 = $request->get('sysNum3');
+            $sys3_height = $request->get('sysHeight3');
+            $land_form = $request->get('landForm');
+            $is_co_opetition = $request->get('isCoOpetition');
+            $share_num_house = $request->get('shareNumHouse');
+            $share_num_tower = $request->get('shareNumTower');
+            $share_num_support = $request->get('shareNumSupport');
+            $share_num_maintain = $request->get('shareNumMaintain');
+            $share_num_site = $request->get('shareNumSite');
+            $share_num_import = $request->get('shareNumImport');
+            $site_district_type = $request->get('siteDistType');
+            $is_rru_away = $request->get('rruAway');
+            $user_type = $request->get('userType');
             $elec_introduced_type = $request->get('elecIntroType');
-            $fee_wlan             = $request->get('feeWlan');
-            $fee_micwav           = $request->get('feeMicwav');
-            $fee_add              = $request->get('feeAdd');
-            $fee_battery          = $request->get('feeBat');
-            $fee_bbu              = $request->get('feeBbu');
+            $fee_wlan = $request->get('feeWlan');
+            $fee_micwav = $request->get('feeMicwav');
+            $fee_add = $request->get('feeAdd');
+            $fee_battery = $request->get('feeBat');
+            $fee_bbu = $request->get('feeBbu');
 
             $updateSiteInfo = DB::table('site_info')
                 ->where('business_code', $business_code)
@@ -1491,36 +1491,36 @@ class SiteInfo extends Model
                 ]);
 
             $insSiteInfo = DB::table('site_info')->insert([
-                'business_code'        => $business_code,
-                'req_code'             => $req_code,
-                'site_code'            => $site_code,
-                'site_name'            => $site_name,
-                'region_name'          => $region_name,
-                'region_id'            => transRegion($region_name),
-                'product_type'         => transProductType($product_type),
-                'share_num_tower'      => transShareType($share_num_tower),
-                'share_num_house'      => transShareType($share_num_house),
-                'share_num_support'    => transShareType($share_num_support),
-                'share_num_maintain'   => transShareType($share_num_maintain),
-                'share_num_site'       => transShareType($share_num_site),
-                'share_num_import'     => transShareType($share_num_import),
-                'established_time'     => $established_time,
-                'effective_date'       => date('Y-m-d', time()),
-                'is_new_tower'         => $is_new_tower,
-                'is_newly_added'       => $is_newly_added,
-                'is_rru_away'          => transIsRRUAway($is_rru_away),
-                'sys_num1'             => $sys_num1,
-                'sys_num2'             => $sys_num2,
-                'sys_num3'             => $sys_num3,
-                'sys1_height'          => transSysHeight($sys1_height),
-                'sys2_height'          => transSysHeight($sys2_height),
-                'sys3_height'          => transSysHeight($sys3_height),
-                'is_co_opetition'      => transIsCoOpetition($is_co_opetition),
-                'is_valid'             => 1,
-                'site_district_type'   => transSiteDistType($site_district_type),
-                'tower_type'           => transTowerType($tower_type),
-                'land_form'            => transLandForm($land_form),
-                'user_type'            => transUserType($user_type),
+                'business_code' => $business_code,
+                'req_code' => $req_code,
+                'site_code' => $site_code,
+                'site_name' => $site_name,
+                'region_name' => $region_name,
+                'region_id' => transRegion($region_name),
+                'product_type' => transProductType($product_type),
+                'share_num_tower' => transShareType($share_num_tower),
+                'share_num_house' => transShareType($share_num_house),
+                'share_num_support' => transShareType($share_num_support),
+                'share_num_maintain' => transShareType($share_num_maintain),
+                'share_num_site' => transShareType($share_num_site),
+                'share_num_import' => transShareType($share_num_import),
+                'established_time' => $established_time,
+                'effective_date' => date('Y-m-d', time()),
+                'is_new_tower' => $is_new_tower,
+                'is_newly_added' => $is_newly_added,
+                'is_rru_away' => transIsRRUAway($is_rru_away),
+                'sys_num1' => $sys_num1,
+                'sys_num2' => $sys_num2,
+                'sys_num3' => $sys_num3,
+                'sys1_height' => transSysHeight($sys1_height),
+                'sys2_height' => transSysHeight($sys2_height),
+                'sys3_height' => transSysHeight($sys3_height),
+                'is_co_opetition' => transIsCoOpetition($is_co_opetition),
+                'is_valid' => 1,
+                'site_district_type' => transSiteDistType($site_district_type),
+                'tower_type' => transTowerType($tower_type),
+                'land_form' => transLandForm($land_form),
+                'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
 
             ]);
@@ -1618,9 +1618,9 @@ class SiteInfo extends Model
                 }
 
             } else {
-                $fee_tower1    = 0;
-                $fee_house1    = 0;
-                $fee_support1  = 0;
+                $fee_tower1 = 0;
+                $fee_house1 = 0;
+                $fee_support1 = 0;
                 $fee_maintain1 = 0;
             }
             if (!empty($sys2_height)) {
@@ -1634,13 +1634,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower2 = 0;
                 }
-                $fee_house2    = $fee_house1;
+                $fee_house2 = $fee_house1;
                 $fee_maintain2 = $fee_maintain1;
-                $fee_support2  = $fee_support1;
+                $fee_support2 = $fee_support1;
             } else {
-                $fee_tower2    = 0;
-                $fee_house2    = 0;
-                $fee_support2  = 0;
+                $fee_tower2 = 0;
+                $fee_house2 = 0;
+                $fee_support2 = 0;
                 $fee_maintain2 = 0;
             }
             if (!empty($sys3_height)) {
@@ -1654,13 +1654,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower3 = 0;
                 }
-                $fee_house3    = $fee_house1;
+                $fee_house3 = $fee_house1;
                 $fee_maintain3 = $fee_maintain1;
-                $fee_support3  = $fee_support1;
+                $fee_support3 = $fee_support1;
             } else {
-                $fee_tower3    = 0;
-                $fee_house3    = 0;
-                $fee_support3  = 0;
+                $fee_tower3 = 0;
+                $fee_house3 = 0;
+                $fee_support3 = 0;
                 $fee_maintain3 = 0;
             }
 
@@ -1707,20 +1707,20 @@ class SiteInfo extends Model
                     $fee_import = 0;
                 }
             } else {
-                $fee_site   = 0;
+                $fee_site = 0;
                 $fee_import = 0;
             }
 
-            $fee_tower               = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
-            $fee_house               = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
-            $fee_support             = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
-            $fee_maintain            = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
-            $fee_tower_discounted    = $fee_tower * $tower_share_discount;
-            $fee_house_discounted    = $fee_house * $house_share_discount;
-            $fee_support_discounted  = $fee_support * $support_share_discount;
+            $fee_tower = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
+            $fee_house = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
+            $fee_support = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
+            $fee_maintain = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
+            $fee_tower_discounted = $fee_tower * $tower_share_discount;
+            $fee_house_discounted = $fee_house * $house_share_discount;
+            $fee_support_discounted = $fee_support * $support_share_discount;
             $fee_maintain_discounted = $fee_maintain * $maintain_share_discount;
-            $fee_site_discounted     = $fee_site * $site_share_discount;
-            $fee_import_discounted   = $fee_import * $import_share_discount;
+            $fee_site_discounted = $fee_site * $site_share_discount;
+            $fee_import_discounted = $fee_import * $import_share_discount;
 
             $updSitePrice = DB::table('fee_out_site_price')
                 ->where('business_code', $business_code)
@@ -1731,47 +1731,47 @@ class SiteInfo extends Model
                 ]);
             $insSitePrice = DB::table('fee_out_site_price')
                 ->insert([
-                    'site_code'               => $site_code,
-                    'req_code'                => $req_code,
-                    'business_code'           => $business_code,
-                    'fee_tower1'              => $fee_tower1,
-                    'fee_house1'              => $fee_house1,
-                    'fee_support1'            => $fee_support1,
-                    'fee_maintain1'           => $fee_maintain1,
-                    'fee_tower2'              => $fee_tower2,
-                    'fee_house2'              => $fee_house2,
-                    'fee_support2'            => $fee_support2,
-                    'fee_maintain2'           => $fee_maintain2,
-                    'fee_tower3'              => $fee_tower3,
-                    'fee_house3'              => $fee_house3,
-                    'fee_support3'            => $fee_support3,
-                    'fee_maintain3'           => $fee_maintain3,
-                    'fee_tower'               => $fee_tower,
-                    'fee_house'               => $fee_house,
-                    'fee_support'             => $fee_support,
-                    'fee_maintain'            => $fee_maintain,
-                    'fee_wlan'                => $fee_wlan,
-                    'fee_microwave'           => $fee_micwav,
-                    'fee_add'                 => $fee_add,
-                    'fee_battery'             => $fee_battery,
-                    'fee_bbu'                 => $fee_bbu,
-                    'tower_share_discount'    => $tower_share_discount,
-                    'house_share_discount'    => $house_share_discount,
-                    'support_share_discount'  => $support_share_discount,
+                    'site_code' => $site_code,
+                    'req_code' => $req_code,
+                    'business_code' => $business_code,
+                    'fee_tower1' => $fee_tower1,
+                    'fee_house1' => $fee_house1,
+                    'fee_support1' => $fee_support1,
+                    'fee_maintain1' => $fee_maintain1,
+                    'fee_tower2' => $fee_tower2,
+                    'fee_house2' => $fee_house2,
+                    'fee_support2' => $fee_support2,
+                    'fee_maintain2' => $fee_maintain2,
+                    'fee_tower3' => $fee_tower3,
+                    'fee_house3' => $fee_house3,
+                    'fee_support3' => $fee_support3,
+                    'fee_maintain3' => $fee_maintain3,
+                    'fee_tower' => $fee_tower,
+                    'fee_house' => $fee_house,
+                    'fee_support' => $fee_support,
+                    'fee_maintain' => $fee_maintain,
+                    'fee_wlan' => $fee_wlan,
+                    'fee_microwave' => $fee_micwav,
+                    'fee_add' => $fee_add,
+                    'fee_battery' => $fee_battery,
+                    'fee_bbu' => $fee_bbu,
+                    'tower_share_discount' => $tower_share_discount,
+                    'house_share_discount' => $house_share_discount,
+                    'support_share_discount' => $support_share_discount,
                     'maintain_share_discount' => $maintain_share_discount,
-                    'fee_tower_discounted'    => $fee_tower_discounted,
-                    'fee_house_discounted'    => $fee_house_discounted,
-                    'fee_support_discounted'  => $fee_support_discounted,
+                    'fee_tower_discounted' => $fee_tower_discounted,
+                    'fee_house_discounted' => $fee_house_discounted,
+                    'fee_support_discounted' => $fee_support_discounted,
                     'fee_maintain_discounted' => $fee_maintain_discounted,
-                    'fee_site'                => $fee_site,
-                    'site_share_discount'     => $site_share_discount,
-                    'fee_site_discounted'     => $fee_site_discounted,
-                    'fee_import'              => $fee_import,
-                    'import_share_discount'   => $import_share_discount,
-                    'fee_import_discounted'   => $fee_import_discounted,
-                    'is_valid'                => 1,
-                    'effective_date'          => $established_time,
-                    'region_id'               => transRegion($region_name),
+                    'fee_site' => $fee_site,
+                    'site_share_discount' => $site_share_discount,
+                    'fee_site_discounted' => $fee_site_discounted,
+                    'fee_import' => $fee_import,
+                    'import_share_discount' => $import_share_discount,
+                    'fee_import_discounted' => $fee_import_discounted,
+                    'is_valid' => 1,
+                    'effective_date' => $established_time,
+                    'region_id' => transRegion($region_name),
                 ]);
             if ($insSitePrice && $insSiteInfo) {
                 return 'success';
@@ -1816,41 +1816,41 @@ class SiteInfo extends Model
 //                echo "<script language=javascript>alert('系统3高度有错误！');history.back()</script>";
                 return "error3";
             }
-            $business_code        = $request->get('businessCode');
-            $site_code            = $request->get('siteCode');
-            $site_name            = $request->get('siteName');
-            $cdma_code            = $request->get('cdmaCode');
-            $lte_code             = $request->get('lteCode');
-            $req_code             = $request->get('reqCode');
-            $region_name          = $request->get('region');
-            $product_type         = $request->get('productType');
-            $established_time     = $request->get('establishedTime');
-            $is_new_tower         = 0;
-            $is_newly_added       = $request->get('isNewlyAdded');
-            $tower_type           = $request->get('towerType');
-            $sys_num1             = $request->get('sysNum1');
-            $sys1_height          = $request->get('sysHeight1');
-            $sys_num2             = $request->get('sysNum2');
-            $sys2_height          = $request->get('sysHeight2');
-            $sys_num3             = $request->get('sysNum3');
-            $sys3_height          = $request->get('sysHeight3');
-            $land_form            = $request->get('landForm');
-            $is_co_opetition      = $request->get('isCoOpetition');
-            $share_num_house      = $request->get('shareNumHouse');
-            $share_num_tower      = $request->get('shareNumTower');
-            $share_num_support    = $request->get('shareNumSupport');
-            $share_num_maintain   = $request->get('shareNumMaintain');
-            $share_num_site       = $request->get('shareNumSite');
-            $share_num_import     = $request->get('shareNumImport');
-            $site_district_type   = $request->get('siteDistType');
-            $is_rru_away          = $request->get('rruAway');
-            $user_type            = $request->get('userType');
+            $business_code = $request->get('businessCode');
+            $site_code = $request->get('siteCode');
+            $site_name = $request->get('siteName');
+            $cdma_code = $request->get('cdmaCode');
+            $lte_code = $request->get('lteCode');
+            $req_code = $request->get('reqCode');
+            $region_name = $request->get('region');
+            $product_type = $request->get('productType');
+            $established_time = $request->get('establishedTime');
+            $is_new_tower = 0;
+            $is_newly_added = $request->get('isNewlyAdded');
+            $tower_type = $request->get('towerType');
+            $sys_num1 = $request->get('sysNum1');
+            $sys1_height = $request->get('sysHeight1');
+            $sys_num2 = $request->get('sysNum2');
+            $sys2_height = $request->get('sysHeight2');
+            $sys_num3 = $request->get('sysNum3');
+            $sys3_height = $request->get('sysHeight3');
+            $land_form = $request->get('landForm');
+            $is_co_opetition = $request->get('isCoOpetition');
+            $share_num_house = $request->get('shareNumHouse');
+            $share_num_tower = $request->get('shareNumTower');
+            $share_num_support = $request->get('shareNumSupport');
+            $share_num_maintain = $request->get('shareNumMaintain');
+            $share_num_site = $request->get('shareNumSite');
+            $share_num_import = $request->get('shareNumImport');
+            $site_district_type = $request->get('siteDistType');
+            $is_rru_away = $request->get('rruAway');
+            $user_type = $request->get('userType');
             $elec_introduced_type = $request->get('elecIntroType');
-            $fee_wlan             = $request->get('feeWlan');
-            $fee_micwav           = $request->get('feeMicwav');
-            $fee_add              = $request->get('feeAdd');
-            $fee_battery          = $request->get('feeBat');
-            $fee_bbu              = $request->get('feeBbu');
+            $fee_wlan = $request->get('feeWlan');
+            $fee_micwav = $request->get('feeMicwav');
+            $fee_add = $request->get('feeAdd');
+            $fee_battery = $request->get('feeBat');
+            $fee_bbu = $request->get('feeBbu');
 
             $updateSiteInfo = DB::table('site_info')
                 ->where('business_code', $business_code)
@@ -1859,36 +1859,36 @@ class SiteInfo extends Model
                 ]);
 
             $insSiteInfo = DB::table('site_info')->insert([
-                'business_code'        => $business_code,
-                'req_code'             => $req_code,
-                'site_code'            => $site_code,
-                'site_name'            => $site_name,
-                'region_name'          => $region_name,
-                'region_id'            => transRegion($region_name),
-                'product_type'         => transProductType($product_type),
-                'share_num_tower'      => transShareType($share_num_tower),
-                'share_num_house'      => transShareType($share_num_house),
-                'share_num_support'    => transShareType($share_num_support),
-                'share_num_maintain'   => transShareType($share_num_maintain),
-                'share_num_site'       => transShareType($share_num_site),
-                'share_num_import'     => transShareType($share_num_import),
-                'established_time'     => $established_time,
-                'effective_date'       => date('Y-m-d', time()),
-                'is_new_tower'         => $is_new_tower,
-                'is_newly_added'       => $is_newly_added,
-                'is_rru_away'          => transIsRRUAway($is_rru_away),
-                'sys_num1'             => $sys_num1,
-                'sys_num2'             => $sys_num2,
-                'sys_num3'             => $sys_num3,
-                'sys1_height'          => transSysHeight($sys1_height),
-                'sys2_height'          => transSysHeight($sys2_height),
-                'sys3_height'          => transSysHeight($sys3_height),
-                'is_co_opetition'      => transIsCoOpetition($is_co_opetition),
-                'is_valid'             => 1,
-                'site_district_type'   => transSiteDistType($site_district_type),
-                'tower_type'           => transTowerType($tower_type),
-                'land_form'            => transLandForm($land_form),
-                'user_type'            => transUserType($user_type),
+                'business_code' => $business_code,
+                'req_code' => $req_code,
+                'site_code' => $site_code,
+                'site_name' => $site_name,
+                'region_name' => $region_name,
+                'region_id' => transRegion($region_name),
+                'product_type' => transProductType($product_type),
+                'share_num_tower' => transShareType($share_num_tower),
+                'share_num_house' => transShareType($share_num_house),
+                'share_num_support' => transShareType($share_num_support),
+                'share_num_maintain' => transShareType($share_num_maintain),
+                'share_num_site' => transShareType($share_num_site),
+                'share_num_import' => transShareType($share_num_import),
+                'established_time' => $established_time,
+                'effective_date' => date('Y-m-d', time()),
+                'is_new_tower' => $is_new_tower,
+                'is_newly_added' => $is_newly_added,
+                'is_rru_away' => transIsRRUAway($is_rru_away),
+                'sys_num1' => $sys_num1,
+                'sys_num2' => $sys_num2,
+                'sys_num3' => $sys_num3,
+                'sys1_height' => transSysHeight($sys1_height),
+                'sys2_height' => transSysHeight($sys2_height),
+                'sys3_height' => transSysHeight($sys3_height),
+                'is_co_opetition' => transIsCoOpetition($is_co_opetition),
+                'is_valid' => 1,
+                'site_district_type' => transSiteDistType($site_district_type),
+                'tower_type' => transTowerType($tower_type),
+                'land_form' => transLandForm($land_form),
+                'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
 
             ]);
@@ -1986,9 +1986,9 @@ class SiteInfo extends Model
                 }
 
             } else {
-                $fee_tower1    = 0;
-                $fee_house1    = 0;
-                $fee_support1  = 0;
+                $fee_tower1 = 0;
+                $fee_house1 = 0;
+                $fee_support1 = 0;
                 $fee_maintain1 = 0;
             }
             if (!empty($sys2_height)) {
@@ -2002,13 +2002,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower2 = 0;
                 }
-                $fee_house2    = $fee_house1;
+                $fee_house2 = $fee_house1;
                 $fee_maintain2 = $fee_maintain1;
-                $fee_support2  = $fee_support1;
+                $fee_support2 = $fee_support1;
             } else {
-                $fee_tower2    = 0;
-                $fee_house2    = 0;
-                $fee_support2  = 0;
+                $fee_tower2 = 0;
+                $fee_house2 = 0;
+                $fee_support2 = 0;
                 $fee_maintain2 = 0;
             }
             if (!empty($sys3_height)) {
@@ -2022,13 +2022,13 @@ class SiteInfo extends Model
                 } else {
                     $fee_tower3 = 0;
                 }
-                $fee_house3    = $fee_house1;
+                $fee_house3 = $fee_house1;
                 $fee_maintain3 = $fee_maintain1;
-                $fee_support3  = $fee_support1;
+                $fee_support3 = $fee_support1;
             } else {
-                $fee_tower3    = 0;
-                $fee_house3    = 0;
-                $fee_support3  = 0;
+                $fee_tower3 = 0;
+                $fee_house3 = 0;
+                $fee_support3 = 0;
                 $fee_maintain3 = 0;
             }
 
@@ -2075,20 +2075,20 @@ class SiteInfo extends Model
                     $fee_import = 0;
                 }
             } else {
-                $fee_site   = 0;
+                $fee_site = 0;
                 $fee_import = 0;
             }
 
-            $fee_tower               = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
-            $fee_house               = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
-            $fee_support             = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
-            $fee_maintain            = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
-            $fee_tower_discounted    = $fee_tower * $tower_share_discount;
-            $fee_house_discounted    = $fee_house * $house_share_discount;
-            $fee_support_discounted  = $fee_support * $support_share_discount;
+            $fee_tower = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
+            $fee_house = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
+            $fee_support = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
+            $fee_maintain = $fee_maintain1 * $sys_num1 + $fee_maintain2 * $sys_num2 + $fee_maintain3 * $sys_num3;
+            $fee_tower_discounted = $fee_tower * $tower_share_discount;
+            $fee_house_discounted = $fee_house * $house_share_discount;
+            $fee_support_discounted = $fee_support * $support_share_discount;
             $fee_maintain_discounted = $fee_maintain * $maintain_share_discount;
-            $fee_site_discounted     = $fee_site * $site_share_discount;
-            $fee_import_discounted   = $fee_import * $import_share_discount;
+            $fee_site_discounted = $fee_site * $site_share_discount;
+            $fee_import_discounted = $fee_import * $import_share_discount;
 
             $updSitePrice = DB::table('fee_out_site_price')
                 ->where('business_code', $business_code)
@@ -2099,47 +2099,47 @@ class SiteInfo extends Model
                 ]);
             $insSitePrice = DB::table('fee_out_site_price')
                 ->insert([
-                    'site_code'               => $site_code,
-                    'req_code'                => $req_code,
-                    'business_code'           => $business_code,
-                    'fee_tower1'              => $fee_tower1,
-                    'fee_house1'              => $fee_house1,
-                    'fee_support1'            => $fee_support1,
-                    'fee_maintain1'           => $fee_maintain1,
-                    'fee_tower2'              => $fee_tower2,
-                    'fee_house2'              => $fee_house2,
-                    'fee_support2'            => $fee_support2,
-                    'fee_maintain2'           => $fee_maintain2,
-                    'fee_tower3'              => $fee_tower3,
-                    'fee_house3'              => $fee_house3,
-                    'fee_support3'            => $fee_support3,
-                    'fee_maintain3'           => $fee_maintain3,
-                    'fee_tower'               => $fee_tower,
-                    'fee_house'               => $fee_house,
-                    'fee_support'             => $fee_support,
-                    'fee_maintain'            => $fee_maintain,
-                    'fee_wlan'                => $fee_wlan,
-                    'fee_microwave'           => $fee_micwav,
-                    'fee_add'                 => $fee_add,
-                    'fee_battery'             => $fee_battery,
-                    'fee_bbu'                 => $fee_bbu,
-                    'tower_share_discount'    => $tower_share_discount,
-                    'house_share_discount'    => $house_share_discount,
-                    'support_share_discount'  => $support_share_discount,
+                    'site_code' => $site_code,
+                    'req_code' => $req_code,
+                    'business_code' => $business_code,
+                    'fee_tower1' => $fee_tower1,
+                    'fee_house1' => $fee_house1,
+                    'fee_support1' => $fee_support1,
+                    'fee_maintain1' => $fee_maintain1,
+                    'fee_tower2' => $fee_tower2,
+                    'fee_house2' => $fee_house2,
+                    'fee_support2' => $fee_support2,
+                    'fee_maintain2' => $fee_maintain2,
+                    'fee_tower3' => $fee_tower3,
+                    'fee_house3' => $fee_house3,
+                    'fee_support3' => $fee_support3,
+                    'fee_maintain3' => $fee_maintain3,
+                    'fee_tower' => $fee_tower,
+                    'fee_house' => $fee_house,
+                    'fee_support' => $fee_support,
+                    'fee_maintain' => $fee_maintain,
+                    'fee_wlan' => $fee_wlan,
+                    'fee_microwave' => $fee_micwav,
+                    'fee_add' => $fee_add,
+                    'fee_battery' => $fee_battery,
+                    'fee_bbu' => $fee_bbu,
+                    'tower_share_discount' => $tower_share_discount,
+                    'house_share_discount' => $house_share_discount,
+                    'support_share_discount' => $support_share_discount,
                     'maintain_share_discount' => $maintain_share_discount,
-                    'fee_tower_discounted'    => $fee_tower_discounted,
-                    'fee_house_discounted'    => $fee_house_discounted,
-                    'fee_support_discounted'  => $fee_support_discounted,
+                    'fee_tower_discounted' => $fee_tower_discounted,
+                    'fee_house_discounted' => $fee_house_discounted,
+                    'fee_support_discounted' => $fee_support_discounted,
                     'fee_maintain_discounted' => $fee_maintain_discounted,
-                    'fee_site'                => $fee_site,
-                    'site_share_discount'     => $site_share_discount,
-                    'fee_site_discounted'     => $fee_site_discounted,
-                    'fee_import'              => $fee_import,
-                    'import_share_discount'   => $import_share_discount,
-                    'fee_import_discounted'   => $fee_import_discounted,
-                    'is_valid'                => 1,
-                    'effective_date'          => $established_time,
-                    'region_id'               => transRegion($region_name),
+                    'fee_site' => $fee_site,
+                    'site_share_discount' => $site_share_discount,
+                    'fee_site_discounted' => $fee_site_discounted,
+                    'fee_import' => $fee_import,
+                    'import_share_discount' => $import_share_discount,
+                    'fee_import_discounted' => $fee_import_discounted,
+                    'is_valid' => 1,
+                    'effective_date' => $established_time,
+                    'region_id' => transRegion($region_name),
                 ]);
             if ($insSitePrice && $insSiteInfo) {
                 return 'success';
@@ -2154,55 +2154,55 @@ class SiteInfo extends Model
     {
         if ($area_level == 'admin' || $area_level == '湖北省') {
             for ($i = 1; $i < count($infoSites); $i++) {
-                $businessCode          = $infoSites[$i][1];
-                $region                = $infoSites[$i][3];
-                $siteName              = $infoSites[$i][6];
-                $siteCode              = $infoSites[$i][7];
-                $reqCode               = $infoSites[$i][8];
-                $productType           = $infoSites[$i][12];
-                $establishedTime       = $infoSites[$i][10];
-                $isNewTower            = transIsNewTower($infoSites[$i][97]);
-                $towerType             = $infoSites[$i][11];
-                $sysNum1               = $infoSites[$i][18];
-                $sysNum2               = $infoSites[$i][23];
-                $sysNum3               = $infoSites[$i][28];
-                $sys1Height            = $infoSites[$i][19];
-                $sys2Height            = $infoSites[$i][24];
-                $sys3Height            = $infoSites[$i][29];
-                $isCoOpetition         = '是';
-                $shareNumHouse         = $infoSites[$i][42];
-                $userRentDateHouse1    = $infoSites[$i][43];
-                $userRentDateHouse2    = $infoSites[$i][45];
-                $shareNumTower         = $infoSites[$i][33];
-                $userRentDateTower1    = $infoSites[$i][34];
-                $userRentDateTower2    = $infoSites[$i][36];
-                $shareNumSupport       = $infoSites[$i][51];
-                $userRentDateSupport1  = $infoSites[$i][52];
-                $userRentDateSupport2  = $infoSites[$i][54];
-                $shareNumMaintain      = $infoSites[$i][61];
+                $businessCode = $infoSites[$i][1];
+                $region = $infoSites[$i][3];
+                $siteName = $infoSites[$i][6];
+                $siteCode = $infoSites[$i][7];
+                $reqCode = $infoSites[$i][8];
+                $productType = $infoSites[$i][12];
+                $establishedTime = $infoSites[$i][10];
+                $isNewTower = transIsNewTower($infoSites[$i][97]);
+                $towerType = $infoSites[$i][11];
+                $sysNum1 = $infoSites[$i][18];
+                $sysNum2 = $infoSites[$i][23];
+                $sysNum3 = $infoSites[$i][28];
+                $sys1Height = $infoSites[$i][19];
+                $sys2Height = $infoSites[$i][24];
+                $sys3Height = $infoSites[$i][29];
+                $isCoOpetition = '是';
+                $shareNumHouse = $infoSites[$i][42];
+                $userRentDateHouse1 = $infoSites[$i][43];
+                $userRentDateHouse2 = $infoSites[$i][45];
+                $shareNumTower = $infoSites[$i][33];
+                $userRentDateTower1 = $infoSites[$i][34];
+                $userRentDateTower2 = $infoSites[$i][36];
+                $shareNumSupport = $infoSites[$i][51];
+                $userRentDateSupport1 = $infoSites[$i][52];
+                $userRentDateSupport2 = $infoSites[$i][54];
+                $shareNumMaintain = $infoSites[$i][61];
                 $userRentDateMaintain1 = $infoSites[$i][62];
                 $userRentDateMaintain2 = $infoSites[$i][64];
-                $shareNumSite          = $infoSites[$i][68];
-                $userRentDateSite1     = $infoSites[$i][69];
-                $userRentDateSite2     = $infoSites[$i][71];
-                $shareNumElec          = $infoSites[$i][75];
-                $userRentDateElec1     = $infoSites[$i][76];
-                $userRentDateElec2     = $infoSites[$i][78];
-                $isRRUAway             = $infoSites[$i][12];
-                $feeWlan               = $infoSites[$i][81];
-                $feeMicWav             = $infoSites[$i][82];
-                $feeAdd                = $infoSites[$i][16];
-                $feeBat                = $infoSites[$i][17];
-                $feeBbu                = $infoSites[$i][57];
-                $siteDistType          = '';
-                $landForm              = '平原';
+                $shareNumSite = $infoSites[$i][68];
+                $userRentDateSite1 = $infoSites[$i][69];
+                $userRentDateSite2 = $infoSites[$i][71];
+                $shareNumElec = $infoSites[$i][75];
+                $userRentDateElec1 = $infoSites[$i][76];
+                $userRentDateElec2 = $infoSites[$i][78];
+                $isRRUAway = $infoSites[$i][12];
+                $feeWlan = $infoSites[$i][81];
+                $feeMicWav = $infoSites[$i][82];
+                $feeAdd = $infoSites[$i][16];
+                $feeBat = $infoSites[$i][17];
+                $feeBbu = $infoSites[$i][57];
+                $siteDistType = '';
+                $landForm = '平原';
 
                 //反推覆盖场景
                 if ($isNewTower == 1) {
-                    $feeSite   = $infoSites[$i][67];
-                    $billYear  = substr($infoSites[$i][0], 0, 4);
+                    $feeSite = $infoSites[$i][67];
+                    $billYear = substr($infoSites[$i][0], 0, 4);
                     $billMonth = substr($infoSites[$i][0], 4, 2);
-                    $billDate  = $billYear . '-' . $billMonth;
+                    $billDate = $billYear . '-' . $billMonth;
                     if (strtotime($establishedTime) <= strtotime($billDate . '-01')) {
                         $siteDistType = DB::table('fee_site_std')
                             ->whereBetween('fee_site', [$feeSite - 2, $feeSite + 2])
@@ -2210,12 +2210,12 @@ class SiteInfo extends Model
                             ->where('region_id', transRegion($region))
                             ->pluck('site_district_type');
                     } else {
-                        $days          = date('t', strtotime($billDate));
-                        $theLastDay    = $billDate . '-' . $days;
-                        $second1       = strtotime($establishedTime);
-                        $second2       = strtotime("$theLastDay + 1 day");
+                        $days = date('t', strtotime($billDate));
+                        $theLastDay = $billDate . '-' . $days;
+                        $second1 = strtotime($establishedTime);
+                        $second2 = strtotime("$theLastDay + 1 day");
                         $effectiveDays = abs(($second1 - $second2) / 86400);
-                        $siteDistType  = DB::table('fee_site_std')
+                        $siteDistType = DB::table('fee_site_std')
                             ->whereBetween('fee_site', [$feeSite / $effectiveDays * $days - 2, $feeSite / $effectiveDays * $days + 2])
                             ->where('is_rru_away', transIsRRUAway($isRRUAway))
                             ->where('region_id', transRegion($region))
@@ -2228,7 +2228,7 @@ class SiteInfo extends Model
                         $siteDistType = $siteDistType[0];
                     }
                 } else {
-                    $feeSite      = $infoSites[$i][67];
+                    $feeSite = $infoSites[$i][67];
                     $siteDistType = '未知';
                 }
 
@@ -2267,16 +2267,16 @@ class SiteInfo extends Model
                 } elseif (strtotime($userRentDateSite) < strtotime('2015-11-01')) {
                     $isNewlyAdded = 0;
                 }
-                $infoSitesNew[$i][0]  = $businessCode;
-                $infoSitesNew[$i][1]  = $siteCode;
-                $infoSitesNew[$i][2]  = $siteName;
-                $infoSitesNew[$i][3]  = '';
-                $infoSitesNew[$i][4]  = '';
-                $infoSitesNew[$i][5]  = $reqCode;
-                $infoSitesNew[$i][6]  = $region;
-                $infoSitesNew[$i][7]  = $productType;
-                $infoSitesNew[$i][8]  = $establishedTime;
-                $infoSitesNew[$i][9]  = transIsNewTower($isNewTower);
+                $infoSitesNew[$i][0] = $businessCode;
+                $infoSitesNew[$i][1] = $siteCode;
+                $infoSitesNew[$i][2] = $siteName;
+                $infoSitesNew[$i][3] = '';
+                $infoSitesNew[$i][4] = '';
+                $infoSitesNew[$i][5] = $reqCode;
+                $infoSitesNew[$i][6] = $region;
+                $infoSitesNew[$i][7] = $productType;
+                $infoSitesNew[$i][8] = $establishedTime;
+                $infoSitesNew[$i][9] = transIsNewTower($isNewTower);
                 $infoSitesNew[$i][10] = $towerType;
                 $infoSitesNew[$i][11] = $sysNum1;
                 $infoSitesNew[$i][12] = $sys1Height;

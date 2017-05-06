@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\GnrRec;
+use App\Models\IronTowerBillDetail;
 use App\Models\ServCost;
 use App\Models\SiteInfo;
 use Auth;
@@ -293,8 +294,8 @@ class ExcelController extends Controller
 
             });
             return redirect('backend/siteInfo')
-                ->with('filter', $filter)
-                ->with('flag', 'add');
+            ->with('filter', $filter)
+            ->with('flag', 'add');
         }
     }
 
@@ -329,7 +330,7 @@ class ExcelController extends Controller
                 $siteinfoDB = new SiteInfo();
                 $infoSites  = $siteinfoDB->searchInfoSite($region);
                 return view('backend/siteInfo/index')->with('infoSites', $infoSites)
-                    ->with('filter', $filter);
+                ->with('filter', $filter);
             }
 
         } else {
@@ -402,185 +403,236 @@ class ExcelController extends Controller
             $siteInfos[0]->gnr_num       = $gnr_num;
             $siteInfos[0]->gnr_total_fee = $gnr_total_fee;
             return redirect('backend/gnrRec/indexGnr')->with('siteInfos', $siteInfos)
-                ->with('gnrRecs', $gnrRecs)
-                ->with('filter', $filter)
-                ->with('flag', 'import');
+            ->with('gnrRecs', $gnrRecs)
+            ->with('filter', $filter)
+            ->with('flag', 'import');
         }
 
     }
 
-    public function transIronTowerSiteInfo(Request $request)
-    {
+//     public function transIronTowerSiteInfo(Request $request)
+//     {
 
-        include '/Applications/XAMPP/xamppfiles/htdocs/IronTower/public/common/PHPExcel-1.8/Classes/PHPExcel.php';
+//         include '/Applications/XAMPP/xamppfiles/htdocs/IronTower/public/common/PHPExcel-1.8/Classes/PHPExcel.php';
+//         $filter     = $request->all();
+//         $region     = $request->input('region', '');
+//         $file       = $request->file('ironTowerSiteInfoFile');
+//         $clientName = $file->getClientOriginalName();
+//         $file_types = explode(".", $clientName);
+//         $file_type  = $file_types[count($file_types) - 1];
+//         if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
+//             echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
+//         } else {
+//             $savePath  = 'storage/app';
+//             $str       = date('Ymdhis');
+//             $file_name = $str . "." . $file_type;
+//             $path      = $file->move($savePath, $file_name);
+//             $filePath  = "public/storage/app/";
+// //        $reader->setOutputEncoding('UTF-8');
+//             Excel::load($filePath . $file_name, function ($reader) {
+// //            获取excel的第1张表
+//                 $reader = $reader->getSheet(0);
+// //            获取表中的数据
+//                 $results    = $reader->toArray();
+//                 $siteInfoDB = new SiteInfo();
+//                 $area_level = Auth::user()->area_level;
+//                 $infoSites  = $siteInfoDB->transIronTowerSiteInfo($results, $area_level);
+//                 foreach ($infoSites as $infoSite) {
+//                     $export[] = array(
+// //                        '产品业务确认单编号' => $infoSite[0],
+//                         //                        '站址编码' => $infoSite[1],
+//                         //                        '站址名称' => $infoSite[2],
+//                         //                        'C网网管编号' => $infoSite[3],
+//                         //                        'L网网管编号' => $infoSite[4],
+//                         //                        '需求确认单编号' => $infoSite[5],
+//                         //                        '地市' => $infoSite[6],
+//                         //                        '产品配套类型' => $infoSite[7],
+//                         //                        '服务起始日期' => $infoSite[8],
+//                         //                        '是否为新建站' => $infoSite[9],
+//                         //                        '铁塔类型' => $infoSite[10],
+//                         //                        '系统数量' => $infoSite[11],
+//                         //                        '系统1挂高' => $infoSite[12],
+//                         //                        '系统2挂高' => $infoSite[13],
+//                         //                        '系统3挂高' => $infoSite[14],
+//                         //                        '站址位置' => $infoSite[15],
+//                         //                        '是否为竞合站点' => $infoSite[16],
+//                         //                        '机房共享用户数' => $infoSite[17],
+//                         //                        '机房共享运营商1的起租日期' => $infoSite[18],
+//                         //                        '机房共享运营商2的起租日期' => $infoSite[19],
+//                         //                        '铁塔共享用户数' => $infoSite[20],
+//                         //                        '铁塔共享运营商1的起租日期' => $infoSite[21],
+//                         //                        '铁塔共享运营商2的起租日期' => $infoSite[22],
+//                         //                        '配套共享用户数' => $infoSite[23],
+//                         //                        '配套共享运营商1的起租日期' => $infoSite[24],
+//                         //                        '配套共享运营商2的起租日期' => $infoSite[25],
+//                         //                        '维护费共享用户数' => $infoSite[26],
+//                         //                        '维护费共享运营商1的起租日期' => $infoSite[27],
+//                         //                        '维护费共享运营商2的起租日期' => $infoSite[28],
+//                         //                        '场地费共享用户数' => $infoSite[29],
+//                         //                        '场地费共享运营商1的起租日期' => $infoSite[30],
+//                         //                        '场地费共享运营商2的起租日期' => $infoSite[31],
+//                         //                        '电力引入费共享用户数' => $infoSite[32],
+//                         //                        '电力引入费共享运营商1的起租日期' => $infoSite[33],
+//                         //                        '电力引入费共享运营商2的起租日期' => $infoSite[34],
+//                         //                        '覆盖场景' => $infoSite[35],
+//                         //                        'RRU是否拉远' => $infoSite[36],
+//                         //                        '用户类型' => $infoSite[37],
+//                         //                        '引电类型' => $infoSite[38],
+//                         //                        'WLAN费用' => $infoSite[39],
+//                         //                        '微波费用' => $infoSite[40],
+//                         //                        '超过10%高等级服务站址额外维护服务费' => $infoSite[41],
+//                         //                        '蓄电池额外保障费' => $infoSite[42],
+//                         //                        'bbu安装在铁塔机房费' => $infoSite[43],
+//                         //                        '场地费' => $infoSite[44],
+//                         0  => $infoSite[0],
+//                         1  => $infoSite[1],
+//                         2  => $infoSite[2],
+//                         3  => $infoSite[3],
+//                         4  => $infoSite[4],
+//                         5  => $infoSite[5],
+//                         6  => $infoSite[6],
+//                         7  => $infoSite[7],
+//                         8  => $infoSite[8],
+//                         9  => $infoSite[9],
+//                         10 => $infoSite[10],
+//                         11 => $infoSite[11],
+//                         12 => $infoSite[12],
+//                         13 => $infoSite[13],
+//                         14 => $infoSite[14],
+//                         15 => $infoSite[15],
+//                         16 => $infoSite[16],
+//                         17 => $infoSite[17],
+//                         18 => $infoSite[18],
+//                         19 => $infoSite[19],
+//                         20 => $infoSite[20],
+//                         21 => $infoSite[21],
+//                         22 => $infoSite[22],
+//                         23 => $infoSite[23],
+//                         24 => $infoSite[24],
+//                         25 => $infoSite[25],
+//                         26 => $infoSite[26],
+//                         27 => $infoSite[27],
+//                         28 => $infoSite[28],
+//                         29 => $infoSite[29],
+//                         30 => $infoSite[30],
+//                         31 => $infoSite[31],
+//                         32 => $infoSite[32],
+//                         33 => $infoSite[33],
+//                         34 => $infoSite[34],
+//                         35 => $infoSite[35],
+//                         36 => $infoSite[36],
+//                         37 => $infoSite[37],
+//                         38 => $infoSite[38],
+//                         39 => $infoSite[39],
+//                         40 => $infoSite[40],
+//                         41 => $infoSite[41],
+//                         42 => $infoSite[42],
+//                         43 => $infoSite[43],
+//                         44 => $infoSite[44],
+//                         45 => $infoSite[45],
+//                         46 => $infoSite[46],
+
+//                     );
+// }
+// $excel = new PHPExcel();
+// $excel->getProperties()->setCreator("yy")
+// ->setLastModifiedBy("yy")
+// ->setTitle("站址属性")
+// ->setSubject("站址属性")
+// ->setDescription("站址属性")
+// ->setKeywords("excel")
+// ->setCategory("result file");
+// $letter = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+//     'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN',
+//     'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU');
+// $tableHeader = array('产品业务确认单编号', '站址编码', '站址名称', 'C网网管编号', 'L网网管编号', '需求确认单编号', '地市', '产品配套类型',
+//     '服务起始日期', '是否为新建站', '铁塔类型', '系统数量1', '系统1挂高', '系统数量2', '系统2挂高', '系统数量1', '系统3挂高', '站址位置', '是否为竞合站点', '机房共享用户数',
+//     '机房共享运营商1的起租日期', '机房共享运营商2的起租日期', '铁塔共享用户数', '铁塔共享运营商1的起租日期', '铁塔共享运营商2的起租日期',
+//     '配套共享用户数', '配套共享运营商1的起租日期', '配套共享运营商2的起租日期', '维护费共享用户数', '维护费共享运营商1的起租日期',
+//     '维护费共享运营商2的起租日期', '场地费共享用户数', '场地费共享运营商1的起租日期', '场地费共享运营商2的起租日期', '电力引入费共享用户数',
+//     '电力引入费共享运营商1的起租日期', '电力引入费共享运营商2的起租日期', '覆盖场景', 'RRU是否拉远', '用户类型', '引电类型', 'WLAN费用',
+//     '微波费用', '超过10%高等级服务站址额外维护服务费', '蓄电池额外保障费', 'bbu安装在铁塔机房费', '场地费');
+// for ($i = 0; $i < count($tableHeader); $i++) {
+//     $excel->getActiveSheet()->setCellValue("$letter[$i]1", "$tableHeader[$i]");
+// }
+// //                foreach ($export)
+// for ($i = 2; $i <= count($export) + 1; $i++) {
+//     $j = 0;
+//     foreach ($export[$i - 2] as $key => $value) {
+//         $excel->getActiveSheet()->setCellValueExplicit("$letter[$j]$i", $value, \PHPExcel_Cell_DataType::TYPE_STRING);
+//         $j++;
+//     }
+// }
+// $write = new \PHPExcel_Writer_Excel5($excel);
+// header("Pragma: public");
+// header("Expires: 0");
+// header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+// header("Content-Type:application/force-download");
+// header("Content-Type:application/vnd.ms-execl");
+// header("Content-Type:application/octet-stream");
+// header("Content-Type:application/download");;
+// header('Content-Disposition:attachment;filename="站址属性.xls"');
+// header("Content-Transfer-Encoding:binary");
+// $write->save('php://output');
+// //                Excel::create('站址属性信息', function ($excel) use ($export) {
+//                 //                    $excel->sheet('站址属性信息', function ($sheet) use ($export) {
+//                 //                        $sheet->fromArray($export);
+//                 //                    });
+//                 //                })->export('xlsx');
+// });
+// }
+
+// }
+
+    public function importBillDetail(Request $request)
+    {
         $filter     = $request->all();
         $region     = $request->input('region', '');
-        $file       = $request->file('ironTowerSiteInfoFile');
+        $file       = $request->file('billDetailFile');
         $clientName = $file->getClientOriginalName();
         $file_types = explode(".", $clientName);
         $file_type  = $file_types[count($file_types) - 1];
         if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
             echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
         } else {
-            $savePath  = 'storage/app';
+            $savePath  = 'storage/app/billDetail';
             $str       = date('Ymdhis');
             $file_name = $str . "." . $file_type;
             $path      = $file->move($savePath, $file_name);
-            $filePath  = "public/storage/app/";
+            $filePath  = "public/storage/app/billDetail/";
 //        $reader->setOutputEncoding('UTF-8');
             Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
                 $reader = $reader->getSheet(0);
 //            获取表中的数据
                 $results    = $reader->toArray();
-                $siteInfoDB = new SiteInfo();
-                $area_level = Auth::user()->area_level;
-                $infoSites  = $siteInfoDB->transIronTowerSiteInfo($results, $area_level);
-                foreach ($infoSites as $infoSite) {
-                    $export[] = array(
-//                        '产品业务确认单编号' => $infoSite[0],
-                        //                        '站址编码' => $infoSite[1],
-                        //                        '站址名称' => $infoSite[2],
-                        //                        'C网网管编号' => $infoSite[3],
-                        //                        'L网网管编号' => $infoSite[4],
-                        //                        '需求确认单编号' => $infoSite[5],
-                        //                        '地市' => $infoSite[6],
-                        //                        '产品配套类型' => $infoSite[7],
-                        //                        '服务起始日期' => $infoSite[8],
-                        //                        '是否为新建站' => $infoSite[9],
-                        //                        '铁塔类型' => $infoSite[10],
-                        //                        '系统数量' => $infoSite[11],
-                        //                        '系统1挂高' => $infoSite[12],
-                        //                        '系统2挂高' => $infoSite[13],
-                        //                        '系统3挂高' => $infoSite[14],
-                        //                        '站址位置' => $infoSite[15],
-                        //                        '是否为竞合站点' => $infoSite[16],
-                        //                        '机房共享用户数' => $infoSite[17],
-                        //                        '机房共享运营商1的起租日期' => $infoSite[18],
-                        //                        '机房共享运营商2的起租日期' => $infoSite[19],
-                        //                        '铁塔共享用户数' => $infoSite[20],
-                        //                        '铁塔共享运营商1的起租日期' => $infoSite[21],
-                        //                        '铁塔共享运营商2的起租日期' => $infoSite[22],
-                        //                        '配套共享用户数' => $infoSite[23],
-                        //                        '配套共享运营商1的起租日期' => $infoSite[24],
-                        //                        '配套共享运营商2的起租日期' => $infoSite[25],
-                        //                        '维护费共享用户数' => $infoSite[26],
-                        //                        '维护费共享运营商1的起租日期' => $infoSite[27],
-                        //                        '维护费共享运营商2的起租日期' => $infoSite[28],
-                        //                        '场地费共享用户数' => $infoSite[29],
-                        //                        '场地费共享运营商1的起租日期' => $infoSite[30],
-                        //                        '场地费共享运营商2的起租日期' => $infoSite[31],
-                        //                        '电力引入费共享用户数' => $infoSite[32],
-                        //                        '电力引入费共享运营商1的起租日期' => $infoSite[33],
-                        //                        '电力引入费共享运营商2的起租日期' => $infoSite[34],
-                        //                        '覆盖场景' => $infoSite[35],
-                        //                        'RRU是否拉远' => $infoSite[36],
-                        //                        '用户类型' => $infoSite[37],
-                        //                        '引电类型' => $infoSite[38],
-                        //                        'WLAN费用' => $infoSite[39],
-                        //                        '微波费用' => $infoSite[40],
-                        //                        '超过10%高等级服务站址额外维护服务费' => $infoSite[41],
-                        //                        '蓄电池额外保障费' => $infoSite[42],
-                        //                        'bbu安装在铁塔机房费' => $infoSite[43],
-                        //                        '场地费' => $infoSite[44],
-                        0  => $infoSite[0],
-                        1  => $infoSite[1],
-                        2  => $infoSite[2],
-                        3  => $infoSite[3],
-                        4  => $infoSite[4],
-                        5  => $infoSite[5],
-                        6  => $infoSite[6],
-                        7  => $infoSite[7],
-                        8  => $infoSite[8],
-                        9  => $infoSite[9],
-                        10 => $infoSite[10],
-                        11 => $infoSite[11],
-                        12 => $infoSite[12],
-                        13 => $infoSite[13],
-                        14 => $infoSite[14],
-                        15 => $infoSite[15],
-                        16 => $infoSite[16],
-                        17 => $infoSite[17],
-                        18 => $infoSite[18],
-                        19 => $infoSite[19],
-                        20 => $infoSite[20],
-                        21 => $infoSite[21],
-                        22 => $infoSite[22],
-                        23 => $infoSite[23],
-                        24 => $infoSite[24],
-                        25 => $infoSite[25],
-                        26 => $infoSite[26],
-                        27 => $infoSite[27],
-                        28 => $infoSite[28],
-                        29 => $infoSite[29],
-                        30 => $infoSite[30],
-                        31 => $infoSite[31],
-                        32 => $infoSite[32],
-                        33 => $infoSite[33],
-                        34 => $infoSite[34],
-                        35 => $infoSite[35],
-                        36 => $infoSite[36],
-                        37 => $infoSite[37],
-                        38 => $infoSite[38],
-                        39 => $infoSite[39],
-                        40 => $infoSite[40],
-                        41 => $infoSite[41],
-                        42 => $infoSite[42],
-                        43 => $infoSite[43],
-                        44 => $infoSite[44],
-                        45 => $infoSite[45],
-                        46 => $infoSite[46],
-
-                    );
+                $irontowerBillDetailDB = new IronTowerBillDetail();
+                for ($i = 1; $i < count($results); $i++){
+                    $irontowerBillDetailDB->store($results[$i]);
                 }
-                $excel = new PHPExcel();
-                $excel->getProperties()->setCreator("yy")
-                    ->setLastModifiedBy("yy")
-                    ->setTitle("站址属性")
-                    ->setSubject("站址属性")
-                    ->setDescription("站址属性")
-                    ->setKeywords("excel")
-                    ->setCategory("result file");
-                $letter = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-                    'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI', 'AJ', 'AK', 'AL', 'AM', 'AN',
-                    'AO', 'AP', 'AQ', 'AR', 'AS', 'AT', 'AU');
-                $tableHeader = array('产品业务确认单编号', '站址编码', '站址名称', 'C网网管编号', 'L网网管编号', '需求确认单编号', '地市', '产品配套类型',
-                    '服务起始日期', '是否为新建站', '铁塔类型', '系统数量1', '系统1挂高', '系统数量2', '系统2挂高', '系统数量1', '系统3挂高', '站址位置', '是否为竞合站点', '机房共享用户数',
-                    '机房共享运营商1的起租日期', '机房共享运营商2的起租日期', '铁塔共享用户数', '铁塔共享运营商1的起租日期', '铁塔共享运营商2的起租日期',
-                    '配套共享用户数', '配套共享运营商1的起租日期', '配套共享运营商2的起租日期', '维护费共享用户数', '维护费共享运营商1的起租日期',
-                    '维护费共享运营商2的起租日期', '场地费共享用户数', '场地费共享运营商1的起租日期', '场地费共享运营商2的起租日期', '电力引入费共享用户数',
-                    '电力引入费共享运营商1的起租日期', '电力引入费共享运营商2的起租日期', '覆盖场景', 'RRU是否拉远', '用户类型', '引电类型', 'WLAN费用',
-                    '微波费用', '超过10%高等级服务站址额外维护服务费', '蓄电池额外保障费', 'bbu安装在铁塔机房费', '场地费');
-                for ($i = 0; $i < count($tableHeader); $i++) {
-                    $excel->getActiveSheet()->setCellValue("$letter[$i]1", "$tableHeader[$i]");
-                }
-//                foreach ($export)
-                for ($i = 2; $i <= count($export) + 1; $i++) {
-                    $j = 0;
-                    foreach ($export[$i - 2] as $key => $value) {
-                        $excel->getActiveSheet()->setCellValueExplicit("$letter[$j]$i", $value, \PHPExcel_Cell_DataType::TYPE_STRING);
-                        $j++;
+                $year = substr($results[1][0],0,4);
+                $month = substr($results[1][0],4,2);
+                $siteInfos = IronTowerBillDetail::where('month',$year.'-'.$month)
+                ->get();
+                foreach ($siteInfos as $siteInfo) {
+                    if (substr($siteInfo->req_code,0,2) == '11') {
+                        IronTowerBillDetail::where('id',$siteInfo->id)
+                        ->update(['is_new_tower' =>0]);
+                        $old_to_rm = IronTowerBillDetail::where('month', $year.'-'.$month)
+                        ->where('req_code','like','10'.'%')
+                        ->where('site_code', $siteInfo->site_code)
+                        ->update(['is_new_tower' => 2]);
+                        $old_to_rm = IronTowerBillDetail::where('month', $year.'-'.$month)
+                        ->where('req_code','like','12'.'%')
+                        ->where('site_code', $siteInfo->site_code)
+                        ->update(['is_new_tower' => 2]);
                     }
                 }
-                $write = new \PHPExcel_Writer_Excel5($excel);
-                header("Pragma: public");
-                header("Expires: 0");
-                header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-                header("Content-Type:application/force-download");
-                header("Content-Type:application/vnd.ms-execl");
-                header("Content-Type:application/octet-stream");
-                header("Content-Type:application/download");;
-                header('Content-Disposition:attachment;filename="站址属性.xls"');
-                header("Content-Transfer-Encoding:binary");
-                $write->save('php://output');
-//                Excel::create('站址属性信息', function ($excel) use ($export) {
-                //                    $excel->sheet('站址属性信息', function ($sheet) use ($export) {
-                //                        $sheet->fromArray($export);
-                //                    });
-                //                })->export('xlsx');
             });
+
+
         }
 
-    }
 
+    }
 }

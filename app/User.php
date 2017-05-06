@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name','password','view','bulk_export', 'bulk_import', 'bulk_update', 'single_update','is_verified','delete','area_level','account_out'
+        'name','password','phone_number','site_add','site_view_basic', 'site_view_advance', 'site_modify','site_batch_import', 'site_batch_export','is_verified','site_delete','area_level','bill_view','bill_out','gnr_manage','site_check_manage','site_shield_manage','os_reason_manage'
     ];
 
     /**

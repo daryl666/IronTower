@@ -152,14 +152,19 @@
                                     <label for="password-confirm" class="col-md-4 control-label">权限</label>
                                 </th>
                                 <td>
-                                    <input type="checkbox" name="permission[]" value="view_basic">查看基础信息
-                                    <input type="checkbox" name="permission[]" value="view_advance">查看价格相关信息
-                                    <input type="checkbox" name="permission[]" value="delete">删除
-                                    <input type="checkbox" name="permission[]" value="bulk_import">批量导入
-                                    <input type="checkbox" name="permission[]" value="bulk_export">批量导出
-                                    {{-- <input type="checkbox" name="permission[]" value="bulk_update">批量修改 --}}
-                                    <input type="checkbox" name="permission[]" value="single_update">逐个修改
-                                    <input type="checkbox" name="permission[]" value="account_out">出账
+                                    <input type="checkbox" name="permission[]" value="site_add">站址新增
+                                    <input type="checkbox" name="permission[]" value="site_view_basic">查看站址基础信息
+                                    <input type="checkbox" name="permission[]" value="site_view_advance">查看站址价格相关信息
+                                    <input type="checkbox" name="permission[]" value="site_delete">站址删除
+                                    <input type="checkbox" name="permission[]" value="site_batch_import">站址批量导入
+                                    <input type="checkbox" name="permission[]" value="site_batch_export">站址批量导出
+                                    <input type="checkbox" name="permission[]" value="site_modify">站址属性修改
+                                    <input type="checkbox" name="permission[]" value="bill_out">出账
+                                    <input type="checkbox" name="permission[]" value="bill_view">查看账单
+                                    <input type="checkbox" name="permission[]" value="gnr_manage">发电记录管理
+                                    <input type="checkbox" name="permission[]" value="site_check_manage">上站记录管理
+                                    <input type="checkbox" name="permission[]" value="site_shield_manage">屏蔽记录管理
+                                    <input type="checkbox" name="permission[]" value="os_reason_manage">退服原因管理
                                 </td>
                             </tr>
                             <tr>

@@ -22,7 +22,7 @@ if (!function_exists('formatNumber_wan')) {
     {
         if ($number == 0)
             return 0.0000;
-        return sprintf("%.4f", $number/10000);
+        return sprintf("%.6f", $number/10000);
     }
 
 }
@@ -327,7 +327,7 @@ if (!function_exists('transShareType')) {
             '电信独享' => 1,
             '两家共享' => 2,
             '三家共享' => 3,
-            '' => 0
+            '' => 0,
         ];
 
         if ($post_type === 'all') {

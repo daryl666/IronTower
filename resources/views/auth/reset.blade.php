@@ -36,7 +36,7 @@
 </div>
 
 <div class="input managerInfo">
-    <div class="bar">
+    {{-- <div class="bar">
         重置密码（如果忘记密码请重置，重置之后密码为：000000）
     </div>
     <form role="form" method="POST" action="{{ url('auth/reset') }}" id="formReset">
@@ -59,7 +59,7 @@
 
         </tr>
 
-    </form><br><br>
+    </form><br><br> --}}
     <div class="bar">
         修改密码
     </div>

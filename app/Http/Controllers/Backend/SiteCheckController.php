@@ -20,40 +20,50 @@ class SiteCheckController extends Controller
         $filter = $request->all();
         $siteCheckDB = new SiteCheck();
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (!empty(session('filter'))) {
+            // if (!empty(session('filter'))) {
+            //     $flag = $request->session()->pull('flag');
+            //     $filter = $request->session()->pull('filter');
+            //     $region = $request->session()->pull('region');
+            //     $beginDate = $request->session()->pull('beginDate');
+            //     $endDate = $request->session()->pull('endDate');
+            //     $checkStatus = $request->session()->pull('checkStatus');
+            //     if ($flag == 'add') {
+            //         echo "<script language='JavaScript'>alert('提交成功')</script>";
+            //     }
+            //     if ($flag == 'update') {
+            //         echo "<script language='JavaScript'>alert('填报成功')</script>";
+            //     }
+            //     $siteChecks = $siteCheckDB->getSiteChecks($region, $checkStatus, $beginDate, $endDate)->paginate(15);
+            //     return view('backend/siteCheck/index')
+            //     ->with('siteChecks', $siteChecks)
+            //     ->with('filter', $filter);
+            // } else {
+            // 
+            if (!empty(session('flag'))) {
                 $flag = $request->session()->pull('flag');
-                $filter = $request->session()->pull('filter');
-                $region = $request->session()->pull('region');
-                $beginDate = $request->session()->pull('beginDate');
-                $endDate = $request->session()->pull('endDate');
-                $checkStatus = $request->session()->pull('checkStatus');
                 if ($flag == 'add') {
                     echo "<script language='JavaScript'>alert('提交成功')</script>";
                 }
                 if ($flag == 'update') {
                     echo "<script language='JavaScript'>alert('填报成功')</script>";
                 }
-                $siteChecks = $siteCheckDB->getSiteChecks($region, $checkStatus, $beginDate, $endDate)->paginate(15);
+            }
+            $regionName = $request->get('region');
+            $checkStatus = $request->get('checkStatus');
+            $beginDate = $request->get('beginDate');
+            $endDate = $request->get('endDate');
+            $siteChecks = $siteCheckDB->getSiteChecks($regionName, $checkStatus, $beginDate, $endDate)->paginate(15);
+            if ($checkStatus == 0) {
                 return view('backend/siteCheck/index')
                 ->with('siteChecks', $siteChecks)
                 ->with('filter', $filter);
             } else {
-                $regionName = $request->get('region');
-                $checkStatus = $request->get('checkStatus');
-                $beginDate = $request->get('beginDate');
-                $endDate = $request->get('endDate');
-                $siteChecks = $siteCheckDB->getSiteChecks($regionName, $checkStatus, $beginDate, $endDate)->paginate(15);
-                if ($checkStatus == 0) {
-                    return view('backend/siteCheck/index')
-                    ->with('siteChecks', $siteChecks)
-                    ->with('filter', $filter);
-                } else {
-                    return view('backend/siteCheck/index-handled')
-                    ->with('siteChecks', $siteChecks)
-                    ->with('filter', $filter);
-                }
-
+                return view('backend/siteCheck/index-handled')
+                ->with('siteChecks', $siteChecks)
+                ->with('filter', $filter);
             }
+
+            // }
         }
 
     }
@@ -108,13 +118,13 @@ class SiteCheckController extends Controller
                     $filter['checkStatus'] = 0;
                     $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报上站申请',
                         'site_check', '');
-                    return redirect('backend/siteCheck')
-                    ->with('filter', $filter)
-                    ->with('region', $filter['region'])
-                    ->with('beginDate', $filter['beginDate'])
-                    ->with('endDate', $filter['endDate'])
-                    ->with('checkStatus', $filter['checkStatus'])
-                    ->with('siteChecks', 1)
+                    return redirect('backend/siteCheck?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
+                    // ->with('filter', $filter)
+                    // ->with('region', $filter['region'])
+                    // ->with('beginDate', $filter['beginDate'])
+                    // ->with('endDate', $filter['endDate'])
+                    // ->with('checkStatus', $filter['checkStatus'])
+                    // ->with('siteChecks', 1)
                     ->with('flag', 'add');
                 } else {
                     echo "<script language=javascript>alert('添加失败！');history.back();</script>";
@@ -142,13 +152,13 @@ class SiteCheckController extends Controller
         if (!empty($updateResult)) {
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报上站结果',
                 'site_check', '');
-            return redirect('backend/siteCheck')
-            ->with('filter', $filter)
-            ->with('region', $filter['region'])
-            ->with('beginDate', $filter['beginDate'])
-            ->with('endDate', $filter['endDate'])
-            ->with('checkStatus', $filter['checkStatus'])
-            ->with('siteChecks', 1)
+            return redirect('backend/siteCheck?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
+            // ->with('filter', $filter)
+            // ->with('region', $filter['region'])
+            // ->with('beginDate', $filter['beginDate'])
+            // ->with('endDate', $filter['endDate'])
+            // ->with('checkStatus', $filter['checkStatus'])
+            // ->with('siteChecks', 1)
             ->with('flag', 'update');
         } else {
             echo "<script language=javascript>alert('填报失败！');history.back();</script>";

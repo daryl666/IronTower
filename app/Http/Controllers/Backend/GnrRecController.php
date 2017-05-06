@@ -49,13 +49,29 @@ class GnrRecController extends Controller
                 ->with('gnrRecs', $gnrRecs);
             }
         } else {
-            if (!empty(session('filter'))) {
-                $siteInfos = $request->session()->pull('siteInfos');
-                $filter = $request->session()->pull('filter');
-                $region = $request->session()->pull('region');
-                $beginDate = $request->session()->pull('beginDate');
-                $endDate = $request->session()->pull('endDate');
-                $checkStatus = $request->session()->pull('checkStatus');
+            // if (!empty(session('filter'))) {
+            //     $siteInfos = $request->session()->pull('siteInfos');
+            //     $filter = $request->session()->pull('filter');
+            //     $region = $request->session()->pull('region');
+            //     $beginDate = $request->session()->pull('beginDate');
+            //     $endDate = $request->session()->pull('endDate');
+            //     $checkStatus = $request->session()->pull('checkStatus');
+            //     $flag = $request->session()->pull('flag');
+            //     if ($flag == 'add') {
+            //         echo "<script language=javascript>alert('提交成功！');</script>";
+            //     } elseif ($flag == 'update') {
+            //         echo "<script language=javascript>alert('修改成功！');</script>";
+            //     } elseif ($flag == 'delete') {
+            //         echo "<script language=javascript>alert('删除成功！');</script>";
+            //     } elseif ($flag == 'import') {
+            //         echo "<script language=javascript>alert('导入成功！');</script>";
+            //     }
+            //     $gnrRecs = $gnrRecDB->searchGnr($region, $checkStatus, $beginDate, $endDate)->paginate(15);
+            //     return view('backend/gnrRec/index')->with('siteInfos', $siteInfos)
+            //     ->with('gnrRecs', $gnrRecs)
+            //     ->with('filter', $filter);
+            // } else {
+            if (!empty(session('flag'))) {
                 $flag = $request->session()->pull('flag');
                 if ($flag == 'add') {
                     echo "<script language=javascript>alert('提交成功！');</script>";
@@ -66,27 +82,24 @@ class GnrRecController extends Controller
                 } elseif ($flag == 'import') {
                     echo "<script language=javascript>alert('导入成功！');</script>";
                 }
-                $gnrRecs = $gnrRecDB->searchGnr($region, $checkStatus, $beginDate, $endDate)->paginate(15);
-                return view('backend/gnrRec/index')->with('siteInfos', $siteInfos)
+            }
+            $filter = $request->all();
+            $regionName = $request->get('region');
+            $beginDate = $request->get('beginDate');
+            $endDate = $request->get('$endDate');
+            $checkStatus = $request->get('checkStatus');
+            $gnrRecs = $gnrRecDB->searchGnr($regionName, $checkStatus, $beginDate, $endDate)->paginate(15);
+            if ($checkStatus == 0) {
+                return view('backend/gnrRec/index')
                 ->with('gnrRecs', $gnrRecs)
                 ->with('filter', $filter);
             } else {
-                $regionName = $request->get('region');
-                $beginDate = $request->get('beginDate');
-                $endDate = $request->get('$endDate');
-                $checkStatus = $request->get('checkStatus');
-                $gnrRecs = $gnrRecDB->searchGnr($regionName, $checkStatus, $beginDate, $endDate)->paginate(15);
-                if ($checkStatus == 0) {
-                    return view('backend/gnrRec/index')
-                    ->with('gnrRecs', $gnrRecs)
-                    ->with('filter', $filter);
-                } else {
-                    return view('backend/gnrRec/index-handled')
-                    ->with('gnrRecs', $gnrRecs)
-                    ->with('filter', $filter);
-                }
-
+                return view('backend/gnrRec/index-handled')
+                ->with('gnrRecs', $gnrRecs)
+                ->with('filter', $filter);
             }
+
+
         }
 
 
@@ -103,7 +116,7 @@ class GnrRecController extends Controller
             $stationCode = $request->get('stationCode');
 //            if ($stationCode != '') {
 //                $siteInfos = DB::table('site_info')
-//                    ->where('site_code', 'like', '%' . $stationCode . '%')
+                   // ->where('site_code', 'like', '%' . $stationCode . '%')
 //                    ->get();
 //            } else {
             $siteInfos = $siteinfoDB->searchInfoSite($region, $stationCode);
@@ -324,13 +337,13 @@ class GnrRecController extends Controller
                 $filter['beginDate'] = '';
                 $filter['endDate'] = '';
                 $filter['checkStatus'] = 0;
-                return redirect('backend/gnrRec')
-                ->with('gnrRecs', 1)
-                ->with('filter', $filter)
-                ->with('region', $filter['region'])
-                ->with('beginDate', $filter['beginDate'])
-                ->with('endDate', $filter['endDate'])
-                ->with('checkStatus', $filter['checkStatus'])
+                return redirect('backend/gnrRec?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
+                // ->with('gnrRecs', 1)
+                // ->with('filter', $filter)
+                // ->with('region', $filter['region'])
+                // ->with('beginDate', $filter['beginDate'])
+                // ->with('endDate', $filter['endDate'])
+                // ->with('checkStatus', $filter['checkStatus'])
                 ->with('flag', 'add');
 
             } else {
@@ -379,13 +392,13 @@ class GnrRecController extends Controller
         if ($handleGnr == true) {
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报发电结果',
                 'fee_out_gnr', $id);
-            return redirect('backend/gnrRec')
-            ->with('gnrRecs', 1)
-            ->with('filter', $filter)
-            ->with('region', $filter['region'])
-            ->with('beginDate', $filter['beginDate'])
-            ->with('endDate', $filter['endDate'])
-            ->with('checkStatus', $filter['checkStatus'])
+            return redirect('backend/gnrRec?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
+            // ->with('gnrRecs', 1)
+            // ->with('filter', $filter)
+            // ->with('region', $filter['region'])
+            // ->with('beginDate', $filter['beginDate'])
+            // ->with('endDate', $filter['endDate'])
+            // ->with('checkStatus', $filter['checkStatus'])
             ->with('flag', 'add');
         } else {
             echo "<script language=javascript>alert('提交失败！');history.back();</script>";

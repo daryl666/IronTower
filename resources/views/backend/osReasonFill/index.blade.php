@@ -68,7 +68,7 @@
     {{--</div>--}}
 
     <div class="list">
-        <form id="listForm" method="post" action="{{url('osReason')}}" enctype="multipart/form-data">
+        <form id="listForm" method="get" action="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">
             <div class="body">
 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -448,6 +448,7 @@
                 listForm.action = url;
                 listForm.submit();
             }
+            return;
 
 
         }

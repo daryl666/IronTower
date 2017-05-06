@@ -26,31 +26,37 @@ class OsReasonFillController extends Controller
         $checkStatus = $request->get('checkStatus');
         $filter = $request->all();
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (!empty(session('filter'))) {
+            // if (!empty(session('filter'))) {
+            //     $flag = $request->session()->pull('flag');
+            //     $filter = $request->session()->pull('filter');
+            //     $osReasons = $osReasonDB->getOsReasons($region, $beginDate, $endDate, $checkStatus)->paginate(15);
+            //     if ($flag == 'add') {
+            //         echo "<script language='JavaScript'>alert('提交成功！');</script>";
+            //     }
+            //     return view('backend/osReasonFill/index')
+            //     ->with('osReasons', $osReasons)
+            //     ->with('filter', $filter);
+
+            // } else {
+            if (!empty(session('flag'))) {
                 $flag = $request->session()->pull('flag');
-                $filter = $request->session()->pull('filter');
-                $osReasons = $osReasonDB->getOsReasons($region, $beginDate, $endDate, $checkStatus)->paginate(15);
                 if ($flag == 'add') {
                     echo "<script language='JavaScript'>alert('提交成功！');</script>";
                 }
-                return view('backend/osReasonFill/index')
-                    ->with('osReasons', $osReasons)
-                    ->with('filter', $filter);
-
-            } else {
-                $osReasons = $osReasonDB->getOsReasons($region, $beginDate, $endDate, $checkStatus)->paginate(15);
-                if ($checkStatus == 0){
-                    return view('backend/osReasonFill/index')
-                        ->with('osReasons', $osReasons)
-                        ->with('filter', $filter);
-                }else{
-                    return view('backend/osReasonFill/index-handled')
-                        ->with('osReasons', $osReasons)
-                        ->with('filter', $filter);
-                }
-
-
             }
+            $osReasons = $osReasonDB->getOsReasons($region, $beginDate, $endDate, $checkStatus)->paginate(15);
+            if ($checkStatus == 0){
+                return view('backend/osReasonFill/index')
+                ->with('osReasons', $osReasons)
+                ->with('filter', $filter);
+            }else{
+                return view('backend/osReasonFill/index-handled')
+                ->with('osReasons', $osReasons)
+                ->with('filter', $filter);
+            }
+
+
+            
         }
 
     }
@@ -66,16 +72,16 @@ class OsReasonFillController extends Controller
         $respUnit = $request->get('respUnit_' . $id);
         $filter = $request->all();
         $addResult = DB::table('tysys_os_info')
-            ->where('id', $id)
-            ->update([
-                'os_reason' => transOsReason($osReason),
-                'os_detail' => $osDetail,
-                'response_unit' => transRespUnit($respUnit),
-                'check_status' => 1
-            ]);
+        ->where('id', $id)
+        ->update([
+            'os_reason' => transOsReason($osReason),
+            'os_detail' => $osDetail,
+            'response_unit' => transRespUnit($respUnit),
+            'check_status' => 1
+        ]);
         $originOsReasons = DB::table('tysys_os_info')
-            ->where('id', $id)
-            ->get();
+        ->where('id', $id)
+        ->get();
 
         // 调用存储过程，向os_record表中插入记录
 //        $isSuccess = DB::statement('call ty2os(?,?,?,?,?,?,?)', array(transRegion($originOsReasons[0]->region_name), $originOsReasons[0]->station_code,
@@ -85,9 +91,9 @@ class OsReasonFillController extends Controller
 
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报退服原因',
                 'tysys_os_info', $id);
-            return redirect('backend/osReasonFill')
-                ->with('filter', $filter)
-                ->with('flag', 'add');
+            return redirect('backend/osReasonFill?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
+            // ->with('filter', $filter)
+            ->with('flag', 'add');
         } else {
             echo "<script language='JavaScript'>alert('提交失败！');history.back()</script>";
         }

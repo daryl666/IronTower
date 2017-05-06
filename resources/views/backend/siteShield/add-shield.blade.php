@@ -413,6 +413,11 @@
         function doAdd() {
             var stationCode = $('#stationCode').val();
             var stationName = $('#stationName').val();
+            var siteShieldAttachment = document.getElementById('siteShieldAttachment');
+            if (siteShieldAttachment.value == "") {
+                alert('请选择附件!');
+                return;
+            }
             if (stationCode == ''){
                 alert('请输入基站编号！');
                 return;
