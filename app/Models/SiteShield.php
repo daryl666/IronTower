@@ -68,6 +68,7 @@ class SiteShield extends Model
         $addResult = DB::table('shield_info')
             ->insertGetId([
                 'region_name' => $regionName,
+                'region_id' => transRegion($regionName),
                 'station_code' => $stationCode,
                 'station_name' => $stationName,
                 'station_level' => transStationLevel($stationLevel),

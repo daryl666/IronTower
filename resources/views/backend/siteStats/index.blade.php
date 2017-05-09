@@ -105,16 +105,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
         <form id="listForm" method="post" action="{{url('backend/siteInfo/')}}" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <input type="hidden" id="siteStats" @if(isset($filter)) value="1" @endif>
-            <div class="listBar">
-                {{-- <td>
-                    
-                </td> --}}
-                <td>导入铁塔详单
-                    <input id="billDetailFile" name="billDetailFile" style="width: 170px" type="file">
-                    <input class="formButton" onclick="doImport()" type="button" value="导入">
-                </td>
+            <div class="input managerInfo">
+                <div class="bar">
+                    铁塔详单导入
+                </div>
+                <table class="inputTable tabContent">
+                    <tr>
+                        <td>
+                            <input id="billDetailFile" name="billDetailFile" style="width: 170px" type="file">
+                            <input class="formButton" onclick="doImport()" type="button" value="导入">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="listBar" style="margin-top: 25px;">
                 <td>
-                    请选择地市和起止时间查看站址统计信息：
+                    请选择地市、起止时间和共享类型（铁塔共享、机房共享等）查看站址统计信息：
                 </td>
                 <td>
                     起始月份
@@ -131,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     onclick="WdatePicker({dateFmt:'yyyy-MM'})"/>
                 </td>
                 <td>
+                    &nbsp;&nbsp;地市：
                     @if(Auth::user()->area_level == '湖北省' || Auth::user()->area_level == 'admin')
                     <select name="region" id="region">
                         <option @if(isset($filter['region']) && $filter['region']=='湖北省') selected="selected"
@@ -291,11 +298,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 </select>
                 @endif
             </td>
+            <td>
+                &nbsp;&nbsp;共享类型：
+                <select name="shareType">
+                    <option @if(isset($filter['shareType']) && $filter['shareType'] == 'share_num_tower') selected="selected"@endif value="share_num_tower">铁塔共享</option>
+                    <option value="share_num_house" @if(isset($filter['shareType']) && $filter['shareType'] == 'share_num_house') selected="selected"@endif>机房共享</option>
+                    <option value="share_num_support" @if(isset($filter['shareType']) && $filter['shareType'] == 'share_num_support') selected="selected"@endif>配套共享</option>
+                    <option value="share_num_maintain" @if(isset($filter['shareType']) && $filter['shareType'] == 'share_num_maintain') selected="selected"@endif>维护费共享</option>
+                    <option value="share_num_import" @if(isset($filter['shareType']) && $filter['shareType'] == 'share_num_import') selected="selected"@endif>电力引入费共享</option>
+                    <option value="share_num_site" @if(isset($filter['shareType']) && $filter['shareType'] == 'share_num_site') selected="selected"@endif>场地费共享</option>
+                </select>
+            </td>
 
 
             <td>
                 &nbsp;&nbsp;&nbsp;
                 <input type="button" id="viewBtn" class="formButton" value="查询" hidefocus onclick="doSearch()"/>
+            </td>
+            <td>
+                <input type="button" class="formButton" value="导出" onclick="doExport()"
+                @if(isset($siteStats)) style="display: inline;" @endif style="display: none;"/>
             </td>
 
             {{--<td style="float:left;margin-right:30px;">--}}
@@ -882,124 +904,124 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 <th rowspan="2">
                     <a href="#" class="sort" name="" hidefocus>楼面塔</a>
                 </th>                <th>
-                    <a href="#" class="sort" name="" hidefocus>普通楼面塔</a>
-                </th>
-                <th>
-                    <a href="#" class="sort" name="" hidefocus>-</a>
-                </th>
-                <td>{{$siteStats[11][0]}}</td>
-                <td>{{$siteStats[11][1]}}</td>
-                <td>{{$siteStats[11][2]}}</td>
-                <td>{{$siteStats[11][3]}}</td>
-                <td>{{formatNumber($siteStats[11][4]*100)}}%</td>
-                <td>{{$siteStats[11][5]}}</td>
-                <td>{{$siteStats[11][6]}}</td>
-                <td>{{$siteStats[11][7]}}</td>
-                <td>{{$siteStats[11][8]}}</td>
-                <td>{{formatNumber($siteStats[11][9]*100)}}%</td>
-                <td>{{$siteStats[11][10]}}</td>
-                <td>{{$siteStats[11][11]}}</td>
-                <td>{{$siteStats[11][12]}}</td>
-                <td>{{$siteStats[11][13]}}</td>
-                <td>{{formatNumber($siteStats[11][14]*100)}}%</td>
-                <td>{{formatNumber_wan($siteStats[11][15])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][16])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][17])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][18])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][19])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][20])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][21])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][22])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][23])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][24])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][25])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][26])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][27])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][28])}}</td>
-                <td>{{formatNumber_wan($siteStats[11][29])}}</td>
-            </tr>
-            <tr>
-                <th>
-                    <a href="#" class="sort" name="" hidefocus>楼面抱杆</a>
-                </th>
-                <th>
-                    <a href="#" class="sort" name="" hidefocus>-</a>
-                </th>
-                <td>{{$siteStats[12][0]}}</td>
-                <td>{{$siteStats[12][1]}}</td>
-                <td>{{$siteStats[12][2]}}</td>
-                <td>{{$siteStats[12][3]}}</td>
-                <td>{{formatNumber($siteStats[12][4]*100)}}%</td>
-                <td>{{$siteStats[12][5]}}</td>
-                <td>{{$siteStats[12][6]}}</td>
-                <td>{{$siteStats[12][7]}}</td>
-                <td>{{$siteStats[12][8]}}</td>
-                <td>{{formatNumber($siteStats[12][9]*100)}}%</td>
-                <td>{{$siteStats[12][10]}}</td>
-                <td>{{$siteStats[12][11]}}</td>
-                <td>{{$siteStats[12][12]}}</td>
-                <td>{{$siteStats[12][13]}}</td>
-                <td>{{formatNumber($siteStats[12][14]*100)}}%</td>
-                <td>{{formatNumber_wan($siteStats[12][15])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][16])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][17])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][18])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][19])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][20])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][21])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][22])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][23])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][24])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][25])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][26])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][27])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][28])}}</td>
-                <td>{{formatNumber_wan($siteStats[12][29])}}</td>
-            </tr>
-            <tr>
-                <th colspan="3">
-                    合计
-                </th>
-                <td>{{$siteStats[13][0]}}</td>
-                <td>{{$siteStats[13][1]}}</td>
-                <td>{{$siteStats[13][2]}}</td>
-                <td>{{$siteStats[13][3]}}</td>
-                <td>{{formatNumber($siteStats[13][4]*100)}}%</td>
-                <td>{{$siteStats[13][5]}}</td>
-                <td>{{$siteStats[13][6]}}</td>
-                <td>{{$siteStats[13][7]}}</td>
-                <td>{{$siteStats[13][8]}}</td>
-                <td>{{formatNumber($siteStats[13][9]*100)}}%</td>
-                <td>{{$siteStats[13][10]}}</td>
-                <td>{{$siteStats[13][11]}}</td>
-                <td>{{$siteStats[13][12]}}</td>
-                <td>{{$siteStats[13][13]}}</td>
-                <td>{{formatNumber($siteStats[13][14]*100)}}%</td>
-                <td>{{formatNumber_wan($siteStats[13][15])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][16])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][17])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][18])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][19])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][20])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][21])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][22])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][23])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][24])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][25])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][26])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][27])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][28])}}</td>
-                <td>{{formatNumber_wan($siteStats[13][29])}}</td>
-                </td>
-            </tr>
-            @endif
+                <a href="#" class="sort" name="" hidefocus>普通楼面塔</a>
+            </th>
+            <th>
+                <a href="#" class="sort" name="" hidefocus>-</a>
+            </th>
+            <td>{{$siteStats[11][0]}}</td>
+            <td>{{$siteStats[11][1]}}</td>
+            <td>{{$siteStats[11][2]}}</td>
+            <td>{{$siteStats[11][3]}}</td>
+            <td>{{formatNumber($siteStats[11][4]*100)}}%</td>
+            <td>{{$siteStats[11][5]}}</td>
+            <td>{{$siteStats[11][6]}}</td>
+            <td>{{$siteStats[11][7]}}</td>
+            <td>{{$siteStats[11][8]}}</td>
+            <td>{{formatNumber($siteStats[11][9]*100)}}%</td>
+            <td>{{$siteStats[11][10]}}</td>
+            <td>{{$siteStats[11][11]}}</td>
+            <td>{{$siteStats[11][12]}}</td>
+            <td>{{$siteStats[11][13]}}</td>
+            <td>{{formatNumber($siteStats[11][14]*100)}}%</td>
+            <td>{{formatNumber_wan($siteStats[11][15])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][16])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][17])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][18])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][19])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][20])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][21])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][22])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][23])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][24])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][25])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][26])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][27])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][28])}}</td>
+            <td>{{formatNumber_wan($siteStats[11][29])}}</td>
+        </tr>
+        <tr>
+            <th>
+                <a href="#" class="sort" name="" hidefocus>楼面抱杆</a>
+            </th>
+            <th>
+                <a href="#" class="sort" name="" hidefocus>-</a>
+            </th>
+            <td>{{$siteStats[12][0]}}</td>
+            <td>{{$siteStats[12][1]}}</td>
+            <td>{{$siteStats[12][2]}}</td>
+            <td>{{$siteStats[12][3]}}</td>
+            <td>{{formatNumber($siteStats[12][4]*100)}}%</td>
+            <td>{{$siteStats[12][5]}}</td>
+            <td>{{$siteStats[12][6]}}</td>
+            <td>{{$siteStats[12][7]}}</td>
+            <td>{{$siteStats[12][8]}}</td>
+            <td>{{formatNumber($siteStats[12][9]*100)}}%</td>
+            <td>{{$siteStats[12][10]}}</td>
+            <td>{{$siteStats[12][11]}}</td>
+            <td>{{$siteStats[12][12]}}</td>
+            <td>{{$siteStats[12][13]}}</td>
+            <td>{{formatNumber($siteStats[12][14]*100)}}%</td>
+            <td>{{formatNumber_wan($siteStats[12][15])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][16])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][17])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][18])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][19])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][20])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][21])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][22])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][23])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][24])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][25])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][26])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][27])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][28])}}</td>
+            <td>{{formatNumber_wan($siteStats[12][29])}}</td>
+        </tr>
+        <tr>
+            <th colspan="3">
+                合计
+            </th>
+            <td>{{$siteStats[13][0]}}</td>
+            <td>{{$siteStats[13][1]}}</td>
+            <td>{{$siteStats[13][2]}}</td>
+            <td>{{$siteStats[13][3]}}</td>
+            <td>{{formatNumber($siteStats[13][4]*100)}}%</td>
+            <td>{{$siteStats[13][5]}}</td>
+            <td>{{$siteStats[13][6]}}</td>
+            <td>{{$siteStats[13][7]}}</td>
+            <td>{{$siteStats[13][8]}}</td>
+            <td>{{formatNumber($siteStats[13][9]*100)}}%</td>
+            <td>{{$siteStats[13][10]}}</td>
+            <td>{{$siteStats[13][11]}}</td>
+            <td>{{$siteStats[13][12]}}</td>
+            <td>{{$siteStats[13][13]}}</td>
+            <td>{{formatNumber($siteStats[13][14]*100)}}%</td>
+            <td>{{formatNumber_wan($siteStats[13][15])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][16])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][17])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][18])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][19])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][20])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][21])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][22])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][23])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][24])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][25])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][26])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][27])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][28])}}</td>
+            <td>{{formatNumber_wan($siteStats[13][29])}}</td>
+        </td>
+    </tr>
+    @endif
 
 
 
-        </table>
+</table>
 
 
-    </div>
+</div>
 
 
 </div>
@@ -1031,7 +1053,7 @@ function doSearch() {
 
 function doExport() {
     var listForm = document.getElementById("listForm");
-    listForm.action = "{{url('backend/siteInfo/export')}}";
+    listForm.action = "{{url('backend/siteStats/export')}}";
     listForm.submit();
 }
 

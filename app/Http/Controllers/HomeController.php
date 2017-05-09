@@ -15,10 +15,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-//        $this->middleware('auth');
-    }
+//     public function __construct()
+//     {
+// //        $this->middleware('auth');
+//     }
 
     /**
      * Show the application dashboard.
@@ -49,7 +49,7 @@ class HomeController extends Controller
 
     }
 
-    function todoHandlePage($id)
+    public function todoHandlePage($id)
     {
 
         $region = Auth::user()->area_level;
@@ -62,14 +62,14 @@ class HomeController extends Controller
         switch ($id) {
             case 0:
             $checkStatus = 1;
-//                $filter['checkStatus'] = $checkStatus;
-//                return redirect('backend/excepHandle/importSiteInfo')
-//                    ->with('region', $region)
-//                    ->with('beginDate', $beginDate)
-//                    ->with('endDate', $endDate)
-//                    ->with('checkStatus', $checkStatus)
-//                    ->with('filter', $filter)
-//                    ->with('siteShieldsChecking', 1);;
+               $filter['checkStatus'] = $checkStatus;
+               return redirect('backend/excepHandle/importSiteInfo')
+                   ->with('region', $region)
+                   ->with('beginDate', $beginDate)
+                   ->with('endDate', $endDate)
+                   ->with('checkStatus', $checkStatus)
+                   ->with('filter', $filter)
+                   ->with('siteShieldsChecking', 1);
             break;
             case 1:
             $checkStatus = 0;

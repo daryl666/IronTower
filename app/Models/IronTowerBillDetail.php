@@ -96,7 +96,7 @@ class IronTowerBillDetail extends Model
         $siteInfoDB->save();
     }
 
-    public function getSiteStats($region, $beginDate, $endDate)
+    public function getSiteStats($region, $beginDate, $endDate, $shareType)
     {
         $date = explode('-', $endDate);
         $year = $date[0];
@@ -108,10 +108,10 @@ class IronTowerBillDetail extends Model
             ->groupBy('month')
             ->where('established_time', '<=', $endDate. '-31')
             ->get();
-            $old_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower,month,count(distinct site_code) count'))
+            $old_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height,'."{$shareType},".'month,count(distinct site_code) count'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->groupBy('month')
             ->where('is_new_tower', 0)
             ->where('established_time', '<=', $endDate. '-31')
@@ -123,10 +123,10 @@ class IronTowerBillDetail extends Model
             ->where('is_new_tower', 0)
             ->where('established_time', '<=', $endDate. '-31')
             ->get();
-            $new_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower,month,count(distinct site_code) count'))
+            $new_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".'month,count(distinct site_code) count'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->groupBy('month')
             ->where('is_new_tower', 1)
             ->where('established_time', '<=', $endDate. '-31')
@@ -148,19 +148,19 @@ class IronTowerBillDetail extends Model
             ->get();
             
 
-            $new_site_share_num_delivered_stats = $this->select(DB::raw('tower_type, sys1_height,share_num_tower,month,count(distinct site_code) count'))
+            $new_site_share_num_delivered_stats = $this->select(DB::raw('tower_type, sys1_height,'."{$shareType},".'month,count(distinct site_code) count'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->where('is_new_tower', 1)
             ->groupBy('month')
             ->where('established_time', '<=', ($year - 1) . '-12-31')
             ->get();
-            $site_fee_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower, month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
+            $site_fee_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".' month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
                 sum(fee_support_discounted) fee_support, sum(fee_maintain_discounted) fee_maintain, sum(fee_site_discounted) fee_site, sum(fee_import_discounted) fee_import, sum(fee_service) fee_service'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->groupBy('month')
             ->where('established_time', '<=', $endDate . '-31')
             ->get();
@@ -172,11 +172,11 @@ class IronTowerBillDetail extends Model
             ->groupBy('month')
             ->where('established_time', '<=', $endDate . '-31')
             ->get();
-            $new_site_share_num_fee_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower,month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
+            $new_site_share_num_fee_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".'month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
                 sum(fee_support_discounted) fee_support, sum(fee_maintain_discounted) fee_maintain, sum(fee_site_discounted) fee_site, sum(fee_import_discounted) fee_import, sum(fee_service) fee_service'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->where('is_new_tower', 1)
             ->groupBy('month')
             ->where('established_time', '<=', $endDate . '-31')          
@@ -204,10 +204,10 @@ class IronTowerBillDetail extends Model
             ->where('region_id', transRegion($region))
             ->where('established_time', '<=', $endDate. '-31')
             ->get();
-            $old_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower,month,count(distinct site_code) count'))
+            $old_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".'month,count(distinct site_code) count'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->groupBy('month')
             ->where('region_id', transRegion($region))
             ->where('is_new_tower', 0)
@@ -221,10 +221,10 @@ class IronTowerBillDetail extends Model
             ->where('is_new_tower', 0)
             ->where('established_time', '<=', $endDate. '-31')
             ->get();
-            $new_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower,month,count(distinct site_code) count'))
+            $new_site_share_num_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".'month,count(distinct site_code) count'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->groupBy('month')
             ->where('region_id', transRegion($region))
             ->where('is_new_tower', 1)
@@ -249,20 +249,20 @@ class IronTowerBillDetail extends Model
             ->get();
             
 
-            $new_site_share_num_delivered_stats = $this->select(DB::raw('tower_type, sys1_height,share_num_tower,month,count(distinct site_code) count'))
+            $new_site_share_num_delivered_stats = $this->select(DB::raw('tower_type, sys1_height,'."{$shareType},".'month,count(distinct site_code) count'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->where('region_id', transRegion($region))
             ->where('is_new_tower', 1)
             ->groupBy('month')
             ->where('established_time', '<=', ($year - 1) . '-12-31')
             ->get();
-            $site_fee_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower, month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
+            $site_fee_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".' month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
                 sum(fee_support_discounted) fee_support, sum(fee_maintain_discounted) fee_maintain, sum(fee_site_discounted) fee_site, sum(fee_import_discounted) fee_import, sum(fee_service) fee_service'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->groupBy('month')
             ->where('region_id', transRegion($region))
             ->where('established_time', '<=', $endDate . '-31')
@@ -276,11 +276,11 @@ class IronTowerBillDetail extends Model
             ->where('region_id', transRegion($region))
             ->where('established_time', '<=', $endDate . '-31')
             ->get();
-            $new_site_share_num_fee_stats = $this->select(DB::raw('tower_type, sys1_height, share_num_tower,month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
+            $new_site_share_num_fee_stats = $this->select(DB::raw('tower_type, sys1_height, '."{$shareType},".'month,sum(fee_tower_discounted) fee_tower, sum(fee_house_discounted) fee_house,
                 sum(fee_support_discounted) fee_support, sum(fee_maintain_discounted) fee_maintain, sum(fee_site_discounted) fee_site, sum(fee_import_discounted) fee_import, sum(fee_service) fee_service'))
             ->groupBy('sys1_height')
             ->groupBy('tower_type')
-            ->groupBy('share_num_tower')
+            ->groupBy($shareType)
             ->where('is_new_tower', 1)
             ->groupBy('month')
             ->where('region_id', transRegion($region))
@@ -324,13 +324,13 @@ class IronTowerBillDetail extends Model
             }
             foreach ($old_site_share_num_stats as $old_site_share_num_stat) {
                 if ($old_site_share_num_stat->month == $endDate) {
-                    if ($old_site_share_num_stat->share_num_tower == 3 && $old_site_share_num_stat->tower_type == $site_info[0] && $old_site_share_num_stat->sys1_height == $site_info[1]) {
+                    if ($old_site_share_num_stat->{$shareType} == 3 && $old_site_share_num_stat->tower_type == $site_info[0] && $old_site_share_num_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][1] = $old_site_share_num_stat->count;
                     }
-                    if ($old_site_share_num_stat->share_num_tower == 2 && $old_site_share_num_stat->tower_type == $site_info[0] && $old_site_share_num_stat->sys1_height == $site_info[1]) {
+                    if ($old_site_share_num_stat->{$shareType} == 2 && $old_site_share_num_stat->tower_type == $site_info[0] && $old_site_share_num_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][2] = $old_site_share_num_stat->count;
                     }
-                    if ($old_site_share_num_stat->share_num_tower == 1&& $old_site_share_num_stat->tower_type == $site_info[0] && $old_site_share_num_stat->sys1_height == $site_info[1]) {
+                    if ($old_site_share_num_stat->{$shareType} == 1&& $old_site_share_num_stat->tower_type == $site_info[0] && $old_site_share_num_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][3] = $old_site_share_num_stat->count;
                         $siteStats[$tower_type_num][4] = 1 - $siteStats[$tower_type_num][3]/$siteStats[$tower_type_num][0];
                     }
@@ -347,14 +347,14 @@ class IronTowerBillDetail extends Model
             }
             foreach ($new_site_share_num_stats as $new_site_share_num_stat) {
                 if ($new_site_share_num_stat->month == $endDate) {
-                    if ($new_site_share_num_stat->share_num_tower == 3 && $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1]) {
+                    if ($new_site_share_num_stat->{$shareType} == 3 && $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][6] = $new_site_share_num_stat->count;
 
                     }
-                    if ($new_site_share_num_stat->share_num_tower == 2 && $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1]) {
+                    if ($new_site_share_num_stat->{$shareType} == 2 && $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][7] = $new_site_share_num_stat->count;
                     }
-                    if ($new_site_share_num_stat->share_num_tower == 1&& $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1]) {
+                    if ($new_site_share_num_stat->{$shareType} == 1&& $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][8] = $new_site_share_num_stat->count;
                     }
                     if (($siteStats[$tower_type_num][6]+$siteStats[$tower_type_num][7]) == 0) {
@@ -378,13 +378,13 @@ class IronTowerBillDetail extends Model
             }
             foreach ($new_site_share_num_delivered_stats as $new_site_share_num_delivered_stat) {
                 if ($new_site_share_num_delivered_stat->month == $endDate){
-                    if ($new_site_share_num_delivered_stat->share_num_tower == 3 && $new_site_share_num_delivered_stat->tower_type == $site_info[0] && $new_site_share_num_delivered_stat->sys1_height == $site_info[1]) {
+                    if ($new_site_share_num_delivered_stat->{$shareType} == 3 && $new_site_share_num_delivered_stat->tower_type == $site_info[0] && $new_site_share_num_delivered_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][11] = $new_site_share_num_delivered_stat->count;
                     }
-                    if ($new_site_share_num_delivered_stat->share_num_tower == 2 && $new_site_share_num_delivered_stat->tower_type == $site_info[0] && $new_site_share_num_delivered_stat->sys1_height == $site_info[1]) {
+                    if ($new_site_share_num_delivered_stat->{$shareType} == 2 && $new_site_share_num_delivered_stat->tower_type == $site_info[0] && $new_site_share_num_delivered_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][12] = $new_site_share_num_delivered_stat->count;
                     }
-                    if ($new_site_share_num_delivered_stat->share_num_tower == 1&& $new_site_share_num_delivered_stat->tower_type == $site_info[0] && $new_site_share_num_delivered_stat->sys1_height == $site_info[1]) {
+                    if ($new_site_share_num_delivered_stat->{$shareType} == 1&& $new_site_share_num_delivered_stat->tower_type == $site_info[0] && $new_site_share_num_delivered_stat->sys1_height == $site_info[1]) {
                         $siteStats[$tower_type_num][13] = $new_site_share_num_delivered_stat->count;
                     }
                     if ($siteStats[$tower_type_num][10] == 0) {
@@ -401,7 +401,7 @@ class IronTowerBillDetail extends Model
 
             // //计算当年新建共享率
             // foreach ($new_site_share_num_stats as $new_site_share_num_stat) {
-            //     if ($new_site_share_num_stat->share_num_tower == 1 && $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1] && $new_site_share_num_stat->month == $endDate) {     
+            //     if ($new_site_share_num_stat->{$shareType} == 1 && $new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1] && $new_site_share_num_stat->month == $endDate) {     
             //         $new_site_share_1_num = $new_site_share_num_stat->count;
             //         foreach ($new_site_num_stats as $new_site_num_stat) {
             //             if ($new_site_num_stat->tower_type == $site_info[0] && $new_site_num_stat->sys1_height == $site_info[1] && $new_site_num_stat->month == $endDate) {
@@ -433,16 +433,16 @@ class IronTowerBillDetail extends Model
             while (strtotime($month_temp) <= strtotime($endDate)) {
                 foreach ($new_site_share_num_fee_stats as $new_site_share_num_fee_stat) {
                     if ($new_site_share_num_fee_stat->tower_type == $site_info[0] && $new_site_share_num_fee_stat->sys1_height == $site_info[1] && $new_site_share_num_fee_stat->month == '2017-03') {
-                        if ($new_site_share_num_fee_stat->share_num_tower == 1 || $new_site_share_num_fee_stat->share_num_tower == 0) {
+                        if ($new_site_share_num_fee_stat->{$shareType} == 1 || $new_site_share_num_fee_stat->{$shareType} == 0) {
                             foreach ($new_site_share_num_stats as $new_site_share_num_stat) {
                                 if ($new_site_share_num_stat->tower_type == $site_info[0] && $new_site_share_num_stat->sys1_height == $site_info[1] && $new_site_share_num_stat->month == $month_temp) {
-                                    if ($new_site_share_num_stat->share_num_tower == 1) {
+                                    if ($new_site_share_num_stat->{$shareType} == 1) {
                                         $new_site_share_1_num = $new_site_share_num_stat->count;
                                     }
-                                    if ($new_site_share_num_stat->share_num_tower == 2) {
+                                    if ($new_site_share_num_stat->{$shareType} == 2) {
                                         $new_site_share_2_num = $new_site_share_num_stat->count;
                                     }
-                                    if ($new_site_share_num_stat->share_num_tower == 3) {
+                                    if ($new_site_share_num_stat->{$shareType} == 3) {
                                         $new_site_share_3_num = $new_site_share_num_stat->count;
                                     }
 
@@ -465,7 +465,7 @@ class IronTowerBillDetail extends Model
                             }
 
                         }
-                        if ($new_site_share_num_fee_stat->share_num_tower == 3) {
+                        if ($new_site_share_num_fee_stat->{$shareType} == 3) {
                             if (empty($new_site_share_3_num)) {
                                 $siteStats[$tower_type_num][23] += 0;
                             }else{
@@ -473,7 +473,7 @@ class IronTowerBillDetail extends Model
                             }
 
                         }
-                        if ($new_site_share_num_fee_stat->share_num_tower == 2) {
+                        if ($new_site_share_num_fee_stat->{$shareType} == 2) {
 
                             if (empty($new_site_share_2_num)) {
                                 $siteStats[$tower_type_num][24] += 0;

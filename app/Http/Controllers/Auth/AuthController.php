@@ -192,10 +192,18 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return back()->withErrors($validator);  //返回一次性错误
         }
-        DB::table('users')->where('name',$name)->update([
+        $updatePW = DB::table('users')->where('name',$name)->update([
             'password' => bcrypt($password)
         ]);
-        return redirect('/login');
+        if (!empty($updatePW)) {
+            echo "<script language=javascript>alert('修改密码成功！')</script>";
+            // return redirect('/login');
+            return view('auth/login');
+        }else{
+            echo "<script language=javascript>alert('修改密码失败！');history.back()</script>";
+        }
+
+        
 
 //        Auth::logout();  //更改完这次密码后，退出这个用户
 //        return redirect('/login');

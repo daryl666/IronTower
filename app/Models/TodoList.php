@@ -12,7 +12,7 @@ class TodoList extends Model
     {
         if ($regionName == '湖北省'){
             $importSiteExcepsUnhandled = DB::table('import_site_exception')
-                ->where('check_status', 1)
+                ->where('check_status', 0)
                 ->get();
             $gnrRecsUnhandled = DB::table('fee_out_gnr')
                 ->where('check_status', 0)
@@ -34,15 +34,15 @@ class TodoList extends Model
                 ->get();
         }else{
             $importSiteExcepsUnhandled = DB::table('import_site_exception')
-                ->where('region_name', $regionName)
+                ->where('region_name', 'like', '%' . $regionName . '%')
                 ->where('check_status', 0)
                 ->get();
             $gnrRecsUnhandled = DB::table('fee_out_gnr')
-                ->where('region_name', $regionName)
+                ->where('region_name', 'like', '%' . $regionName . '%')
                 ->where('check_status', 0)
                 ->get();
             $siteChecksUnhandled = DB::table('site_check')
-                ->where('region_name', $regionName)
+                ->where('region_name', 'like', '%' . $regionName . '%')
                 ->where('check_status', 0)
                 ->get();
             $osReasonsUnhandled = DB::table('tysys_os_info')
@@ -50,15 +50,15 @@ class TodoList extends Model
                 ->where('check_status', 0)
                 ->get();
             $servBillsUnhandled = DB::table('fee_out')
-                ->where('region_name', $regionName)
+                ->where('region_name', 'like', '%' . $regionName . '%')
                 ->where('is_out', 0)
                 ->get();
             $siteShieldUnhandled = DB::table('shield_info')
-                ->where('region_name', $regionName)
+                ->where('region_name', 'like', '%' . $regionName . '%')
                 ->where('shield_req_proc_state', 1)
                 ->get();
             $siteUnshieldUnhandled = DB::table('shield_info')
-                ->where('region_name', $regionName)
+                ->where('region_name', 'like', '%' . $regionName . '%')
                 ->where('unshield_req_proc_state', 1)
                 ->get();
         }

@@ -21,10 +21,10 @@ class OsreasonFill extends Model
                     ->where('check_status', 0)
                     ->orderBy('created_at', 'DESC');
                 if ($beginDate != '') {
-                    $query->where('created_at', '>=', $beginDate . '00:00:00');
+                    $query->where('created_at', '>=', $beginDate . '-01 00:00:00');
                 }
                 if ($endDate != '') {
-                    $query->where('created_at', '<=', $endDate . '23:59:59');
+                    $query->where('created_at', '<=', $endDate . ' -31 23:59:59');
                 }
             } else {
                 $query = DB::table('tysys_os_info')
@@ -32,10 +32,10 @@ class OsreasonFill extends Model
                     ->where('bsc', 'like', '%'.$region.'%')
                     ->orderBy('created_at', 'DESC');
                 if ($beginDate != '') {
-                    $query->where('created_at', '>=', $beginDate . '00:00:00');
+                    $query->where('created_at', '>=', $beginDate . '-01 00:00:00');
                 }
                 if ($endDate != '') {
-                    $query->where('created_at', '<=', $endDate . '23:59:59');
+                    $query->where('created_at', '<=', $endDate . '-31 23:59:59');
                 }
             }
         } elseif ($checkStatus == 1) {
@@ -44,10 +44,10 @@ class OsreasonFill extends Model
                     ->where('check_status', 1)
                     ->orderBy('created_at', 'DESC');
                 if ($beginDate != '') {
-                    $query->where('created_at', '>=', $beginDate . '00:00:00');
+                    $query->where('created_at', '>=', $beginDate . '-01 00:00:00');
                 }
                 if ($endDate != '') {
-                    $query->where('created_at', '<=', $endDate . '23:59:59');
+                    $query->where('created_at', '<=', $endDate . '-31 23:59:59');
                 }
             } else {
                 $query = DB::table('tysys_os_info')
@@ -55,10 +55,10 @@ class OsreasonFill extends Model
                     ->where('bsc', 'like', '%'.$region.'%')
                     ->orderBy('created_at', 'DESC');
                 if ($beginDate != '') {
-                    $query->where('created_at', '>=', $beginDate . '00:00:00');
+                    $query->where('created_at', '>=', $beginDate . '-01 00:00:00');
                 }
                 if ($endDate != '') {
-                    $query->where('created_at', '<=', $endDate . '23:59:59');
+                    $query->where('created_at', '<=', $endDate . '-31 23:59:59');
                 }
             }
         }

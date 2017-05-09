@@ -1357,13 +1357,13 @@ class SiteInfo extends Model
         return $query->get();
     }
 
-    public function searchInfoSite($region, $stationCode = '')
+    public function searchInfoSite($region, $siteCode = '')
     {
         if ($region != '湖北省') {
             $query = DB::table('site_info')
                 ->where('site_info.region_id', transRegion($region))
                 ->where('site_info.is_valid', 1)
-                ->where('site_info.site_code', 'like', '%' . $stationCode . '%')
+                ->where('site_info.site_code', 'like', '%' . $siteCode . '%')
                 ->join('fee_out_site_price', 'site_info.req_code', '=', 'fee_out_site_price.req_code')
                 ->where('fee_out_site_price.is_valid', 1)
                 ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
@@ -1382,7 +1382,7 @@ class SiteInfo extends Model
         } else {
             $query = DB::table('site_info')
                 ->where('site_info.is_valid', 1)
-                ->where('site_info.site_code', 'like', '%' . $stationCode . '%')
+                ->where('site_info.site_code', 'like', '%' . $siteCode . '%')
                 ->join('fee_out_site_price', 'site_info.req_code', '=', 'fee_out_site_price.req_code')
                 ->where('fee_out_site_price.is_valid', 1)
                 ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',

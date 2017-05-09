@@ -17,6 +17,7 @@ class SiteStatsController extends Controller
             return view('backend.siteStats.index');
         } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $filter = $request->all();
+            $shareType = $request->get('shareType');
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
             $dates_1 = explode('-', $endDate);
@@ -29,7 +30,7 @@ class SiteStatsController extends Controller
             $filter['beginMonth'] = $beginMonth;
             $region = $request->get('region');
             $irontowerBillDetailDB = new IronTowerBillDetail();
-            $siteStats = $irontowerBillDetailDB->getSiteStats($region, $beginDate, $endDate);
+            $siteStats = $irontowerBillDetailDB->getSiteStats($region, $beginDate, $endDate, $shareType);
             return view('backend/siteStats/index')
             ->with('siteStats', $siteStats)
             ->with('filter', $filter);

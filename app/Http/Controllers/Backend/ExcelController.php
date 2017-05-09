@@ -574,11 +574,7 @@ class ExcelController extends Controller
 // header('Content-Disposition:attachment;filename="站址属性.xls"');
 // header("Content-Transfer-Encoding:binary");
 // $write->save('php://output');
-// //                Excel::create('站址属性信息', function ($excel) use ($export) {
-//                 //                    $excel->sheet('站址属性信息', function ($sheet) use ($export) {
-//                 //                        $sheet->fromArray($export);
-//                 //                    });
-//                 //                })->export('xlsx');
+
 // });
 // }
 
@@ -595,6 +591,7 @@ class ExcelController extends Controller
         if (strtolower($file_type) != "xlsx" && strtolower($file_type) != "xls") {
             echo "<script language=javascript>alert('不是Excel文件，请重新上传！');history.back();</script>";
         } else {
+
             $savePath  = 'storage/app/billDetail';
             $str       = date('Ymdhis');
             $file_name = $str . "." . $file_type;
@@ -606,28 +603,43 @@ class ExcelController extends Controller
                 $reader = $reader->getSheet(0);
 //            获取表中的数据
                 $results    = $reader->toArray();
-                $irontowerBillDetailDB = new IronTowerBillDetail();
-                for ($i = 1; $i < count($results); $i++){
-                    $irontowerBillDetailDB->store($results[$i]);
-                }
                 $year = substr($results[1][0],0,4);
                 $month = substr($results[1][0],4,2);
-                $siteInfos = IronTowerBillDetail::where('month',$year.'-'.$month)
+                $monthLists = IronTowerBillDetail::select(DB::raw('month'))
+                ->groupBy('month')
                 ->get();
-                foreach ($siteInfos as $siteInfo) {
-                    if (substr($siteInfo->req_code,0,2) == '11') {
-                        IronTowerBillDetail::where('id',$siteInfo->id)
-                        ->update(['is_new_tower' =>0]);
-                        $old_to_rm = IronTowerBillDetail::where('month', $year.'-'.$month)
-                        ->where('req_code','like','10'.'%')
-                        ->where('site_code', $siteInfo->site_code)
-                        ->update(['is_new_tower' => 2]);
-                        $old_to_rm = IronTowerBillDetail::where('month', $year.'-'.$month)
-                        ->where('req_code','like','12'.'%')
-                        ->where('site_code', $siteInfo->site_code)
-                        ->update(['is_new_tower' => 2]);
+                foreach ($monthLists as $monthList) {
+                    if ($monthList->month == $year.'-'.$month) {
+                        $isExist = 1;
                     }
                 }
+                if (isset($isExist) && $isExist == 1) {
+                    echo "<script language=javascript>alert('该月账单已经存在！');history.back()</script>";
+                }else{
+                    $irontowerBillDetailDB = new IronTowerBillDetail();
+                    for ($i = 1; $i < count($results); $i++){
+                        $irontowerBillDetailDB->store($results[$i]);
+                    }
+
+                    $siteInfos = IronTowerBillDetail::where('month',$year.'-'.$month)
+                    ->get();
+                    foreach ($siteInfos as $siteInfo) {
+                        if (substr($siteInfo->req_code,0,2) == '11') {
+                            IronTowerBillDetail::where('id',$siteInfo->id)
+                            ->update(['is_new_tower' =>0]);
+                            $old_to_rm = IronTowerBillDetail::where('month', $year.'-'.$month)
+                            ->where('req_code','like','10'.'%')
+                            ->where('site_code', $siteInfo->site_code)
+                            ->update(['is_new_tower' => 2]);
+                            $old_to_rm = IronTowerBillDetail::where('month', $year.'-'.$month)
+                            ->where('req_code','like','12'.'%')
+                            ->where('site_code', $siteInfo->site_code)
+                            ->update(['is_new_tower' => 2]);
+                        }
+                    }
+                    echo "<script language=javascript>alert('导入成功！');history.back()</script>";
+                }
+
             });
 
 
@@ -635,4 +647,154 @@ class ExcelController extends Controller
 
 
     }
+
+    public function exportSiteStats(Request $request)
+    {       
+        $region = $request->get('region');
+        $beginDate = $request->get('beginDate');
+        $endDate = $request->get('endDate');
+        $dates_begin = explode('-',$beginDate);
+        $dates_end = explode('-',$endDate);
+        $year = $dates_end[0];
+        $month_begin = $dates_begin[1];
+        $month_end = $dates_end[1];
+        $shareType = $request->get('shareType');
+        $IronTowerBillDetailDB = new IronTowerBillDetail();
+        $siteStats = $IronTowerBillDetailDB->getSiteStats($region, $beginDate, $endDate, $shareType);
+        $excel = new PHPExcel();
+        $excel = new PHPExcel();
+        $excel->getProperties()->setCreator("yy")
+        ->setLastModifiedBy("yy")
+        ->setTitle("test_siteStats")
+        ->setSubject("test_siteStats")
+        ->setDescription("test_siteStats")
+        ->setKeywords("excel")
+        ->setCategory("result file");
+        $letter = ['D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG'];
+        for ($i = 0; $i < count($siteStats); $i++) {
+            foreach ($siteStats[$i] as $key => $value) {
+                $column = $i + 5;
+                if ($key == 4 || $key == 9 || $key == 14) {
+                    $excel->getActiveSheet()->setCellValueExplicit("$letter[$key]$column", formatNumber($value*100).'%', \PHPExcel_Cell_DataType::TYPE_STRING);
+                }elseif ($key >= 15 && $key <= 29) {
+                    $excel->getActiveSheet()->setCellValueExplicit("$letter[$key]$column", formatNumber_wan($value), \PHPExcel_Cell_DataType::TYPE_STRING);
+                }else{
+                    $excel->getActiveSheet()->setCellValueExplicit("$letter[$key]$column", $value, \PHPExcel_Cell_DataType::TYPE_STRING);
+                }
+
+            }
+        }
+        $excel->getActiveSheet()->mergeCells("A1:AG1");
+        $excel->getActiveSheet()->setCellValueExplicit("A1", $year.' 年'.$month_begin.'月~'.$month_end.'月 铁 塔 租 赁 情 况 调 查 表', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("A2:B4");
+        $excel->getActiveSheet()->setCellValueExplicit("A2", '铁塔类型', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("C2:C4");
+        $excel->getActiveSheet()->setCellValueExplicit("C2", '挂高（m）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("D2:H3");
+        $excel->getActiveSheet()->setCellValueExplicit("D2", '存量塔（个）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("I2:I4");
+        $excel->getActiveSheet()->setCellValueExplicit("I2", $year.'年一季度末新建塔累计到达数', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("J2:L2");
+        $excel->getActiveSheet()->setCellValueExplicit("J2", '季度累计新建塔（个）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("M2:M4");
+        $excel->getActiveSheet()->setCellValueExplicit("M2", '当年新建共享率', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("N2:Q3");
+        $excel->getActiveSheet()->setCellValueExplicit("N2", $year.'年初已交付新建塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("R2:R4");
+        $excel->getActiveSheet()->setCellValueExplicit("R2", '累计新建共享率', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("S2:AB2");
+        $excel->getActiveSheet()->setCellValueExplicit("S2", '新建单塔年均服务费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("AC2:AG2");
+        $excel->getActiveSheet()->setCellValueExplicit("AC2", $year.'年'.$month_begin.'月~'.$month_end.'月'.'累计运行费用（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("J3:K3");
+        $excel->getActiveSheet()->setCellValueExplicit("J3", '新建共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("L3:L4");
+        $excel->getActiveSheet()->setCellValueExplicit("L3", '新建独享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("A5:A15");
+        $excel->getActiveSheet()->setCellValueExplicit("A5", '地面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("B5:B9");
+        $excel->getActiveSheet()->setCellValueExplicit("B5", '普通地面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("B10:B14");
+        $excel->getActiveSheet()->setCellValueExplicit("B10", '灯杆景观塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("A16:A17");
+        $excel->getActiveSheet()->setCellValueExplicit("A16", '楼面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("A18:C18");
+        $excel->getActiveSheet()->setCellValueExplicit("A18", '合计', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("D4", '存量合计', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("E4", '三共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("F4", '两共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("G4", '存量独享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("H4", '共享率', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("J4", '三共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("K4", '两共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("N4", '年初交付合计', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("O4", '三共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("P4", '两共享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Q4", '新建独享', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("S3", '独享单塔平均服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("T3", '其中：平均塔租', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("U3", '其中：单塔平均场地费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("V3", '其中：单塔平均电力引入费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("W3", '其中：单塔平均维护费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("X3", '其中：机房及配套费用', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Y3", '存量单塔年均服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Z3", '单塔年均服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AA3", '三共享单塔年均服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AB3", '两共享单塔年均服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AC3", '铁塔服务年成本', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AD3", '站址服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AE3", '转供电费用', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AF3", '发电服务费', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AG3", '其他', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("S4", '1', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("T4", '1-1', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("U4", '1-2', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("V4", '1-3', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("W4", '1-4', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("X4", '1-5', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Y4", '2', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Z4", '3', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AA4", '4', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AB4", '5', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AC4", '6=7+8+9+10', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AD4", '7', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AE4", '8', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AF4", '9', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AG4", '10', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C5", 'H<30', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C6", '30≤H<35', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C7", '35≤H<40', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C8", '40≤H<45', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C9", '45≤H≤50', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C10", 'H<20', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C11", '20≤H<25', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C12", '25≤H<30', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C13", '30≤H<35', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C14", '35≤H≤40', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C15", 'H≤20', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C16", '-', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C17", '-', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B15", '简易灯杆塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B16", '普通楼面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B17", '楼面抱杆', \PHPExcel_Cell_DataType::TYPE_STRING);
+
+        $excel->getActiveSheet()->getStyle('A1:AG1')->getFont()->setSize(18)->setBold( true);
+        $excel->getActiveSheet()->getStyle('A1:AG1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $excel->getActiveSheet()->getStyle('A2:AG18')->getFont()->setSize(13);
+        $excel->getActiveSheet()->getStyle('A2:AG18')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $excel->getActiveSheet()->getStyle('A2:AG18')->getAlignment()->setWrapText(true);
+        $write = new \PHPExcel_Writer_Excel5($excel);
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");;
+        header('Content-Disposition:attachment;filename="test_siteStats.xls"');
+        header("Content-Transfer-Encoding:binary");
+        $write->save('php://output');
+    }
+
+
 }

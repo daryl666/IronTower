@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="listBar">
                 <td>
-                    请选择地市来查看站址信息：
+                    请选择地市或者站址编码来查看站址信息：
                 </td>
                 <td>
                     @if(Auth::user()->area_level == '湖北省' || Auth::user()->area_level == 'admin')
@@ -303,6 +303,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 </select>
 @endif
 </td>
+<td>
+    &nbsp;&nbsp;&nbsp;站址编码：
+    <input type="text" name="siteCode" @if(isset($filter['siteCode'])) value="{{$filter['siteCode']}}" @endif>
+</td>
 
 
 <td>
@@ -326,7 +330,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     <table class="listTable" style="white-space:nowrap;font-size:12px;">
 
         <tr>
-            @if(Auth::user()->single_update == 1)
+            @if(Auth::user()->site_modify == 1)
             <th>
                 <a href="#" class="sort" name="" hidefocus>操作</a>
             </th>
@@ -460,7 +464,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         @if(isset($infoSites))
         @foreach($infoSites as $infoSite)
         <tr>
-            @if(Auth::user()->single_update == 1)
+            @if(Auth::user()->site_modify == 1)
             <td>
                 <button class="buttonNextStep" onclick="doEditPage({{$infoSite->id}})">编辑</button>
             </td>

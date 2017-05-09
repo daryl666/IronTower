@@ -424,9 +424,9 @@
 
         function doSearch() {
             var listForm = document.getElementById("listForm");
-            var region = document.getElementById('region');
-            var beginDate = document.getElementById('beginDate');
-            var endDate = document.getElementById('endDate');
+            var region = $('#region').val();
+            var beginDate = $('#beginDate').val();
+            var endDate = $('#endDate').val();
             var checkStatus = $('input[name="checkStatus"]:checked').val();
             var url = "{{url('backend/osReasonFill?region=')}}" + region + '&beginDate=' + beginDate + '&endDate=' + endDate + '&checkStatus=' + checkStatus;
             listForm.method = "GET";

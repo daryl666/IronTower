@@ -26,6 +26,7 @@ class SiteInfoController extends Controller
             ->with('filter', $filter);
         } elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
             $region = $request->get('region');
+            $siteCode = $request->get('siteCode');
             if (!empty(session('filter'))) {
                 $filter = $request->session()->pull('filter');
                 $region = $filter['region'];
@@ -49,7 +50,7 @@ class SiteInfoController extends Controller
             if (empty($filter['region'])) {
                 $filter['region'] = Auth::user()->area_level;
             }
-            $infoSites = $siteinfoDB->searchInfoSite($region)->paginate(15);
+            $infoSites = $siteinfoDB->searchInfoSite($region, $siteCode)->paginate(15);
             return view('backend/siteInfo/index')
             ->with('infoSites', $infoSites)
             ->with('filter', $filter);
