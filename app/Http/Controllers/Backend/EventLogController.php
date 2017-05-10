@@ -13,19 +13,17 @@ class EventLogController extends Controller
 {
     function indexPage(Request $request){
         if ($_SERVER['REQUEST_METHOD'] == 'GET'){
-            $eventLogs = DB::table('sys_log')->paginate(15);
-            return view('backend.eventLog.index')
-                ->with('eventLogs', $eventLogs);
-        }else{
             $filter = $request->all();
-            $regionName = $request->get('region');
+            $region = $request->get('region');
             $beginDate = $request->get('beginDate');
             $endDate = $request->get('endDate');
-            if (Auth::user()->area_level =='湖北省'){
-                $query = DB::table('sys_log');
+            if ($region =='湖北省'){
+                $query = DB::table('sys_log')
+                ->orderBy('created_at', 'DESC');
             }else{
                 $query = DB::table('sys_log')
-                    ->where('region_name', $regionName);
+                    ->where('region_id', transRegion($region))
+                    ->orderBy('created_at', 'DESC');
             }
             if ($beginDate != '') {
                 $query->where('created_at', '>=', $beginDate . '-01 00:00:00');
@@ -35,7 +33,8 @@ class EventLogController extends Controller
             }
             $eventLogs = $query->paginate(15);
             return view('backend.eventLog.index')
-                ->with('eventLogs', $eventLogs);
+                ->with('eventLogs', $eventLogs)
+                ->with('filter', $filter);
         }
     }
 }

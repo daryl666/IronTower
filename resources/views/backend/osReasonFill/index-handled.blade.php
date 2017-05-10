@@ -79,7 +79,7 @@
                         <input type="text" id="beginDate" name="beginDate" style="width:130px;padding-left:5px"
                                readonly="true"
                                @if(isset($filter['beginDate'])) value="{{$filter['beginDate']}}" @endif
-                               onclick="WdatePicker({dateFmt:'yyyy-MM'})"/>
+                               onclick="WdatePicker({dateFmt:'<yyy></yyy>y-MM'})"/>
                         ~
                         统计结束时间:
                         <input type="text" id="endDate" name="endDate" style="width:130px;padding-left:5px"
@@ -294,6 +294,10 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="button" id="searchBtn" class="formButton" value="搜 索"
                                onclick="doSearch()"/>
+                    </td>
+                    <td>
+                        <input type="button" class="formButton" value="导出" onclick="doExport()"
+                        @if(isset($osReasons)) style="display: inline;" @endif style="display: none;"/>
                     </td>
 
 

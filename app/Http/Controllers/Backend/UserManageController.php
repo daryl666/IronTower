@@ -88,8 +88,9 @@ class UserManageController extends Controller
             'site_check_manage' => $site_check_manage,
             'site_shield_manage' => $site_shield_manage,
             'os_reason_manage' => $os_reason_manage,
+            'is_verified' => 1
         ]);
-        if($update_success){
+        if(!empty($update_success)){
             echo "<script>alert('审核成功！');location.href='".$_SERVER["HTTP_REFERER"]."';</script>";
         }else{
             echo "<script>alert('审核失败！');location.href='".$_SERVER["HTTP_REFERER"]."';</script>";

@@ -8,13 +8,13 @@
     <div class="container" style="width:100% ">
         <div class="row clearfix">
             <div class="col-md-12 column" style="padding: 0">
-                <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                {{-- <div class="collapse navbar-collapse" id="example-navbar-collapse"> --}}
                     <ul class="nav nav-tabs">
                         <li class="inactive">
                             <a href="{{url('backend/userManage')}}">用户管理</a>
                         </li>
                         <li class="inactive">
-                            <a href="{{url('backend/eventLog')}}">日志管理</a>
+                            <a href="{{url('backend/eventLog?region=').Auth::user()->area_level.'&beginDate=&endDate='}}">日志管理</a>
                         </li>
                         <li class="active">
                             <a href="{{url('backend/rentStd')}}">计费标准管理</a>
