@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
@@ -13,6 +12,7 @@ use Session;
 
 class SiteInfoController extends Controller
 {
+
     public function indexPage(Request $request)
     {
         $filter     = $request->all();
@@ -24,6 +24,7 @@ class SiteInfoController extends Controller
             return view('backend/siteInfo/index')
             ->with('infoSites', $infoSites)
             ->with('filter', $filter);
+
         } elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
             $region = $request->get('region');
             $siteCode = $request->get('siteCode');
@@ -189,5 +190,11 @@ class SiteInfoController extends Controller
         ->paginate(3);
         return view('backend.siteInfo.test')
         ->with('infoSites', $infoSites);
+    }
+
+    public function downloadSiteInfoTemplate(Request $request)
+    {
+        $path = public_path().'/storage/app/站址信息导入模板.xlsx';
+                return response()->download($path);
     }
 }

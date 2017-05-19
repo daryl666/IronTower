@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class SiteInfo extends Model
 {
+    /**
+     * [searchCode description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function searchCode(Request $request)
     {
         $region_id = DB::table('area_info_copy')
@@ -115,7 +120,6 @@ class SiteInfo extends Model
                 'elec_introduced_type' => transElecType($elec_introduced_type),
 
             ]);
-
             $site_price = DB::table('fee_out_site_price')
                 ->where('business_code', $business_code)
                 ->where('is_valid', 1)

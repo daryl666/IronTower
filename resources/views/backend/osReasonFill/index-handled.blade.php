@@ -443,7 +443,7 @@
 
         function doExport() {
             var listForm = document.getElementById("listForm");
-            listForm.action = "{{url('backend/siteInfo/export')}}";
+            listForm.action = "{{url('backend/osReasonFill/export')}}";
             listForm.submit();
         }
 

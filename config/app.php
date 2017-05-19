@@ -161,6 +161,10 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        /**
+         * laravel-ide-helper
+         */
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*

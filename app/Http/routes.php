@@ -53,9 +53,9 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
     Route::post('export', ['uses' => 'ExcelController@exportSiteInfo', 'permissions' => ['site_batch_export', 'is_verified']]);
     //导入站址信息
     Route::post('import', ['uses' => 'ExcelController@importSiteInfo', 'permissions' => ['site_batch_import', 'is_verified']]);
-    // Route::post('importIronTowerSiteInfo', ['uses' => 'ExcelController@transIronTowerSiteInfo', 'permissions' => ['site_view_basic', 'bulk_import', 'is_verified']]);
-    // Route::post('bulkUpdate', ['uses' => 'ExcelController@bulkUpdateSiteInfo', 'permissions' => ['site_view_basic', 'bulk_update', 'is_verified']]);
-    
+    //下载站址信息导入模板
+    Route::post('download', ['uses' => 'SiteInfoController@downloadSiteInfoTemplate', 'permissions' => ['is_verified']]);
+
     //返回
     Route::post('back', ['uses' => 'SiteInfoController@back', 'permissions' => ['site_view_basic']]);
 
@@ -185,7 +185,7 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
 /**
  * 上站记录管理
  */
-Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_check_manage','is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/siteCheck'], function () {
+Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_check_manage', 'is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/siteCheck'], function () {
     Route::any('/', ['uses' => 'SiteCheckController@indexPage']);
     Route::any('handlePage/{id}', ['uses' => 'SiteCheckController@handlePage']);
     Route::any('addPage', ['uses' => 'SiteCheckController@addPage']);
@@ -196,7 +196,7 @@ Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_ch
 /**
  * 屏蔽记录管理
  */
-Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_shield_manage','is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/siteShield'], function () {
+Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_shield_manage', 'is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/siteShield'], function () {
     Route::any('/', ['uses' => 'SiteShieldController@indexPage']);
     Route::any('addShieldPage', ['uses' => 'SiteShieldController@addShieldPage']);
     Route::any('checkShieldPage', ['uses' => 'SiteShieldController@checkShieldPage']);
@@ -214,20 +214,22 @@ Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_sh
     Route::any('denyShield/{id}', ['uses' => 'SiteShieldController@denyShield']);
     Route::any('denyUnshield/{id}', ['uses' => 'SiteShieldController@denyUnshield']);
     Route::any('downloadAttachment/{id}', ['uses' => 'SiteShieldController@downloadAttachment']);
+    Route::any('exportSiteShields', ['uses' => 'ExcelController@exportSiteShields']);
 });
 
 /**
  * 退服原因管理
  */
-Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['os_reason_manage','is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/osReasonFill'], function () {
+Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['os_reason_manage', 'is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/osReasonFill'], function () {
     Route::any('/', ['uses' => 'OsReasonFillController@indexPage']);
     Route::any('add/{id}', ['uses' => 'OsReasonFillController@add']);
+    Route::any('export', ['uses' => 'ExcelController@exportOsReasons']);
 });
 
 /**
  * 异常处理
  */
-Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_batch_import','is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/excepHandle'], function () {
+Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_batch_import', 'is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/excepHandle'], function () {
     Route::any('importSiteInfo', ['uses' => 'ExcepHandleController@indexPage']);
     Route::any('update/{id}', ['uses' => 'ExcepHandleController@updateSiteInfo']);
     Route::any('deny/{id}', ['uses' => 'ExcepHandleController@denySiteInfo']);
@@ -243,13 +245,11 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
 /**
  * 站址信息统计
  */
-Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_view_advance','is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/siteStats'], function () {
+Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_view_advance', 'is_verified'], 'namespace' => 'Backend', 'prefix' => 'backend/siteStats'], function () {
     Route::any('/', ['uses' => 'SiteStatsController@indexPage']);
     Route::any('import', ['uses' => 'ExcelController@importBillDetail']);
     Route::any('export', ['uses' => 'ExcelController@exportSiteStats']);
 });
-
-
 
 
 

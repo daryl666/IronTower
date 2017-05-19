@@ -773,8 +773,9 @@
                 return;
             }
             if (confirm('确认提交吗？')) {
-                var form = $('#listForm');
-                form.submit();
+                var listForm = document.getElementById("listForm");
+                listForm.action = "{{url('backend/siteInfo/addOld')}}"
+                listForm.submit();
             }
 
         }

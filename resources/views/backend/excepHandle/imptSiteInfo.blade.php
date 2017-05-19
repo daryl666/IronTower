@@ -36,7 +36,9 @@
                         <a href="{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">上站记录管理</a>
                     </li>
                     <li class="inactive">
-                        @if(Auth::user()->area_level == '湖北省')                             <a href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')                             <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
+                        @if(Auth::user()->area_level == '湖北省')                             <a
+                                href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')
+                            <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
                     </li>
                     <li class="inactive">
                         <a href="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">退服原因管理</a>
@@ -362,19 +364,19 @@
                         <a href="#" class="sort" name="" hidefocus>系统数量1</a>
                     </th>
                     <th class="scanStopTime">
-                    <a href="#" class="sort" name="" hidefocus>系统1挂高(米)</a>
+                        <a href="#" class="sort" name="" hidefocus>系统1挂高(米)</a>
                     </th>
                     <th class="scanStopTime">
                         <a href="#" class="sort" name="" hidefocus>系统数量2</a>
                     </th>
                     <th class="scanStopTime">
-                    <a href="#" class="sort" name="" hidefocus>系统2挂高(米)</a>
+                        <a href="#" class="sort" name="" hidefocus>系统2挂高(米)</a>
                     </th>
                     <th class="scanStopTime">
                         <a href="#" class="sort" name="" hidefocus>系统数量3</a>
                     </th>
                     <th class="scanStopTime">
-                    <a href="#" class="sort" name="" hidefocus>系统3挂高(米)</a>
+                        <a href="#" class="sort" name="" hidefocus>系统3挂高(米)</a>
                     </th>
                     <th class="freqMode">
                         <a href="#" class="sort" name="" hidefocus>铁塔共享类型</a>
@@ -395,13 +397,13 @@
                         <a href="#" class="sort" name="" hidefocus>电力引入费共享类型</a>
                     </th>
                     <th class="freqMode">
-                    <a href="#" class="sort" name="" hidefocus>站址所在地区类型</a>
+                        <a href="#" class="sort" name="" hidefocus>站址所在地区类型</a>
                     </th>
                     <th class="freqMode">
-                    <a href="#" class="sort" name="" hidefocus>是否RRU拉远</a>
+                        <a href="#" class="sort" name="" hidefocus>是否RRU拉远</a>
                     </th>
                     <th class="freqMode">
-                    <a href="#" class="sort" name="" hidefocus>引电类型</a>
+                        <a href="#" class="sort" name="" hidefocus>引电类型</a>
                     </th>
                 </tr>
                 @if(isset($excepSiteInfos))
@@ -419,37 +421,37 @@
                             <td>{{$excepSiteInfo->site_code}}</td>
                             <td>{{$excepSiteInfo->established_time}}</td>
                             <td>{{$excepSiteInfo->region_name}}</td>
-                            <td>{{transTowerType($excepSiteInfo->tower_type)}}</td>
-                            <td>{{transIsNewTower($excepSiteInfo->is_new_tower)}}</td>
-                            <td>{{transProductType($excepSiteInfo->product_type)}}</td>
-                            <td>{{transIsCoOpetition($excepSiteInfo->is_co_opetition)}}</td>
-                            <td>{{transIsNewlyAdded($excepSiteInfo->is_newly_added)}}</td>
-                            <td>{{transUserType($excepSiteInfo->user_type)}}</td>
-                            <td>{{transLandForm($excepSiteInfo->land_form)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'tower_type',$excepSiteInfo->tower_type, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transTowerType($excepSiteInfo->tower_type)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'is_new_tower',$excepSiteInfo->is_new_tower, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transIsNewTower($excepSiteInfo->is_new_tower)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'product_type',$excepSiteInfo->product_type, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transProductType($excepSiteInfo->product_type)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'is_co_opetition',$excepSiteInfo->is_co_opetition, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transIsCoOpetition($excepSiteInfo->is_co_opetition)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'is_newly_added',$excepSiteInfo->is_newly_added, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transIsNewlyAdded($excepSiteInfo->is_newly_added)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'user_type',$excepSiteInfo->user_type, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transUserType($excepSiteInfo->user_type)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'land_form',$excepSiteInfo->land_form, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transLandForm($excepSiteInfo->land_form)}}</td>
 
-                            <td>{{$excepSiteInfo->sys_num1}}</td>
-                            <td>{{transSysHeight($excepSiteInfo->sys1_height)}}</td>
-                            <td>{{$excepSiteInfo->sys_num2}}</td>
-                            <td>{{transSysHeight($excepSiteInfo->sys2_height)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'sys_num1',$excepSiteInfo->sys_num1, $excepSiteInfo->id) == false) style="color: red;" @endif>{{$excepSiteInfo->sys_num1}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'sys1_height',$excepSiteInfo->sys1_height, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transSysHeight($excepSiteInfo->sys1_height)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'sys_num2',$excepSiteInfo->sys_num2, $excepSiteInfo->id) == false) style="color: red;" @endif>{{$excepSiteInfo->sys_num2}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'sys2_height',$excepSiteInfo->sys2_height, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transSysHeight($excepSiteInfo->sys2_height)}}</td>
                             <td>{{$excepSiteInfo->sys_num3}}</td>
-                            <td>{{transSysHeight($excepSiteInfo->sys3_height)}}</td>
-                            <td>{{transShareType($excepSiteInfo->share_num_tower)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'sys3_height',$excepSiteInfo->sys3_height, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transSysHeight($excepSiteInfo->sys3_height)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'share_num_tower',$excepSiteInfo->share_num_tower, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transShareType($excepSiteInfo->share_num_tower)}}</td>
 
-                            <td>{{transShareType($excepSiteInfo->share_num_house)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'share_num_house',$excepSiteInfo->share_num_house, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transShareType($excepSiteInfo->share_num_house)}}</td>
 
-                            <td>{{transShareType($excepSiteInfo->share_num_support)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'share_num_support',$excepSiteInfo->share_num_support, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transShareType($excepSiteInfo->share_num_support)}}</td>
 
-                            <td>{{transShareType($excepSiteInfo->share_num_maintain)}}</td>
-                            <td>{{transShareType($excepSiteInfo->share_num_site)}}</td>
-                            <td>{{transShareType($excepSiteInfo->share_num_import)}}</td>
-                            <td>{{transSiteDistType($excepSiteInfo->site_district_type)}}</td>
-                            <td>{{transIsRRUAway($excepSiteInfo->is_rru_away)}}</td>
-                            
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'share_num_maintain',$excepSiteInfo->share_num_maintain, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transShareType($excepSiteInfo->share_num_maintain)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'share_num_site',$excepSiteInfo->share_num_site, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transShareType($excepSiteInfo->share_num_site)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'share_num_import',$excepSiteInfo->share_num_import, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transShareType($excepSiteInfo->share_num_import)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'site_district_type',$excepSiteInfo->site_district_type, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transSiteDistType($excepSiteInfo->site_district_type)}}</td>
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'is_rru_away',$excepSiteInfo->is_rru_away, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transIsRRUAway($excepSiteInfo->is_rru_away)}}</td>
 
-                            <td>{{transElecType($excepSiteInfo->elec_introduced_type)}}</td>
+
+                            <td @if(compareTheSiteAttributes('',$origSiteInfos,'elec_introduced_type',$excepSiteInfo->elec_introduced_type, $excepSiteInfo->id) == false) style="color: red;" @endif>{{transElecType($excepSiteInfo->elec_introduced_type)}}</td>
                         </tr>
                         @foreach($origSiteInfos as $origSiteInfo)
-                            @if($origSiteInfo->id == $excepSiteInfo->site_info_id)
+                            @if($origSiteInfo->id == $excepSiteInfo->site_info_id && $origSiteInfo->import_site_exception_id == $excepSiteInfo->id)
                                 <tr>
                                     <td></td>
                                     <td>原有记录</td>
@@ -458,33 +460,33 @@
                                     <td>{{$origSiteInfo->site_code}}</td>
                                     <td>{{$origSiteInfo->established_time}}</td>
                                     <td>{{$origSiteInfo->region_name}}</td>
-                                    <td>{{transTowerType($origSiteInfo->tower_type)}}</td>
-                                    <td>{{transIsNewTower($origSiteInfo->is_new_tower)}}</td>
-                                    <td>{{transProductType($origSiteInfo->product_type)}}</td>
-                                    <td>{{transIsCoOpetition($origSiteInfo->is_co_opetition)}}</td>
-                                    <td>{{transIsNewlyAdded($origSiteInfo->is_newly_added)}}</td>
-                                    <td>{{transUserType($origSiteInfo->user_type)}}</td>
-                                    <td>{{transLandForm($origSiteInfo->land_form)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','tower_type',$origSiteInfo->tower_type, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transTowerType($origSiteInfo->tower_type)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','is_new_tower',$origSiteInfo->is_new_tower, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transIsNewTower($origSiteInfo->is_new_tower)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','product_type',$origSiteInfo->product_type, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transProductType($origSiteInfo->product_type)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','is_co_opetition',$origSiteInfo->is_co_opetition, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transIsCoOpetition($origSiteInfo->is_co_opetition)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','is_newly_added',$origSiteInfo->is_newly_added, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transIsNewlyAdded($origSiteInfo->is_newly_added)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','user_type',$origSiteInfo->user_type, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transUserType($origSiteInfo->user_type)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','land_form',$origSiteInfo->land_form, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transLandForm($origSiteInfo->land_form)}}</td>
 
-                                    <td>{{$origSiteInfo->sys_num1}}</td>
-                                    <td>{{transSysHeight($origSiteInfo->sys1_height)}}</td>
-                                    <td>{{$origSiteInfo->sys_num2}}</td>
-                                    <td>{{transSysHeight($origSiteInfo->sys2_height)}}</td>
-                                    <td>{{$origSiteInfo->sys_num3}}</td>
-                                    <td>{{transSysHeight($origSiteInfo->sys3_height)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','sys_num1',$origSiteInfo->sys_num1, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{$origSiteInfo->sys_num1}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','sys1_height',$origSiteInfo->sys1_height, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transSysHeight($origSiteInfo->sys1_height)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','sys_num2',$origSiteInfo->sys_num2, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{$origSiteInfo->sys_num2}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','sys2_height',$origSiteInfo->sys2_height, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transSysHeight($origSiteInfo->sys2_height)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','sys_num3',$origSiteInfo->sys_num3, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{$origSiteInfo->sys_num3}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','sys3_height',$origSiteInfo->sys3_height, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transSysHeight($origSiteInfo->sys3_height)}}</td>
 
-                                    <td>{{transShareType($origSiteInfo->share_num_tower)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','share_num_tower',$origSiteInfo->share_num_tower, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transShareType($origSiteInfo->share_num_tower)}}</td>
 
-                                    <td>{{transShareType($origSiteInfo->share_num_house)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','share_num_house',$origSiteInfo->share_num_house, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transShareType($origSiteInfo->share_num_house)}}</td>
 
-                                    <td>{{transShareType($origSiteInfo->share_num_support)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','share_num_support',$origSiteInfo->share_num_support, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transShareType($origSiteInfo->share_num_support)}}</td>
 
-                                    <td>{{transShareType($origSiteInfo->share_num_maintain)}}</td>
-                                    <td>{{transShareType($origSiteInfo->share_num_site)}}</td>
-                                    <td>{{transShareType($origSiteInfo->share_num_import)}}</td>
-                                    <td>{{transSiteDistType($origSiteInfo->site_district_type)}}</td>
-                                    <td>{{transIsRRUAway($origSiteInfo->is_rru_away)}}</td>
-                                    <td>{{transElecType($origSiteInfo->elec_introduced_type)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','share_num_maintain',$origSiteInfo->share_num_maintain, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transShareType($origSiteInfo->share_num_maintain)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','share_num_site',$origSiteInfo->share_num_site, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transShareType($origSiteInfo->share_num_site)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','share_num_import',$origSiteInfo->share_num_import, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transShareType($origSiteInfo->share_num_import)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','site_district_type',$origSiteInfo->site_district_type, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transSiteDistType($origSiteInfo->site_district_type)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','is_rru_away',$origSiteInfo->is_rru_away, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transIsRRUAway($origSiteInfo->is_rru_away)}}</td>
+                                    <td @if(compareTheSiteAttributes($excepSiteInfos,'','elec_introduced_type',$origSiteInfo->elec_introduced_type, $origSiteInfo->id, $origSiteInfo->import_site_exception_id) == false) style="color: red;" @endif>{{transElecType($origSiteInfo->elec_introduced_type)}}</td>
                                 </tr>
                                 <tr>
                                     <td>&nbsp;</td>

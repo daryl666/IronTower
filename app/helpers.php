@@ -22,7 +22,7 @@ if (!function_exists('formatNumber_wan')) {
     {
         if ($number == 0)
             return 0.0000;
-        return sprintf("%.6f", $number/10000);
+        return sprintf("%.6f", $number / 10000);
     }
 
 }
@@ -773,13 +773,49 @@ if (!function_exists('transShareDisc')) {
 
     function transShareDisc($disc1, $disc2)
     {
-        if (!empty($disc2)){
+        if (!empty($disc2)) {
             return $disc2;
-        }elseif (empty($disc2) && !empty($disc1)){
+        } elseif (empty($disc2) && !empty($disc1)) {
             return $disc1;
-        }elseif (empty($disc2) && empty($dis1)){
+        } elseif (empty($disc2) && empty($dis1)) {
             return 1;
         }
     }
 
+}
+
+if (!function_exists('object2array')) {
+    function object2array(&$object)
+    {
+        $object = json_decode(json_encode($object), true);
+        return $object;
+    }
+}
+
+if (!function_exists('compareTheSiteAttributes')) {
+    function compareTheSiteAttributes($excepSiteInfos = '', $origSiteInfos = '', $attributeName = '', $attributeValue = '', $id, $importSiteExceptionId = '')
+    {
+        if (empty($excepSiteInfos)) {
+            foreach ($origSiteInfos as $origSiteInfo) {
+                if ($origSiteInfo->import_site_exception_id === $id) {
+                    if ($origSiteInfo->$attributeName === $attributeValue) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+        if (empty($origSiteInfos)) {
+            foreach ($excepSiteInfos as $excepSiteInfo) {
+                if ($excepSiteInfo->site_info_id === $id && $excepSiteInfo->id === $importSiteExceptionId) {
+                    if ($excepSiteInfo->$attributeName === $attributeValue) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+    }
 }

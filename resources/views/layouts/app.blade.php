@@ -9,25 +9,22 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('/common/css/jquery.waiting.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/admin/css/base.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('/common/css/admin.css') }}"/>
-
-
-    {{--<script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>--}}
-    {{--<script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
-
     <script src="{{ asset('/common/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('/common/js/bootstrap.min.js') }}"></script>
+    {{--<script src="{{ asset('/common/js/jquery.fixedheadertable.min.js') }}"></script>--}}
+    {{--<script src="{{ asset('/common/js/jquery.fixedheadertable.js') }}"></script>--}}
     <script type="text/javascript" src="{{ asset('/common/js/jquery.waiting.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/admin/js/base.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/admin/js/admin.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/common/js/jquery.pager.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/common/datePicker/WdatePicker.js') }}"></script>
     <script type="text/javascript">
-        $().ready(function () {
+    $().ready(function () {
             // 显示时间
             showTime();
         })
 
-        function showTime() {
+    function showTime() {
             var date = new Date(); //日期对象
             var now = "";
             now = date.getFullYear() + "/";
@@ -39,21 +36,21 @@
             var nowTime = document.getElementById('nowTime');
             nowTime.innerHTML = now;
 //            $("#nowTime").html(now);
-            setTimeout("showTime()", 1000);
-        }
-    </script>
+setTimeout("showTime()", 1000);
+}
+</script>
 
-    @yield('script_header')
+@yield('script_header')
 </head>
 <body>
-@if (session('status_update'))
+    @if (session('status_update'))
     <div class="alert alert-success" style="">
         <script language=javascript>
-            alert('修改成功！');
-            <?php ?>
-        </script>
+        alert('修改成功！');
+        <?php ?>
+    </script>
 
-    </div>
+</div>
 @endif
 
 
@@ -86,9 +83,9 @@
                                             <a href="{{url('backend/servBill')}}">账单管理</a>
                                         </li>
                                         @if(Auth::user()->area_level == '湖北省')
-                                            <li class="menuItem" id="menu_sys">
-                                                <a href="{{url('backend/userManage')}}">系统管理</a>
-                                            </li>@endif
+                                        <li class="menuItem" id="menu_sys">
+                                            <a href="{{url('backend/userManage')}}">系统管理</a>
+                                        </li>@endif
                                         {{--<li class="menuItem" id="menu_exce">--}}
                                         {{--<a href="{{url('backend/excepHandle')}}">异常处理</a>--}}
                                         {{--</li>--}}
@@ -97,11 +94,11 @@
                             </td>
                             <td style="text-align:right">
                                 <div class="info" style="margin-right:10px;font-size: 12px">
-                                        <span class="welcome" style="color:#CD3700">
-                                            账号:&nbsp;{{ Auth::user()->name }}&nbsp;
-                                            地区:&nbsp;{{Auth::user()->area_level}}&nbsp;
-                                            时间:&nbsp;<span id="nowTime"></span>
-                                        </span>
+                                    <span class="welcome" style="color:#CD3700">
+                                        账号:&nbsp;{{ Auth::user()->name }}&nbsp;
+                                        地区:&nbsp;{{Auth::user()->area_level}}&nbsp;
+                                        时间:&nbsp;<span id="nowTime"></span>
+                                    </span>
                                     <a class="logout" href="{{ url('logout') }}" target="_top">退出</a>
                                 </div>
                             </td>

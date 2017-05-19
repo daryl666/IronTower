@@ -66,56 +66,55 @@
                 <td>{{$user->area_level}}</td>
                 <td>{{$user->name}}</td>
                 <td>
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_add"
-                    @if($user->site_add == 1) checked="checked"@endif>站址新增
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_view_basic"
-                    @if($user->site_view_basic == 1) checked="checked"@endif>查看站址基础信息
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_view_advance"
-                    @if($user->site_view_advance == 1) checked="checked"@endif>查看站址价格相关信息
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_add"
+                  @if($user->site_add == 1) checked="checked"@endif>站址新增
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_view_basic"
+                  @if($user->site_view_basic == 1) checked="checked"@endif>查看站址基础信息
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_view_advance"
+                  @if($user->site_view_advance == 1) checked="checked"@endif>查看站址价格相关信息
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_modify"
+                  @if($user->site_modify == 1) checked="checked"@endif>站址属性修改
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_delete"
+                  @if($user->site_delete == 1) checked="checked"@endif>站址删除
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_batch_import"
+                  @if($user->site_batch_import == 1) checked="checked"@endif>站址批量导入
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_batch_export"
+                  @if($user->site_batch_export == 1) checked="checked"@endif>站址批量导出
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="bill_view"
+                  @if($user->bill_view == 1) checked="checked"@endif>查看账单
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="bill_out"
+                  @if($user->bill_out == 1) checked="checked"@endif>出账
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="gnr_manage"
+                  @if($user->gnr_manage == 1) checked="checked"@endif>发电记录管理
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_check_manage"
+                  @if($user->site_check_manage == 1) checked="checked"@endif>上站记录管理
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="site_shield_manage"
+                  @if($user->site_shield_manage == 1) checked="checked"@endif>屏蔽记录管理
+                  <input type="checkbox" name="permission_{{$user->id}}[]" value="os_reason_manage"
+                  @if($user->os_reason_manage == 1) checked="checked"@endif>退服原因管理
+              </td>
+              <td>
+                @if($user->is_verified == 1)已审核@endif
+                @if($user->is_verified == 0)待审核@endif
+            </td>
+            <td>
+                @if($user->is_verified == 1)
+                <button class="buttonNextStep" onclick="doUpdate({{$user->id}})">修改权限
+                </button>
+                @endif
+                @if($user->is_verified == 0)
+                <button class="buttonNextStep" onclick="doVerify({{$user->id}})">审核通过
+                </button>
+                @endif
+            </td>
+        </tr>
+        @endif
+        @endforeach
+        @endif
 
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_modify"
-                    @if($user->site_modify == 1) checked="checked"@endif>站址属性修改
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_delete"
-                    @if($user->site_delete == 1) checked="checked"@endif>站址删除
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_batch_import"
-                    @if($user->site_batch_import == 1) checked="checked"@endif>站址批量导入
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_batch_export"
-                    @if($user->site_batch_export == 1) checked="checked"@endif>站址批量导出
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="bill_view"
-                    @if($user->bill_view == 1) checked="checked"@endif>查看账单
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="bill_out"
-                    @if($user->bill_out == 1) checked="checked"@endif>出账
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="gnr_manage"
-                    @if($user->gnr_manage == 1) checked="checked"@endif>发电记录管理
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_check_manage"
-                    @if($user->site_check_manage == 1) checked="checked"@endif>上站记录管理
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="site_shield_manage"
-                    @if($user->site_shield_manage == 1) checked="checked"@endif>屏蔽记录管理
-                    <input type="checkbox" name="permission_{{$user->id}}[]" value="os_reason_manage"
-                    @if($user->os_reason_manage == 1) checked="checked"@endif>退服原因管理
-                </td>
-                <td>
-                    @if($user->is_verified == 1)已审核@endif
-                    @if($user->is_verified == 0)待审核@endif
-                </td>
-                <td>
-                    @if($user->is_verified == 1)
-                    <button class="buttonNextStep" onclick="doUpdate({{$user->id}})">修改权限
-                    </button>
-                    @endif
-                    @if($user->is_verified == 0)
-                    <button class="buttonNextStep" onclick="doVerify({{$user->id}})">审核通过
-                    </button>
-                    @endif
-                </td>
-            </tr>
-            @endif
-            @endforeach
-            @endif
 
-
-        </table>
-    </form>
+    </table>
+</form>
 </div>
 </div>
 @endsection

@@ -425,6 +425,8 @@
         </table>
 
 
+
+
     </div>
 @endsection
 
@@ -433,6 +435,7 @@
     <script type="text/javascript">
         $().ready(function () {
             $('#menu_bill').addClass("current");
+
         });
 
         function doSearch() {
