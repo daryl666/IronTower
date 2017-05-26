@@ -100,6 +100,13 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
     Route::get('deduction2', ['uses' => 'ServBillController@viewDeduction2Page', 'permissions' => ['bill_view', 'is_verified']]);
     Route::post('createBill', ['uses' => 'ServBillController@createBill', 'permissions' => ['bill_view', 'is_verified']]);
     Route::post('doOut', ['uses' => 'ServBillController@doOut', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck', ['uses' => 'ServBillController@billCheck', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck/bills', ['uses' => 'ServBillController@billCheck', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck/orders/{id}', ['uses' => 'ServBillController@orderCheck', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck/orders/view/{id}', ['uses' => 'ServBillController@viewOrders', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck/orders/editPage/{id}', ['uses' => 'ServBillController@editPage', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('irontowerBillImportPage', ['uses' => 'ServBillController@irontowerBillImportPage', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+
 });
 
 // Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 'prefix' => 'backend/servCost'], function () {

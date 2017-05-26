@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\BillCheck;
+use App\Models\SiteInfo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -185,5 +187,66 @@ class ServBillController extends Controller
         DB::commit();
 
         return response()->json(['code' => 0]);
+    }
+
+    public function billCheck(Request $request)
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            return view('backend.servBill.billCheck-bill');
+        }else{
+            $filter = $request->all();
+            $billCheckDB = new BillCheck();
+            $month = $request->get('month');
+            $region = $request->get('region');
+            $bills = $billCheckDB->getDiffBills($month, $region);
+            $ironTowerBills = $bills[0];
+            $telecomBills = $bills[1];
+            return view('backend.servBill.billCheck-bill')
+                ->with('telecomBills', $telecomBills)
+                ->with('ironTowerBills', $ironTowerBills)
+                ->with('filter', $filter);
+        }
+
+
+    }
+
+    public function orderCheck($id)
+    {
+        $telecomBill = DB::table('fee_out')
+            ->where('id', $id)
+            ->get();
+        $month = $telecomBill[0]->month;
+        $region = $telecomBill[0]->region_id;
+        $billCheckDB = new BillCheck();
+        $ordersDiff = $billCheckDB->getDiffOrders($month,transRegion($region));
+        return view('backend.servBill.billCheck-order')
+            ->with('orders', $ordersDiff);
+    }
+
+    public function viewOrders($id)
+    {
+        $ironTowerBillOrder = DB::table('irontower_bill_detail')
+            ->where('id', $id)
+            ->get();
+        $month = $ironTowerBillOrder[0]->month;
+        $businessCode = $ironTowerBillOrder[0]->business_code;
+        $siteInfoDB = new SiteInfo();
+        $telecomOrders = $siteInfoDB->getOrders($businessCode, $month);
+        return view('backend.servBill.orders-to-edit')
+            ->with('telecomOrders', $telecomOrders);
+    }
+
+    public function editPage($id)
+    {
+        $telecomOrder = DB::table('site_info')
+            ->where('id', $id)
+            ->get();
+        return view('backend.servBill.edit')
+            ->with('telecomOrder', $telecomOrder[0]);
+    }
+
+    public function irontowerBillImportPage()
+    {
+        return view('backend.servBill.irontower-bill-import');
     }
 }

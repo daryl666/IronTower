@@ -46,9 +46,6 @@
                     <li class="inactive" style="float: none">
                         <a href="{{url('backend/excepHandle/importSiteInfo')}}">导入异常处理</a>
                     </li>
-                    <li class="inactive" style="float: none">
-                        <a href="{{url('backend/siteStats/')}}">站址统计</a>
-                    </li>
                     {{--<li class="dropdown inactiive">--}}
                     {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
                     {{--扣费记录填报 <b class="caret"></b>--}}
@@ -166,7 +163,7 @@
             <tr>
                 <th>站址属性变更日期</th>
                 <td>
-                    <input type="text" id="modifyTime" name="modifyTime" style="width:65px;padding-left:5px"
+                    <input type="text" id="effectiveDate" name="effectiveDate" style="width:65px;padding-left:5px"
                            readonly="true" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
                 </td>
             </tr>

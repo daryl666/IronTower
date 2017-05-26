@@ -1361,13 +1361,15 @@ class SiteInfo extends Model
         return $query->get();
     }
 
-    public function searchInfoSite($region, $siteCode = '')
+    public function searchInfoSite($region, $siteCode = '', $businessCode = '', $id = '')
     {
         if ($region != '湖北省') {
             $query = DB::table('site_info')
-                ->where('site_info.region_id', transRegion($region))
+                ->where('site_info.region_id', 'like', '%' . transRegion($region) . '%')
                 ->where('site_info.is_valid', 1)
                 ->where('site_info.site_code', 'like', '%' . $siteCode . '%')
+                ->where('site_info.business_code', 'like', '%' . $businessCode . '%')
+//                ->where('site_info.id', $id)
                 ->join('fee_out_site_price', 'site_info.req_code', '=', 'fee_out_site_price.req_code')
                 ->where('fee_out_site_price.is_valid', 1)
                 ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
@@ -1409,9 +1411,13 @@ class SiteInfo extends Model
     public function updateDB(Request $request)
     {
         $establishedTime = DB::table('site_info')
-            ->where('site_code', $request->get('siteCode'))
+            ->where('business_code', $request->get('businessCode'))
             ->where('is_valid', 1)
             ->pluck('established_time');
+        $regionId = DB::table('site_info')
+            ->where('business_code', $request->get('businessCode'))
+            ->where('is_valid', 1)
+            ->pluck('region_id');
 
         if ($request->get('isNewTower') == 1) {
 
@@ -1458,7 +1464,7 @@ class SiteInfo extends Model
             $cdma_code = $request->get('cdmaCode');
             $lte_code = $request->get('lteCode');
             $req_code = $request->get('reqCode');
-            $region_name = $request->get('region');
+            $region_name = transRegion($regionId[0]);
             $product_type = $request->get('productType');
             $established_time = $request->get('establishedTime');
             $is_new_tower = 1;
@@ -1487,6 +1493,7 @@ class SiteInfo extends Model
             $fee_add = $request->get('feeAdd');
             $fee_battery = $request->get('feeBat');
             $fee_bbu = $request->get('feeBbu');
+            $effective_date = $request->get('effectiveDate');
 
             $updateSiteInfo = DB::table('site_info')
                 ->where('business_code', $business_code)
@@ -1526,6 +1533,7 @@ class SiteInfo extends Model
                 'land_form' => transLandForm($land_form),
                 'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
+                'effective_date' => $effective_date
 
             ]);
 
@@ -1731,7 +1739,6 @@ class SiteInfo extends Model
                 ->where('is_valid', 1)
                 ->update([
                     'is_valid' => 0,
-//                        'updated_at' => date('Y-m-d h:i:s',time())
                 ]);
             $insSitePrice = DB::table('fee_out_site_price')
                 ->insert([
@@ -1774,7 +1781,7 @@ class SiteInfo extends Model
                     'import_share_discount' => $import_share_discount,
                     'fee_import_discounted' => $fee_import_discounted,
                     'is_valid' => 1,
-                    'effective_date' => $established_time,
+                    'effective_date' => $effective_date,
                     'region_id' => transRegion($region_name),
                 ]);
             if ($insSitePrice && $insSiteInfo) {
@@ -1826,7 +1833,7 @@ class SiteInfo extends Model
             $cdma_code = $request->get('cdmaCode');
             $lte_code = $request->get('lteCode');
             $req_code = $request->get('reqCode');
-            $region_name = $request->get('region');
+            $region_name = transRegion($regionId[0]);
             $product_type = $request->get('productType');
             $established_time = $request->get('establishedTime');
             $is_new_tower = 0;
@@ -1855,6 +1862,7 @@ class SiteInfo extends Model
             $fee_add = $request->get('feeAdd');
             $fee_battery = $request->get('feeBat');
             $fee_bbu = $request->get('feeBbu');
+            $effective_date = $request->get('effectiveDate');
 
             $updateSiteInfo = DB::table('site_info')
                 ->where('business_code', $business_code)
@@ -1894,6 +1902,7 @@ class SiteInfo extends Model
                 'land_form' => transLandForm($land_form),
                 'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
+                'effective_date' => $effective_date
 
             ]);
 
@@ -2142,7 +2151,7 @@ class SiteInfo extends Model
                     'import_share_discount' => $import_share_discount,
                     'fee_import_discounted' => $fee_import_discounted,
                     'is_valid' => 1,
-                    'effective_date' => $established_time,
+                    'effective_date' => $effective_date,
                     'region_id' => transRegion($region_name),
                 ]);
             if ($insSitePrice && $insSiteInfo) {
@@ -2323,6 +2332,29 @@ class SiteInfo extends Model
             return $infoSitesNew;
 
         }
+    }
+
+    public function getOrders($businessCode, $month)
+    {
+        $telecomOrders = DB::table('site_info')
+            ->where('business_code', $businessCode)
+            ->orderBy('effective_date', 'DESC')
+            ->get();
+        $length = count($telecomOrders);
+        foreach ($telecomOrders as $index => $telecomOrder) {
+            if ((!empty($telecomOrder->effective_date) && (strtotime($telecomOrder->effective_date) > strtotime(date('Y-m-d', strtotime("$month +1 month -1 day"))))) || (strtotime($telecomOrder->established_time) > strtotime(date('Y-m-d', strtotime("$month +1 month -1 day"))))) {
+                unset($telecomOrders[$index]);
+            }
+            if ((!empty($telecomOrder->effective_date) && (strtotime($telecomOrder->effective_date) < strtotime(date('Y-m-01', strtotime($month))))) || (empty($telecomOrder->effective_date) && (strtotime($telecomOrder->established_time) < strtotime(date('Y-m-01', strtotime($month)))))) {
+                $indexToChoose = $index;
+                for ($index = $indexToChoose + 1; $index < $length; $index++) {
+                    unset($telecomOrders[$index]);
+                }
+                break;
+            }
+        }
+        return $telecomOrders;
+
     }
 
 }

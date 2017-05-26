@@ -106,10 +106,10 @@ class FeeOut extends Model
 
 
         if ($beginDay != '') {
-            $query->where('start_day', '>=', $beginDay);
+            $query->where('month', '>=', $beginDay);
         }
         if ($endDay != '') {
-            $query->where('end_day', '<=', $endDay);
+            $query->where('month', '<=', $endDay);
         }
         return $query->get();
     }

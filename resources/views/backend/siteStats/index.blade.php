@@ -24,75 +24,29 @@
     <div class="container" style="width:100% ">
         <div class="row clearfix">
             <div class="col-md-12 column" style="padding: 0">
-                {{--<div class="collapse navbar-collapse" id="example-navbar-collapse" style="padding: 0">--}}
-                <ul class="nav nav-tabs" style="font-size: 13px">
+                <ul class="nav nav-tabs">
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill')}}">账单管理</a>
+                    </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill/irontowerBillImportPage')}}">铁塔详单导入</a>
+                    </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill/billCheck')}}">账单稽查</a>
+                    </li>
                     <li class="active">
-                        <a href="{{url('backend/siteInfo?region=') . Auth::user()->area_level}}">站址信息管理</a>
+                        <a href="{{url('backend/siteStats/')}}">铁塔详单统计</a>
                     </li>
-                    <li class="inactive">
-                        <a href="{{url('backend/gnrRec?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">发电记录管理</a>
-                    </li>
-                    <li class="inactive">
-                        <a href="{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">上站记录管理</a>
-                    </li>
-                    <li class="inactive">
-                        @if(Auth::user()->area_level == '湖北省')                             <a
-                                href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')
-                            <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
-                    </li>
-                    <li class="inactive">
-                        <a href="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">退服原因管理</a>
-                    </li>
-                    {{--<li class="dropdown inactiive">--}}
-                    {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
-                    {{--扣费记录填报 <b class="caret"></b>--}}
-                    {{--</a>--}}
-                    {{--<ul class="dropdown-menu" style="font-size: 12px;">--}}
-
-
-                    {{--</ul>--}}
-                    {{--</li>--}}
-                </ul>
-                {{--</div>--}}
-
-
-                <ul class="nav-tabs-2">
-                    <li class="inactive">
-                        <a href="{{url('backend/siteInfo?region=') . Auth::user()->area_level}}">站址信息查询</a>
-                    </li>
-                    <li class="inactive">
-                        <a href="{{url('backend/siteInfo/addNewPage')}}">站址信息新增</a>
-                    </li>
-                    <li class="inactive" style="float: none">
-                        <a href="{{url('backend/excepHandle/importSiteInfo')}}">导入异常处理</a>
-                    </li>
-                    <li class="active" style="float: none">
-                        <a href="{{url('backend/siteStats/')}}">站址统计</a>
-                    </li>
-                    {{--<li class="dropdown inactiive">--}}
-                    {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
-                    {{--扣费记录填报 <b class="caret"></b>--}}
-                    {{--</a>--}}
-                    {{--<ul class="dropdown-menu" style="font-size: 12px;">--}}
-
-
-                    {{--</ul>--}}
-                    {{--</li>--}}
                 </ul>
                 <ul class="breadcrumb" style="margin-bottom: 0;background-color: #F5F5F5">
                     当前位置：
                     <li>
-                        <a href="{{url('backend/siteInfo?region=') . Auth::user()->area_level}}">业务管理</a>
-                    </li>
-                    <li>
-                        <a href="{{url('backend/siteInfo?region=') . Auth::user()->area_level}}">站址信息管理</a>
+                        <a href="{{url('backend/servBill')}}">账单管理</a>
                     </li>
                     <li class="active">
-                        <a href="#">站址统计</a>
+                        <a href="#">铁塔详单统计</a>
                     </li>
                 </ul>
-
-
             </div>
         </div>
 
@@ -106,20 +60,7 @@
             <form id="listForm" method="post" action="{{url('backend/siteInfo/')}}" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" id="siteStats" @if(isset($filter)) value="1" @endif>
-                <div class="input managerInfo">
-                    <div class="bar">
-                        铁塔详单导入
-                    </div>
-                    <table class="inputTable tabContent">
-                        <tr>
-                            <td>
-                                <input id="billDetailFile" name="billDetailFile" style="width: 170px" type="file">
-                                <input class="formButton" onclick="doImport()" type="button" value="导入">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="listBar" style="margin-top: 25px;">
+                <div class="listBar">
                     <td>
                         请选择地市、起止时间和共享类型（铁塔共享、机房共享等）查看站址统计信息：
                     </td>
@@ -1088,7 +1029,7 @@
 @section('script_footer')
     <script type="text/javascript">
         $().ready(function () {
-            $('#menu_business').addClass("current");
+            $('#menu_bill').addClass("current");
             if ($('#siteStats').val() == '1') {
                 $("#siteStatsTable").find("tr").each(function () {
                     var tdArr = $(this).children();

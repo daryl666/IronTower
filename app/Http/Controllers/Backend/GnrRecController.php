@@ -312,7 +312,6 @@ class GnrRecController extends Controller
         ->where('tower_site_code', $siteCode)
         ->where('region_id', transRegion($filter['region']))
         ->get();
-        dd($stationSiteMap);
         // dd($stationSiteMap);
         if (empty($stationSiteMap)) {
             echo "<script language=javascript>alert('站址编码和基站编号映射关系不正确！');history.back();</script>";

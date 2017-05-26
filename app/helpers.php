@@ -819,3 +819,20 @@ if (!function_exists('compareTheSiteAttributes')) {
         }
     }
 }
+
+if (!function_exists('compareBills')) {
+    function compareBills($costIronTower, $costTelecom)
+    {
+        return $costIronTower === $costTelecom;
+    }
+}
+
+if (!function_exists('compareOrderDetail')) {
+    function compareOrderDetail($orderIronTower, $orderTelecom)
+    {
+        return $orderIronTower === $orderTelecom;
+
+    }
+}
+
+

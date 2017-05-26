@@ -17,6 +17,15 @@
                     <li class="active">
                         <a href="{{url('backend/servBill')}}">账单管理</a>
                     </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill/irontowerBillImportPage')}}">铁塔详单导入</a>
+                    </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill/billCheck')}}">账单稽查</a>
+                    </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/siteStats/')}}">铁塔详单统计</a>
+                    </li>
                 </ul>
                 <ul class="breadcrumb" style="margin-bottom: 0;background-color: #F5F5F5">
                     当前位置：

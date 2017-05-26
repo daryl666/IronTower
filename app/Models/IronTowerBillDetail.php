@@ -19,8 +19,8 @@ class IronTowerBillDetail extends Model
         $siteInfoDB = $this->firstOrNew(['month' => $year.'-'.$month, 'business_code' => $siteInfo[1]]);
         $siteInfoDB->month = $year.'-'.$month;
         $siteInfoDB->business_code = $siteInfo[1];
-        $siteInfoDB->region_id = transRegion($siteInfo[5]);
-        $siteInfoDB->region_name = $siteInfo[5];
+        $siteInfoDB->region_id = transRegion($siteInfo[3]);
+        $siteInfoDB->region_name = $siteInfo[3];
         $siteInfoDB->site_name = $siteInfo[6];
         $siteInfoDB->site_code = $siteInfo[7];
         $siteInfoDB->req_code = $siteInfo[8];
@@ -601,9 +601,24 @@ class IronTowerBillDetail extends Model
         $siteStats[13][28] += $siteStat[28];
         $siteStats[13][29] += $siteStat[29];
     }
-    $siteStats[13][4] = ($siteStats[13][1]+$siteStats[13][2])/$siteStats[13][0];
-    $siteStats[13][9] = ($siteStats[13][6]+$siteStats[13][7])/$siteStats[13][5];
-    $siteStats[13][14] = ($siteStats[13][11]+$siteStats[13][12])/$siteStats[13][10];
+        if ($siteStats[13][0] == 0) {
+            $siteStats[13][4] = 0;
+        }else{
+            $siteStats[13][4] = ($siteStats[13][1]+$siteStats[13][2])/$siteStats[13][0];
+        }
+        if ($siteStats[13][5] == 0) {
+            $siteStats[13][9] = 0;
+        }else{
+            $siteStats[13][9] = ($siteStats[13][6]+$siteStats[13][7])/$siteStats[13][5];
+        }
+        if ($siteStats[13][10] == 0) {
+            $siteStats[13][14] = 0;
+        }else{
+            $siteStats[13][14] = ($siteStats[13][11]+$siteStats[13][12])/$siteStats[13][10];
+        }
+
+
+
 
     return $siteStats;
 

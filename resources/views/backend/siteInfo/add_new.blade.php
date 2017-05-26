@@ -94,11 +94,6 @@
                             导入异常处理
                         </a>
                     </li>
-                    <li class="inactive" style="float: none">
-                        <a href="{{url('backend/siteStats/')}}">
-                            站址统计
-                        </a>
-                    </li>
                     {{--
                     <li class="dropdown inactiive">
                         --}}

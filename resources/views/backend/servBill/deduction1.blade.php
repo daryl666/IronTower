@@ -16,6 +16,15 @@
                     <li class="active">
                         <a href="{{url('backend/servBill')}}">账单管理</a>
                     </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill/irontowerBillImportPage')}}">铁塔详单导入</a>
+                    </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/servBill/billCheck')}}">账单稽查</a>
+                    </li>
+                    <li class="inactive">
+                        <a href="{{url('backend/siteStats/')}}">铁塔详单统计</a>
+                    </li>
                 </ul>
                 <ul class="breadcrumb" style="margin-bottom: 0;background-color: #F5F5F5">
                     当前位置：
@@ -23,7 +32,7 @@
                         <a href="{{url('backend/servBill')}}">账单管理</a>
                     </li>
                     <li class="active">
-                        <a href="#">扣费1明细</a>
+                        <a href="#">集团指标扣费明细</a>
                     </li>
                 </ul>
             </div>
@@ -82,11 +91,11 @@
     <script type="text/javascript" src="{{ URL::asset('common/datePicker/WdatePicker.js')}}"></script>
     <script type="text/javascript">
         $().ready(function () {
-            var child2 = document.getElementById('child2');
-            var servBill = document.getElementById('servBill');
-            child2.style.display = '';
-            servBill.style.color = '#FF6D10';
-//            $('#menu_bill').addClass("current");
+//            var child2 = document.getElementById('child2');
+//            var servBill = document.getElementById('servBill');
+//            child2.style.display = '';
+//            servBill.style.color = '#FF6D10';
+            $('#menu_bill').addClass("current");
         });
 
     </script>

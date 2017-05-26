@@ -46,9 +46,6 @@
                     <li class="inactive" style="float: none">
                         <a href="{{url('backend/excepHandle/importSiteInfo')}}">导入异常处理</a>
                     </li>
-                    <li class="inactive" style="float: none">
-                        <a href="{{url('backend/siteStats/')}}">站址统计</a>
-                    </li>
                     {{--<li class="dropdown inactiive">--}}
                     {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown">--}}
                     {{--扣费记录填报 <b class="caret"></b>--}}
