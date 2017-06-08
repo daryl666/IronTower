@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class SiteInfo extends Model
 {
-
     protected $table = 'site_info';
     protected $guarded = ['id'];
 
@@ -18,34 +17,6 @@ class SiteInfo extends Model
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function searchCode(Request $request)
-    {
-        $region_id = DB::table('area_info_copy')
-            ->where('region_name', '=', $request->get('region'))
-            ->pluck('region_id');
-        $product_type = DB::table('dict_sys_code')
-            ->where('value', '=', $request->get('productType'))
-            ->pluck('code');
-        $rru_away = DB::table('dict_sys_code')
-            ->where('value', '=', $request->get('rruAway'))
-            ->pluck('code');
-        $site_district_type = DB::table('dict_sys_code')
-            ->where('value', '=', $request->get('siteDistType'))
-            ->pluck('code');
-        $sys_height = DB::table('dict_sys_code')
-            ->where('value', '=', $request->get('sysHeight'))
-            ->pluck('code');
-        $tower_type = DB::table('dict_sys_code')
-            ->where('value', '=', $request->get('towerType'))
-            ->pluck('code');
-        $elec_introduced_type
-            = DB::table('dict_sys_code')
-            ->where('value', '=', $request->get('elecIntroType'))
-            ->pluck('code');
-        $code = $region_id[0] . $product_type[0] . $rru_away[0] . $site_district_type[0] . $sys_height[0] .
-            $tower_type[0] . $elec_introduced_type[0];
-        return $code;
-    }
 
     public function addInfoSiteNew(Request $request)
     {
@@ -112,92 +83,19 @@ class SiteInfo extends Model
 
 
 
-//            $tower_share_discount = DB::table('share_discount_std')
-//                ->where('is_new_tower', $is_new_tower)
-//                ->where('share_num', transShareType($share_num_tower))
-//                ->where('user_type', transUserType($user_type))
-//                ->where('is_newly_added', $is_newly_added)
-//                ->pluck('discount_basic');
-//            if (!empty($tower_share_discount)) {
-//                $tower_share_discount = $tower_share_discount[0];
-//            } else {
-//                $tower_share_discount = 1;
-//            }
+            $fee_house1 = FeeHouseStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_house');
+            $fee_house1 = ($fee_house1 == null) ? 0 : $fee_house1;
 
-//            $house_share_discount = DB::table('share_discount_std')
-//                ->where('is_new_tower', $is_new_tower)
-//                ->where('share_num', transShareType($share_num_house))
-//                ->where('user_type', transUserType($user_type))
-//                ->where('is_newly_added', $is_newly_added)
-//                ->pluck('discount_basic');
-//            if (!empty($house_share_discount)) {
-//                $house_share_discount = $house_share_discount[0];
-//            } else {
-//                $house_share_discount = 1;
-//            }
-//            $support_share_discount = DB::table('share_discount_std')
-//                ->where('is_new_tower', $is_new_tower)
-//                ->where('share_num', transShareType($share_num_support))
-//                ->where('user_type', transUserType($user_type))
-//                ->where('is_newly_added', $is_newly_added)
-//                ->pluck('discount_basic');
-//            if (!empty($support_share_discount)) {
-//                $support_share_discount = $support_share_discount[0];
-//            } else {
-//                $support_share_discount = 1;
-//            }
-//            $maintain_share_discount = DB::table('share_discount_std')
-//                ->where('is_new_tower', 1)
-//                ->where('share_num', transShareType($share_num_maintain))
-//                ->where('user_type', transUserType($user_type))
-//                ->where('is_newly_added', $is_newly_added)
-//                ->pluck('discount_basic');
-//            if (!empty($maintain_share_discount)) {
-//                $maintain_share_discount = $maintain_share_discount[0];
-//            } else {
-//                $maintain_share_discount = 1;
-//            }
-            $fee_house1 = DB::table('fee_house_std')
-                ->where('tower_type', transTowerType($tower_type))
-                ->where('product_type', transProductType($product_type))
-                ->where('is_new_tower', $is_new_tower)
-                ->pluck('fee_house');
-            if (!empty($fee_house1)) {
-                $fee_house1 = $fee_house1[0];
-            } else {
-                $fee_house1 = 0;
-            }
-            $fee_support1 = DB::table('fee_support_std')
-                ->where('tower_type', transTowerType($tower_type))
-                ->where('product_type', transProductType($product_type))
-                ->where('is_new_tower', $is_new_tower)
-                ->pluck('fee_support');
-            if (!empty($fee_support1)) {
-                $fee_support1 = $fee_support1[0];
-            } else {
-                $fee_support1 = 0;
-            }
-            $fee_maintain1 = DB::table('fee_maintain_std')
-                ->where('tower_type', transTowerType($tower_type))
-                ->where('product_type', transProductType($product_type))
-                ->where('is_new_tower', $is_new_tower)
-                ->pluck('fee_maintain');
-            if (!empty($fee_maintain1)) {
-                $fee_maintain1 = $fee_maintain1[0];
-            } else {
-                $fee_maintain1 = 0;
-            }
+            $fee_support1 = FeeSupportStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_support');
+            $fee_support1 = ($fee_support1 == null) ? 0 : $fee_support1;
+
+            $fee_maintain1 = FeeMaintainStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_maintain');
+            $fee_maintain1 = ($fee_maintain1 == null) ? 0 : $fee_maintain1;
+
             if (!empty($sys1_height) && $sys1_height != '无') {
-                $fee_tower1 = DB::table('fee_tower_std')
-                    ->where('tower_type', transTowerType($tower_type))
-                    ->where('sys_height', transSysHeight($sys1_height))
-                    ->where('is_new_tower', $is_new_tower)
-                    ->pluck('fee_tower');
-                if (!empty($fee_tower1)) {
-                    $fee_tower1 = $fee_tower1[0];
-                } else {
-                    $fee_tower1 = 0;
-                }
+                $fee_tower1 = FeeTowerStd::getStd($tower_type, $sys1_height, $is_new_tower)->value('fee_tower');
+                $fee_tower1 = ($fee_tower1 == null) ? 0 : $fee_tower1;
+
 
             } else {
                 $fee_tower1 = 0;
@@ -206,16 +104,8 @@ class SiteInfo extends Model
                 $fee_maintain1 = 0;
             }
             if (!empty($sys2_height) && $sys2_height != '无') {
-                $fee_tower2 = DB::table('fee_tower_std')
-                    ->where('tower_type', transTowerType($tower_type))
-                    ->where('sys_height', transSysHeight($sys1_height))
-                    ->where('is_new_tower', $is_new_tower)
-                    ->pluck('fee_tower');
-                if (!empty($fee_tower2)) {
-                    $fee_tower2 = $fee_tower2[0];
-                } else {
-                    $fee_tower2 = 0;
-                }
+                $fee_tower2 = FeeTowerStd::getStd($tower_type, $sys2_height, $is_new_tower)->value('fee_tower');
+                $fee_tower2 = ($fee_tower2 == null) ? 0 : $fee_tower2;
                 $fee_house2 = $fee_house1;
                 $fee_maintain2 = $fee_maintain1;
                 $fee_support2 = $fee_support1;
@@ -226,16 +116,8 @@ class SiteInfo extends Model
                 $fee_maintain2 = 0;
             }
             if (!empty($sys3_height) && $sys3_height != '无') {
-                $fee_tower3 = DB::table('fee_tower_std')
-                    ->where('tower_type', transTowerType($tower_type))
-                    ->where('sys_height', transSysHeight($sys1_height))
-                    ->where('is_new_tower', $is_new_tower)
-                    ->pluck('fee_tower');
-                if (!empty($fee_tower3)) {
-                    $fee_tower3 = $fee_tower3[0];
-                } else {
-                    $fee_tower3 = 0;
-                }
+                $fee_tower3 = FeeTowerStd::getStd($tower_type, $sys3_height, $is_new_tower)->value('fee_tower');
+                $fee_tower3 = ($fee_tower3 == null) ? 0 : $fee_tower3;
                 $fee_house3 = $fee_house1;
                 $fee_maintain3 = $fee_maintain1;
                 $fee_support3 = $fee_support1;
@@ -245,57 +127,15 @@ class SiteInfo extends Model
                 $fee_support3 = 0;
                 $fee_maintain3 = 0;
             }
-
-//            $site_share_discount = DB::table('share_discount_std')
-//                ->where('is_new_tower', $is_new_tower)
-//                ->where('share_num', transShareType($share_num_site))
-//                ->where('user_type', transUserType($user_type))
-//                ->where('is_newly_added', $is_newly_added)
-//                ->pluck('discount_site');
-//            if (!empty($site_share_discount)) {
-//                $site_share_discount = $site_share_discount[0];
-//            } else {
-//                $site_share_discount = 1;
-//            }
-//            $import_share_discount = DB::table('share_discount_std')
-//                ->where('is_new_tower', $is_new_tower)
-//                ->where('share_num', transShareType($share_num_import))
-//                ->where('user_type', transUserType($user_type))
-//                ->where('is_newly_added', $is_newly_added)
-//                ->pluck('discount_import');
-//            if (!empty($import_share_discount)) {
-//                $import_share_discount = $import_share_discount[0];
-//            } else {
-//                $import_share_discount = 1;
-//            }
             if ($sys_num1 >= 1) {
                 $fee_site = FeeSiteStd::getStd($region_name, $site_district_type, $is_rru_away)->value('fee_site');
                 $fee_site = ($fee_site == null) ? 0 : $fee_site;
-//                $fee_site = DB::table('fee_site_std')
-//                    ->where('region_id', transRegion($region_name))
-//                    ->where('site_district_type', transSiteDistType($site_district_type))
-//                    ->where('is_rru_away', transIsRRUAway($is_rru_away))
-//                    ->pluck('fee_site');
-//                if (!empty($fee_site)) {
-//                    $fee_site = $fee_site[0];
-//                } else {
-//                    $fee_site = 0;
-//                }
                 $fee_import = FeeImportStd::getStd($region_name, $elec_introduced_type)->value('fee_import');
-//                $fee_import = DB::table('fee_import_std')
-//                    ->where('region_id', transRegion($region_name))
-//                    ->where('elec_introduced_type', transElecType($elec_introduced_type))
-//                    ->pluck('fee_import');
-//                if (!empty($fee_import)) {
-//                    $fee_import = $fee_import[0];
-//                } else {
-//                    $fee_import = 0;
-//                }
+                $fee_import = ($fee_import == null) ? 0 : $fee_import;
             } else {
                 $fee_site = 0;
                 $fee_import = 0;
             }
-
             $fee_tower = $fee_tower1 * $sys_num1 + $fee_tower2 * $sys_num2 + $fee_tower3 * $sys_num3;
             $fee_house = $fee_house1 * $sys_num1 + $fee_house2 + $sys_num2 + $fee_house3 * $sys_num3;
             $fee_support = $fee_support1 * $sys_num1 + $fee_support2 * $sys_num2 + $fee_support3 * $sys_num3;
@@ -358,7 +198,6 @@ class SiteInfo extends Model
                     ->where('is_valid', 1)
                     ->update([
                         'is_valid' => 0,
-//                        'updated_at' => date('Y-m-d h:i:s',time())
                     ]);
                 $insSitePrice = FeeOutSitePrice::create([
                     'site_code' => $site_code,
@@ -453,40 +292,7 @@ class SiteInfo extends Model
     {
         //插入站址属性信息
         $business_code = $request->get('businessCode');
-        $site_code = $request->get('siteCode');
-        $site_name = $request->get('siteName');
-        $cdma_code = $request->get('cdmaCode');
-        $lte_code = $request->get('lteCode');
-        $req_code = $request->get('reqCode');
-        $region_name = $request->get('region');
-        $product_type = $request->get('productType');
-        $established_time = $request->get('establishedTime');
-        $is_new_tower = '否';
-        $is_newly_added = $request->get('isNewlyAdded');
-        $tower_type = $request->get('towerType');
-        $sys_num1 = $request->get('sysNum1');
-        $sys1_height = $request->get('sysHeight1');
-        $sys_num2 = $request->get('sysNum2');
-        $sys2_height = $request->get('sysHeight2');
-        $sys_num3 = $request->get('sysNum3');
-        $sys3_height = $request->get('sysHeight3');
-        $land_form = $request->get('landForm');
-        $is_co_opetition = $request->get('isCoOpetition');
-        $share_num_house = $request->get('shareNumHouse');
-        $share_num_tower = $request->get('shareNumTower');
-        $share_num_support = $request->get('shareNumSupport');
-        $share_num_maintain = $request->get('shareNumMaintain');
-        $share_num_site = $request->get('shareNumSite');
-        $share_num_import = $request->get('shareNumImport');
-        $site_district_type = $request->get('siteDistType');
-        $is_rru_away = $request->get('rruAway');
-        $user_type = $request->get('userType');
-        $elec_introduced_type = $request->get('elecIntroType');
-        $fee_wlan = $request->get('feeWlan');
-        $fee_micwav = $request->get('feeMicwav');
-        $fee_add = $request->get('feeAdd');
-        $fee_battery = $request->get('feeBat');
-        $fee_bbu = $request->get('feeBbu');
+
 
         $siteIsExist = DB::table('site_info')
             ->where('business_code', $request->get('business_code'))
@@ -533,92 +339,23 @@ class SiteInfo extends Model
             $fee_add = $request->get('feeAdd');
             $fee_battery = $request->get('feeBat');
             $fee_bbu = $request->get('feeBbu');
-            $tower_share_discount = DB::table('share_discount_std')
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->where('share_num', transShareType($share_num_tower))
-                ->where('user_type', transUserType($user_type))
-                ->where('is_newly_added', $is_newly_added)
-                ->pluck('discount_basic');
-            if (!empty($tower_share_discount)) {
-                $tower_share_discount = $tower_share_discount[0];
-            } else {
-                $tower_share_discount = 1;
-            }
-
-            $house_share_discount = DB::table('share_discount_std')
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->where('share_num', transShareType($share_num_house))
-                ->where('user_type', transUserType($user_type))
-                ->where('is_newly_added', $is_newly_added)
-                ->pluck('discount_basic');
-            if (!empty($house_share_discount)) {
-                $house_share_discount = $house_share_discount[0];
-            } else {
-                $house_share_discount = 1;
-            }
-            $support_share_discount = DB::table('share_discount_std')
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->where('share_num', transShareType($share_num_support))
-                ->where('user_type', transUserType($user_type))
-                ->where('is_newly_added', $is_newly_added)
-                ->pluck('discount_basic');
-            if (!empty($support_share_discount)) {
-                $support_share_discount = $support_share_discount[0];
-            } else {
-                $support_share_discount = 1;
-            }
-            $maintain_share_discount = DB::table('share_discount_std')
-                ->where('is_new_tower', 1)
-                ->where('share_num', transShareType($share_num_maintain))
-                ->where('user_type', transUserType($user_type))
-                ->where('is_newly_added', $is_newly_added)
-                ->pluck('discount_basic');
-            if (!empty($maintain_share_discount)) {
-                $maintain_share_discount = $maintain_share_discount[0];
-            } else {
-                $maintain_share_discount = 1;
-            }
-            $fee_house1 = DB::table('fee_house_std')
-                ->where('tower_type', transTowerType($tower_type))
-                ->where('product_type', transProductType($product_type))
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->pluck('fee_house');
-            if (!empty($fee_house1)) {
-                $fee_house1 = $fee_house1[0];
-            } else {
-                $fee_house1 = 0;
-            }
-            $fee_support1 = DB::table('fee_support_std')
-                ->where('tower_type', transTowerType($tower_type))
-                ->where('product_type', transProductType($product_type))
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->pluck('fee_support');
-            if (!empty($fee_support1)) {
-                $fee_support1 = $fee_support1[0];
-            } else {
-                $fee_support1 = 0;
-            }
-            $fee_maintain1 = DB::table('fee_maintain_std')
-                ->where('tower_type', transTowerType($tower_type))
-                ->where('product_type', transProductType($product_type))
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->pluck('fee_maintain');
-            if (!empty($fee_maintain1)) {
-                $fee_maintain1 = $fee_maintain1[0];
-            } else {
-                $fee_maintain1 = 0;
-            }
+            $tower_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_tower, $user_type, $is_newly_added)->value('discount_basic');
+            $tower_share_discount = ($tower_share_discount == null) ? 1 : $tower_share_discount;
+            $house_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_house, $user_type, $is_newly_added)->value('discount_basic');
+            $house_share_discount = ($house_share_discount == null) ? 1 : $house_share_discount;
+            $support_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_support, $user_type, $is_newly_added)->value('discount_basic');
+            $support_share_discount = ($support_share_discount == null) ? 1 : $support_share_discount;
+            $maintain_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_maintain, $user_type, $is_newly_added)->value('discount_basic');
+            $maintain_share_discount = ($maintain_share_discount == null) ? 1 : $maintain_share_discount;
+            $fee_house1 = FeeHouseStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_house');
+            $fee_house1 = ($fee_house1 == null) ? 0 : $fee_house1;
+            $fee_support1 = FeeSupportStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_support');
+            $fee_support1 = ($fee_support1 == null) ? 0 : $fee_support1;
+            $fee_maintain1 = FeeMaintainStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_maintain');
+            $fee_maintain1 = ($fee_maintain1 == null) ? 0 : $fee_maintain1;
             if (!empty($sys1_height) && $sys1_height != 0) {
-                $fee_tower1 = DB::table('fee_tower_std')
-                    ->where('tower_type', transTowerType($tower_type))
-                    ->where('sys_height', transSysHeight($sys1_height))
-                    ->where('is_new_tower', transIsNewTower($is_new_tower))
-                    ->pluck('fee_tower');
-                if (!empty($fee_tower1)) {
-                    $fee_tower1 = $fee_tower1[0];
-                } else {
-                    $fee_tower1 = 0;
-                }
+                $fee_tower1 = FeeTowerStd::getStd($tower_type, $sys1_height, $is_new_tower)->value('fee_tower');
+                $fee_tower1 = ($fee_tower1 == null) ? 0 : $fee_tower1;
 
             } else {
                 $fee_tower1 = 0;
@@ -627,16 +364,8 @@ class SiteInfo extends Model
                 $fee_maintain1 = 0;
             }
             if (!empty($sys2_height) && $sys2_height != 0) {
-                $fee_tower2 = DB::table('fee_tower_std')
-                    ->where('tower_type', transTowerType($tower_type))
-                    ->where('sys_height', transSysHeight($sys1_height))
-                    ->where('is_new_tower', transIsNewTower($is_new_tower))
-                    ->pluck('fee_tower');
-                if (!empty($fee_tower2)) {
-                    $fee_tower2 = $fee_tower2[0];
-                } else {
-                    $fee_tower2 = 0;
-                }
+                $fee_tower2 = FeeTowerStd::getStd($tower_type, $sys2_height, $is_new_tower)->value('fee_tower');
+                $fee_tower2 = ($fee_tower2 == null) ? 0 : $fee_tower2;
                 $fee_house2 = $fee_house1;
                 $fee_maintain2 = $fee_maintain1;
                 $fee_support2 = $fee_support1;
@@ -647,16 +376,8 @@ class SiteInfo extends Model
                 $fee_maintain2 = 0;
             }
             if (!empty($sys3_height) && $sys3_height != 0) {
-                $fee_tower3 = DB::table('fee_tower_std')
-                    ->where('tower_type', transTowerType($tower_type))
-                    ->where('sys_height', transSysHeight($sys1_height))
-                    ->where('is_new_tower', transIsNewTower($is_new_tower))
-                    ->pluck('fee_tower');
-                if (!empty($fee_tower3)) {
-                    $fee_tower3 = $fee_tower3[0];
-                } else {
-                    $fee_tower3 = 0;
-                }
+                $fee_tower3 = FeeTowerStd::getStd($tower_type, $sys3_height, $is_new_tower)->value('fee_tower');
+                $fee_tower3 = ($fee_tower3 == null) ? 0 : $fee_tower3;
                 $fee_house3 = $fee_house1;
                 $fee_maintain3 = $fee_maintain1;
                 $fee_support3 = $fee_support1;
@@ -667,39 +388,14 @@ class SiteInfo extends Model
                 $fee_maintain3 = 0;
             }
 
-            $site_share_discount = DB::table('share_discount_std')
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->where('share_num', transShareType($share_num_site))
-                ->where('user_type', transUserType($user_type))
-                ->where('is_newly_added', $is_newly_added)
-                ->pluck('discount_site');
-            if (!empty($site_share_discount)) {
-                $site_share_discount = $site_share_discount[0];
-            } else {
-                $site_share_discount = 1;
-            }
-            $import_share_discount = DB::table('share_discount_std')
-                ->where('is_new_tower', transIsNewTower($is_new_tower))
-                ->where('share_num', transShareType($share_num_import))
-                ->where('user_type', transUserType($user_type))
-                ->where('is_newly_added', $is_newly_added)
-                ->pluck('discount_import');
-            if (!empty($import_share_discount)) {
-                $import_share_discount = $import_share_discount[0];
-            } else {
-                $import_share_discount = 1;
-            }
+            $site_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_site, $user_type, $is_newly_added)->value('discount_site');
+            $site_share_discount = ($site_share_discount == null) ? 1 : $site_share_discount;
+            $import_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_import, $user_type, $is_newly_added)->value('discount_import');
+            $import_share_discount = ($import_share_discount == null) ? 1 : $import_share_discount;
             if ($sys_num1 >= 1) {
                 $fee_site = $request->get('feeSiteOld');
-                $fee_import = DB::table('fee_import_std')
-                    ->where('region_id', transRegion($region_name))
-                    ->where('elec_introduced_type', transElecType($elec_introduced_type))
-                    ->pluck('fee_import');
-                if (!empty($fee_import)) {
-                    $fee_import = $fee_import[0];
-                } else {
-                    $fee_import = 0;
-                }
+                $fee_import = FeeImportStd::getStd($region_name, $elec_introduced_type)->value('fee_import');
+                $fee_import = ($fee_import == null) ? 0 : $fee_import;
             } else {
                 $fee_site = 0;
                 $fee_import = 0;
@@ -767,7 +463,6 @@ class SiteInfo extends Model
                     ->where('is_valid', 1)
                     ->update([
                         'is_valid' => 0,
-//                        'updated_at' => date('Y-m-d h:i:s',time())
                     ]);
                 $insSitePrice = FeeOutSitePrice::create([
                     'site_code' => $site_code,
@@ -933,95 +628,27 @@ class SiteInfo extends Model
                         ->get();
 
                     //查表得出各种价格
-                    $tower_share_discount = DB::table('share_discount_std')
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->where('share_num', ($share_num_tower))
-                        ->where('user_type', transUserType($user_type))
-                        ->where('is_newly_added', $is_newly_added)
-                        ->pluck('discount_basic');
-                    if (!empty($tower_share_discount)) {
-                        $tower_share_discount = $tower_share_discount[0];
-                    } else {
-                        $tower_share_discount = 1;
-                    }
+                    $tower_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_tower, $user_type, $is_newly_added)->value('discount_basic');
+                    $tower_share_discount = ($tower_share_discount == null) ? 1 : $tower_share_discount;
+                    $house_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_house, $user_type, $is_newly_added)->value('discount_basic');
+                    $house_share_discount = ($house_share_discount == null) ? 1 : $house_share_discount;
+                    $support_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_support, $user_type, $is_newly_added)->value('discount_basic');
+                    $support_share_discount = ($support_share_discount == null) ? 1 : $support_share_discount;
+                    $maintain_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_maintain, $user_type, $is_newly_added)->value('discount_basic');
+                    $maintain_share_discount = ($maintain_share_discount == null) ? 1 : $maintain_share_discount;
 
-                    $house_share_discount = DB::table('share_discount_std')
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->where('share_num', ($share_num_house))
-                        ->where('user_type', transUserType($user_type))
-                        ->where('is_newly_added', $is_newly_added)
-                        ->pluck('discount_basic');
-                    if (!empty($house_share_discount)) {
-                        $house_share_discount = $house_share_discount[0];
-                    } else {
-                        $house_share_discount = 1;
-                    }
-                    $support_share_discount = DB::table('share_discount_std')
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->where('share_num', ($share_num_support))
-                        ->where('user_type', transUserType($user_type))
-                        ->where('is_newly_added', $is_newly_added)
-                        ->pluck('discount_basic');
-                    if (!empty($support_share_discount)) {
-                        $support_share_discount = $support_share_discount[0];
-                    } else {
-                        $support_share_discount = 1;
-                    }
-                    $maintain_share_discount = DB::table('share_discount_std')
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->where('share_num', ($share_num_maintain))
-                        ->where('user_type', transUserType($user_type))
-                        ->where('is_newly_added', $is_newly_added)
-                        ->pluck('discount_basic');
 
-                    if (!empty($maintain_share_discount)) {
-                        $maintain_share_discount = $maintain_share_discount[0];
-                    } else {
-                        $maintain_share_discount = 1;
-                    }
-                    $fee_house1 = DB::table('fee_house_std')
-                        ->where('tower_type', transTowerType($tower_type))
-                        ->where('product_type', transProductType($product_type))
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->pluck('fee_house');
-                    if (!empty($fee_house1)) {
-                        $fee_house1 = $fee_house1[0];
-                    } else {
-                        $fee_house1 = 0;
-                    }
-                    $fee_support1 = DB::table('fee_support_std')
-                        ->where('tower_type', transTowerType($tower_type))
-                        ->where('product_type', transProductType($product_type))
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->pluck('fee_support');
-                    if (!empty($fee_support1)) {
-                        $fee_support1 = $fee_support1[0];
-                    } else {
-                        $fee_support1 = 0;
-                    }
-                    $fee_maintain1 = DB::table('fee_maintain_std')
-                        ->where('tower_type', transTowerType($tower_type))
-                        ->where('product_type', transProductType($product_type))
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->pluck('fee_maintain');
-                    if (!empty($fee_maintain1)) {
-                        $fee_maintain1 = $fee_maintain1[0];
-                    } else {
-                        $fee_maintain1 = 0;
-                    }
+
+                    $fee_house1 = FeeHouseStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_house');
+                    $fee_house1 = ($fee_house1 == null) ? 0 : $fee_house1;
+                    $fee_support1 = FeeSupportStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_support');
+                    $fee_support1 = ($fee_support1 == null) ? 0 : $fee_support1;
+                    $fee_maintain1 = FeeMaintainStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_maintain');
+                    $fee_maintain1 = ($fee_maintain1 == null) ? 0 : $fee_maintain1;
+
                     if (!empty($sys1_height)) {
-                        $fee_tower1 = DB::table('fee_tower_std')
-                            ->where('tower_type', transTowerType($tower_type))
-                            ->where('sys_height', transSysHeight($sys1_height))
-                            ->where('is_new_tower', transIsNewTower($is_new_tower))
-                            ->pluck('fee_tower');
-
-                        if (!empty($fee_tower1)) {
-                            $fee_tower1 = $fee_tower1[0];
-                        } else {
-                            $fee_tower1 = 0;
-                        }
-
+                        $fee_tower1 = FeeTowerStd::getStd($tower_type, $sys1_height, $is_new_tower)->value('fee_tower');
+                        $fee_tower1 = ($fee_tower1 == null) ? 0 : $fee_tower1;
                     } else {
                         $fee_tower1 = 0;
                         $fee_house1 = 0;
@@ -1029,16 +656,8 @@ class SiteInfo extends Model
                         $fee_maintain1 = 0;
                     }
                     if (!empty($sys2_height)) {
-                        $fee_tower2 = DB::table('fee_tower_std')
-                            ->where('tower_type', transTowerType($tower_type))
-                            ->where('sys_height', transSysHeight($sys1_height))
-                            ->where('is_new_tower', transIsNewTower($is_new_tower))
-                            ->pluck('fee_tower');
-                        if (!empty($fee_tower2)) {
-                            $fee_tower2 = $fee_tower2[0];
-                        } else {
-                            $fee_tower2 = 0;
-                        }
+                        $fee_tower2 = FeeTowerStd::getStd($tower_type, $sys2_height, $is_new_tower)->value('fee_tower');
+                        $fee_tower2 = ($fee_tower2 == null) ? 0 : $fee_tower2;
                         $fee_house2 = $fee_house1;
                         $fee_maintain2 = $fee_maintain1;
                         $fee_support2 = $fee_support1;
@@ -1049,16 +668,8 @@ class SiteInfo extends Model
                         $fee_maintain2 = 0;
                     }
                     if (!empty($sys3_height)) {
-                        $fee_tower3 = DB::table('fee_tower_std')
-                            ->where('tower_type', transTowerType($tower_type))
-                            ->where('sys_height', transSysHeight($sys1_height))
-                            ->where('is_new_tower', transIsNewTower($is_new_tower))
-                            ->pluck('fee_tower');
-                        if (!empty($fee_tower3)) {
-                            $fee_tower3 = $fee_tower3[0];
-                        } else {
-                            $fee_tower3 = 0;
-                        }
+                        $fee_tower3 = FeeTowerStd::getStd($tower_type, $sys3_height, $is_new_tower)->value('fee_tower');
+                        $fee_tower3 = ($fee_tower3 == null) ? 0 : $fee_tower3;
                         $fee_house3 = $fee_house1;
                         $fee_maintain3 = $fee_maintain1;
                         $fee_support3 = $fee_support1;
@@ -1069,49 +680,19 @@ class SiteInfo extends Model
                         $fee_maintain3 = 0;
                     }
 
-                    $site_share_discount = DB::table('share_discount_std')
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->where('share_num', ($share_num_site))
-                        ->where('user_type', transUserType($user_type))
-                        ->where('is_newly_added', $is_newly_added)
-                        ->pluck('discount_site');
-                    if (!empty($site_share_discount)) {
-                        $site_share_discount = $site_share_discount[0];
-                    } else {
-                        $site_share_discount = 1;
-                    }
-                    $import_share_discount = DB::table('share_discount_std')
-                        ->where('is_new_tower', transIsNewTower($is_new_tower))
-                        ->where('share_num', ($share_num_import))
-                        ->where('user_type', transUserType($user_type))
-                        ->where('is_newly_added', $is_newly_added)
-                        ->pluck('discount_import');
-                    if (!empty($import_share_discount)) {
-                        $import_share_discount = $import_share_discount[0];
-                    } else {
-                        $import_share_discount = 1;
-                    }
+                    $site_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_site, $user_type, $is_newly_added)->value('discount_site');
+                    $site_share_discount = ($site_share_discount == null) ? 1 : $site_share_discount;
+
+                    $import_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_import, $user_type, $is_newly_added)->value('discount_site');
+                    $import_share_discount = ($import_share_discount == null) ? 1 : $import_share_discount;
+
                     if (transIsNewTower($is_new_tower) == 1) {
                         if ($sys_num1 >= 1) {
-                            $fee_site = DB::table('fee_site_std')
-                                ->where('region_id', transRegion($region_name))
-                                ->where('site_district_type', transSiteDistType($site_district_type))
-                                ->where('is_rru_away', transIsRRUAway($is_rru_away))
-                                ->pluck('fee_site');
-                            if (!empty($fee_site)) {
-                                $fee_site = $fee_site[0];
-                            } else {
-                                $fee_site = 0;
-                            }
-                            $fee_import = DB::table('fee_import_std')
-                                ->where('region_id', transRegion($region_name))
-                                ->where('elec_introduced_type', transElecType($elec_introduced_type))
-                                ->pluck('fee_import');
-                            if (!empty($fee_import)) {
-                                $fee_import = $fee_import[0];
-                            } else {
-                                $fee_import = 0;
-                            }
+                            $fee_site = FeeSiteStd::getStd($region_name, $site_district_type, $is_rru_away)->value('fee_site');
+                            $fee_site = ($fee_site == null) ? 0 : $fee_site;
+                            $fee_import = FeeImportStd::getStd($region_name, $elec_introduced_type)->value('fee_import');
+                            $fee_import = ($fee_import == null) ? 0 : $fee_import;
+
                         } else {
                             $fee_site = 0;
                             $fee_import = 0;
@@ -1296,131 +877,7 @@ class SiteInfo extends Model
 
     }
 
-    public function updateInfoSiteByArray(array $infoSites, $area_level)
-    {
-        if ($area_level == 'admin' || $area_level == '湖北省') {
-            for ($i = 1; $i < count($infoSites); $i++) {
-                $infoSite = DB::table('site_info')->where('site_code', $infoSites[$i][7])->where('is_valid', 1)->get();
-                if (empty($infoSite)) {
-                    DB::table('site_info')->insert([
-                        'site_code' => $infoSites[$i][7],
-                        'region_name' => $infoSites[$i][0],
-                        'product_type' => transProductType($infoSites[$i][12]),
-                        'is_new_tower' => transIsNewTower($infoSites[$i][97]),
-                        'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
-                        'tower_type' => transTowerType($infoSites[$i][8]),
-                        'sys_num' => $infoSites[$i][9],
-                        'sys1_height' => transSysHeight($infoSites[$i][19]),
-                        'land_form' => transSysHeight($infoSites[$i][14]),
-                        'share_num' => transSysHeight($infoSites[$i][12]),
-                        'is_co_opetition' => transSysHeight($infoSites[$i][13]),
-                        'site_district_type' => transSysHeight($infoSites[$i][14]),
-                        'is_rru_away' => transLandForm($infoSites[$i][15]),
-                        'user_type' => transIsCoOpetition($infoSites[$i][16]),
-                        'elec_introduced_type' => $infoSites[$i][17],
-                        'is_valid' => 1,
-                    ]);
-                } else {
-                    DB::table('site_info')->where('id', $infoSite[0]->id)->update([
-                        'is_valid' => 0,
-                    ]);
-                    DB::table('site_info')->insert([
-                        'site_code' => $infoSites[$i][7],
-                        'region_name' => $infoSites[$i][0],
-                        'product_type' => transProductType($infoSites[$i][12]),
-                        'is_new_tower' => transIsNewTower($infoSites[$i][97]),
-                        'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
-                        'tower_type' => transTowerType($infoSites[$i][8]),
-                        'sys_num' => $infoSites[$i][9],
-                        'sys1_height' => transSysHeight($infoSites[$i][19]),
-                        'land_form' => transSysHeight($infoSites[$i][14]),
-                        'share_num' => transSysHeight($infoSites[$i][12]),
-                        'is_co_opetition' => transSysHeight($infoSites[$i][13]),
-                        'site_district_type' => transSysHeight($infoSites[$i][14]),
-                        'is_rru_away' => transLandForm($infoSites[$i][15]),
-                        'user_type' => transIsCoOpetition($infoSites[$i][16]),
-                        'elec_introduced_type' => $infoSites[$i][17],
-                        'is_valid' => 1,
-                    ]);
-                }
 
-            }
-        } else {
-            for ($i = 1; $i < count($infoSites); $i++) {
-                if ($infoSites[$i][0] == $area_level) {
-                    $infoSite = DB::table('site_info')->where('site_code', $infoSites[$i][7])->where('is_valid', 1)->where('region_name', $area_level)->get();
-                    if (empty($infoSite)) {
-                        DB::table('site_info')->insert([
-                            'site_code' => $infoSites[$i][7],
-                            'region_name' => $infoSites[$i][0],
-                            'product_type' => transProductType($infoSites[$i][12]),
-                            'is_new_tower' => transIsNewTower($infoSites[$i][97]),
-                            'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
-                            'tower_type' => transTowerType($infoSites[$i][8]),
-                            'sys_num' => $infoSites[$i][9],
-                            'sys1_height' => transSysHeight($infoSites[$i][19]),
-                            'land_form' => transSysHeight($infoSites[$i][14]),
-                            'share_num' => transSysHeight($infoSites[$i][12]),
-                            'is_co_opetition' => transSysHeight($infoSites[$i][13]),
-                            'site_district_type' => transSysHeight($infoSites[$i][14]),
-                            'is_rru_away' => transLandForm($infoSites[$i][15]),
-                            'user_type' => transIsCoOpetition($infoSites[$i][16]),
-                            'elec_introduced_type' => $infoSites[$i][17],
-                            'is_valid' => 1,
-                        ]);
-                    } else {
-                        DB::table('site_info')->where('id', $infoSite[0]->id)->update([
-                            'is_valid' => 0,
-                        ]);
-                        DB::table('site_info')->insert([
-                            'site_code' => $infoSites[$i][7],
-                            'region_name' => $infoSites[$i][0],
-                            'product_type' => transProductType($infoSites[$i][12]),
-                            'is_new_tower' => transIsNewTower($infoSites[$i][97]),
-                            'is_newly_added' => transIsNewlyAdded($infoSites[$i][7]),
-                            'tower_type' => transTowerType($infoSites[$i][8]),
-                            'sys_num' => $infoSites[$i][9],
-                            'sys1_height' => transSysHeight($infoSites[$i][19]),
-                            'land_form' => transSysHeight($infoSites[$i][14]),
-                            'share_num' => transSysHeight($infoSites[$i][12]),
-                            'is_co_opetition' => transSysHeight($infoSites[$i][13]),
-                            'site_district_type' => transSysHeight($infoSites[$i][14]),
-                            'is_rru_away' => transLandForm($infoSites[$i][15]),
-                            'user_type' => transIsCoOpetition($infoSites[$i][16]),
-                            'elec_introduced_type' => $infoSites[$i][17],
-                            'is_valid' => 1,
-                        ]);
-                    }
-                }
-
-            }
-        }
-
-    }
-
-    public function addSiteMonthlyRent(Request $request)
-    {
-        $code = $this->searchCode($request);
-
-        //根据code查询服务费用
-        $site_fee = DB::table('dict_site_std_rent')
-            ->where('code', '=', $code)
-            ->pluck('site_fee');
-        $elec_introduced_fee = DB::table('dict_site_std_rent')
-            ->where('code', '=', $code)
-            ->pluck('elec_introduced_fee');
-        $sys_basic_fee = DB::table('dict_site_std_rent')
-            ->where('code', '=', $code)
-            ->pluck('basic_fee');
-
-        //插入服务费用信息
-        $bool2 = DB::table('fee_site_monthly_rent')->insert(
-            ['site_code' => $request->get('siteCode'),
-                'site_fee' => $site_fee[0],
-                'sys1_basic_fee' => $sys_basic_fee[0],
-                'elec_introduced_fee' => $elec_introduced_fee[0]]
-        );
-    }
 
     public function searchInfoSiteById($id)
     {
@@ -1447,33 +904,6 @@ class SiteInfo extends Model
 
     public function searchInfoSite($region, $siteCode = '', $businessCode = '', $id = '', $telecomSiteName = '')
     {
-//        if (!empty($telecomSiteName)) {
-//            if ($region == '湖北省') {
-//                $siteCodes = SiteStation::where('tele_site_name', 'like', '%' . $telecomSiteName . '%')
-//                    ->pluck('tower_site_code');
-//                $query = $this->where('site_code', 'like', '%'. $siteCode . '%')
-//                    ->whereIn('site_code', $siteCodes)
-//                    ->leftJoin('fee_out_site_price', 'site_info.business_code', '=', 'fee_out_site_price.business_code')
-//                    ->where('fee_out_site_price.is_valid', 1)
-//                    ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
-//                        'fee_out_site_price.fee_maintain1', 'fee_out_site_price.fee_tower2', 'fee_out_site_price.fee_house2',
-//                        'fee_out_site_price.fee_support2', 'fee_out_site_price.fee_maintain2', 'fee_out_site_price.fee_tower3',
-//                        'fee_out_site_price.fee_house3', 'fee_out_site_price.fee_support3', 'fee_out_site_price.fee_maintain3',
-//                        'fee_out_site_price.fee_tower', 'fee_out_site_price.fee_house', 'fee_out_site_price.fee_support',
-//                        'fee_out_site_price.fee_maintain', 'fee_out_site_price.fee_wlan', 'fee_out_site_price.fee_microwave',
-//                        'fee_out_site_price.fee_add', 'fee_out_site_price.fee_battery', 'fee_out_site_price.fee_bbu',
-//                        'fee_out_site_price.tower_share_discount', 'fee_out_site_price.house_share_discount',
-//                        'fee_out_site_price.support_share_discount', 'fee_out_site_price.maintain_share_discount', 'fee_out_site_price.fee_tower_discounted',
-//                        'fee_out_site_price.fee_house_discounted', 'fee_out_site_price.fee_support_discounted', 'fee_out_site_price.fee_maintain_discounted',
-//                        'fee_out_site_price.fee_site', 'fee_out_site_price.site_share_discount',
-//                        'fee_out_site_price.fee_site_discounted', 'fee_out_site_price.fee_import', 'fee_out_site_price.import_share_discount',
-//                        'fee_out_site_price.fee_import_discounted', 'site_info.*');
-//            }
-//
-//            dd($query->get());
-//
-//        }
-
         if ($region != '湖北省') {
             $query = DB::table('site_info')
                 ->where('site_info.region_id', 'like', '%' . transRegion($region) . '%')
