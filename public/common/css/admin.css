@@ -307,7 +307,7 @@ body.menu {
     padding: 0px 10px;
     color: #444444;
     text-align: left;
-    background: url(../images/admin_x_bg.gif) 0px -60px repeat-x;
+    /*background: url(../images/admin_x_bg.gif) 0px -60px repeat-x;*/
 }
 
 .index .listTable td {
@@ -376,6 +376,7 @@ body.menu {
     line-height: 24px;
     display: block;
     outline: none;
+    background: url(../images/admin_bg.gif) 0px -60px repeat-x;
 }
 
 .list .listTable .sort:hover {

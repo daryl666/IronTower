@@ -565,7 +565,6 @@
                 listForm.action = url;
                 listForm.submit();
             }
-
         }
 
 

@@ -74,151 +74,151 @@ class AuthController extends Controller
      * @param  array $data
      * @return User
      */
-    protected function create(array $data)
-    {
-        $site_view_basic = 0;
-        $site_view_advance = 0;
-        $site_batch_export = 0;
-        $site_batch_import = 0;
-        $site_modify = 0;
-        $site_delete = 0;
-        $site_add = 0;
-        $bill_out = 0;
-        $bill_view = 0;
-        $gnr_manage = 0;
-        $site_check_manage = 0;
-        $site_shield_manage = 0;
-        $os_reason_manage = 0;
-        if (!empty($data['permission'])) {
-            foreach ($data['permission'] as $permission) {
-                if ($permission == 'site_view_basic') {
-                    $site_view_basic = 1;
-                }
-                if ($permission == 'site_view_advance') {
-                    $site_view_advance = 1;
-                }
-                if ($permission == 'site_batch_export') {
-                    $site_batch_export = 1;
-                }
-                if ($permission == 'site_batch_import') {
-                    $site_batch_import = 1;
-                }
-                if ($permission == 'site_modify') {
-                    $site_modify = 1;
-                }
-                if ($permission == 'site_delete') {
-                    $site_delete = 1;
-                }
-                if ($permission == 'site_add') {
-                    $site_add = 1;
-                }
-                if ($permission == 'bill_out') {
-                    $bill_out = 1;
-                }
-                if ($permission == 'bill_view') {
-                    $bill_view = 1;
-                }
-                if ($permission == 'gnr_manage') {
-                    $gnr_manage = 1;
-                }
-                if ($permission == 'site_check_manage') {
-                    $site_check_manage = 1;
-                }
-                if ($permission == 'site_shield_manage') {
-                    $site_shield_manage = 1;
-                }
-                if ($permission == 'os_reason_manage') {
-                    $os_reason_manage = 1;
-                }
-            }
-        }
+//    protected function create(array $data)
+//    {
+//        $site_view_basic = 0;
+//        $site_view_advance = 0;
+//        $site_batch_export = 0;
+//        $site_batch_import = 0;
+//        $site_modify = 0;
+//        $site_delete = 0;
+//        $site_add = 0;
+//        $bill_out = 0;
+//        $bill_view = 0;
+//        $gnr_manage = 0;
+//        $site_check_manage = 0;
+//        $site_shield_manage = 0;
+//        $os_reason_manage = 0;
+//        if (!empty($data['permission'])) {
+//            foreach ($data['permission'] as $permission) {
+//                if ($permission == 'site_view_basic') {
+//                    $site_view_basic = 1;
+//                }
+//                if ($permission == 'site_view_advance') {
+//                    $site_view_advance = 1;
+//                }
+//                if ($permission == 'site_batch_export') {
+//                    $site_batch_export = 1;
+//                }
+//                if ($permission == 'site_batch_import') {
+//                    $site_batch_import = 1;
+//                }
+//                if ($permission == 'site_modify') {
+//                    $site_modify = 1;
+//                }
+//                if ($permission == 'site_delete') {
+//                    $site_delete = 1;
+//                }
+//                if ($permission == 'site_add') {
+//                    $site_add = 1;
+//                }
+//                if ($permission == 'bill_out') {
+//                    $bill_out = 1;
+//                }
+//                if ($permission == 'bill_view') {
+//                    $bill_view = 1;
+//                }
+//                if ($permission == 'gnr_manage') {
+//                    $gnr_manage = 1;
+//                }
+//                if ($permission == 'site_check_manage') {
+//                    $site_check_manage = 1;
+//                }
+//                if ($permission == 'site_shield_manage') {
+//                    $site_shield_manage = 1;
+//                }
+//                if ($permission == 'os_reason_manage') {
+//                    $os_reason_manage = 1;
+//                }
+//            }
+//        }
+//
+//        return User::create([
+//            'name' => $data['name'],
+////            'email' => $data['email'],
+//            'password' => bcrypt($data['password']),
+//            'phone_number' => $data['phone_number'],
+//            'area_level' => $data['area_level'],
+//            'site_view_basic' => $site_view_basic,
+//            'site_view_advance' => $site_view_advance,
+//            'site_batch_export' => $site_batch_export,
+//            'site_batch_import' => $site_batch_import,
+//            'site_modify' => $site_modify,
+//            'site_delete' => $site_delete,
+//            'is_verified' => 0,
+//            'site_add' => $site_add,
+//            'bill_out' => $bill_out,
+//            'bill_view' => $bill_view,
+//            'gnr_manage' => $gnr_manage,
+//            'site_check_manage' => $site_check_manage,
+//            'site_shield_manage' => $site_shield_manage,
+//            'os_reason_manage' => $os_reason_manage,
+//        ]);
+//    }
+//
+//    public function getReset()
+//    {
+//        return view('auth.reset');
+//    }
 
-        return User::create([
-            'name' => $data['name'],
-//            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'phone_number' => $data['phone_number'],
-            'area_level' => $data['area_level'],
-            'site_view_basic' => $site_view_basic,
-            'site_view_advance' => $site_view_advance,
-            'site_batch_export' => $site_batch_export,
-            'site_batch_import' => $site_batch_import,
-            'site_modify' => $site_modify,
-            'site_delete' => $site_delete,
-            'is_verified' => 0,
-            'site_add' => $site_add,
-            'bill_out' => $bill_out,
-            'bill_view' => $bill_view,
-            'gnr_manage' => $gnr_manage,
-            'site_check_manage' => $site_check_manage,
-            'site_shield_manage' => $site_shield_manage,
-            'os_reason_manage' => $os_reason_manage,
-        ]);
-    }
+//    public function postUpdate(Request $request)
+//    {
+//
+//        $name = $request->get('name');
+//        $oldpassword = $request->get('oldpassword');
+//        $password = $request->get('password');
+//        $data = $request->all();
+//        $rules = [
+//            'name' => 'required|max:255',
+//            'oldpassword' => 'required|between:6,20',
+//            'password' => 'required|between:6,20|confirmed',
+//        ];
+//        $messages = [
+//            'name.required' => '用户名不能为空',
+//            'oldpassword.required' => '原密码不能为空',
+//            'password.required' => '新密码不能为空',
+//            'between' => '密码必须是6~20位之间',
+//            'confirmed' => '新密码和确认密码不匹配'
+//        ];
+//        $validator = Validator::make($data, $rules, $messages);
+//
+//        $oldpassword_user = DB::table('users')->where('name',$name)->pluck('password');
+//        $oldpassword_user = $oldpassword_user[0];
+//        $validator->after(function($validator) use ($oldpassword, $oldpassword_user) {
+//            if (!\Hash::check($oldpassword, $oldpassword_user)) {
+//                $validator->errors()->add('oldpassword', '原密码错误');
+//            }
+//        });
+//        if ($validator->fails()) {
+//            return back()->withErrors($validator);  //返回一次性错误
+//        }
+//        $updatePW = DB::table('users')->where('name',$name)->update([
+//            'password' => bcrypt($password)
+//        ]);
+//        if (!empty($updatePW)) {
+//            echo "<script language=javascript>alert('修改密码成功！')</script>";
+//            // return redirect('/login');
+//            return view('auth/login');
+//        }else{
+//            echo "<script language=javascript>alert('修改密码失败！');history.back()</script>";
+//        }
+//
+//
+//
+////        Auth::logout();  //更改完这次密码后，退出这个用户
+////        return redirect('/login');
+//    }
 
-    public function getReset()
-    {
-        return view('auth.reset');
-    }
-
-    public function postUpdate(Request $request)
-    {
-
-        $name = $request->get('name');
-        $oldpassword = $request->get('oldpassword');
-        $password = $request->get('password');
-        $data = $request->all();
-        $rules = [
-            'name' => 'required|max:255',
-            'oldpassword' => 'required|between:6,20',
-            'password' => 'required|between:6,20|confirmed',
-        ];
-        $messages = [
-            'name.required' => '用户名不能为空',
-            'oldpassword.required' => '原密码不能为空',
-            'password.required' => '新密码不能为空',
-            'between' => '密码必须是6~20位之间',
-            'confirmed' => '新密码和确认密码不匹配'
-        ];
-        $validator = Validator::make($data, $rules, $messages);
-
-        $oldpassword_user = DB::table('users')->where('name',$name)->pluck('password');
-        $oldpassword_user = $oldpassword_user[0];
-        $validator->after(function($validator) use ($oldpassword, $oldpassword_user) {
-            if (!\Hash::check($oldpassword, $oldpassword_user)) {
-                $validator->errors()->add('oldpassword', '原密码错误');
-            }
-        });
-        if ($validator->fails()) {
-            return back()->withErrors($validator);  //返回一次性错误
-        }
-        $updatePW = DB::table('users')->where('name',$name)->update([
-            'password' => bcrypt($password)
-        ]);
-        if (!empty($updatePW)) {
-            echo "<script language=javascript>alert('修改密码成功！')</script>";
-            // return redirect('/login');
-            return view('auth/login');
-        }else{
-            echo "<script language=javascript>alert('修改密码失败！');history.back()</script>";
-        }
-
-        
-
-//        Auth::logout();  //更改完这次密码后，退出这个用户
-//        return redirect('/login');
-    }
-
-    public function postReset(Request $request){
-        $name = $request->get('name');
-        $isSuccess = DB::table('users')->where('name',$name)->update([
-            'password' => bcrypt('000000')
-        ]);
-        if($isSuccess){
-            echo "<script language=javascript>alert('重置成功！');</script>";
-            return redirect('/login');
-        }else{
-            echo "<script language=javascript>alert('重置失败！');history.back()</script>";
-        }
-    }
+//    public function postReset(Request $request){
+//        $name = $request->get('name');
+//        $isSuccess = DB::table('users')->where('name',$name)->update([
+//            'password' => bcrypt('000000')
+//        ]);
+//        if($isSuccess){
+//            echo "<script language=javascript>alert('重置成功！');</script>";
+//            return redirect('/login');
+//        }else{
+//            echo "<script language=javascript>alert('重置失败！');history.back()</script>";
+//        }
+//    }
 }

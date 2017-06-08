@@ -79,7 +79,7 @@
                         <input type="text" id="beginDate" name="beginDate" style="width:130px;padding-left:5px"
                                readonly="true"
                                @if(isset($filter['beginDate'])) value="{{$filter['beginDate']}}" @endif
-                               onclick="WdatePicker({dateFmt:'<yyy></yyy>y-MM'})"/>
+                               onclick="WdatePicker({dateFmt:'yyyy-MM'})"/>
                         ~
                         统计结束时间:
                         <input type="text" id="endDate" name="endDate" style="width:130px;padding-left:5px"

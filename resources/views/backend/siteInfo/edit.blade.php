@@ -496,13 +496,13 @@
                 </th>
                 <td>
 
-                    <input type="radio" name="shareType_tower" id="shareType_tower" value="电信独享"
+                    <input type="radio" name="shareNumTower" id="shareNumTower" value="电信独享"
                            @if(isset($siteInfo->share_num_tower) && transShareType($siteInfo->share_num_tower) =="电信独享")
                            checked="checked" @endif>电信独享
-                    <input type="radio" name="shareType_tower" id="shareType" value="两家共享"
+                    <input type="radio" name="shareNumTower" id="shareType" value="两家共享"
                            @if(isset($siteInfo->share_num_tower) && transShareType($siteInfo->share_num_tower)=="两家共享")
                            checked="checked" @endif>两家共享
-                    <input type="radio" name="shareType_tower" id="shareType" value="三家共享"
+                    <input type="radio" name="shareNumTower" id="shareType" value="三家共享"
                            @if(isset($siteInfo->share_num_tower) && transShareType($siteInfo->share_num_tower)=="三家共享") checked="checked"
                             @endif>三家共享
                 </td>
@@ -513,13 +513,13 @@
                 </th>
                 <td>
 
-                    <input type="radio" name="shareType_house" id="shareType" value="电信独享"
+                    <input type="radio" name="shareNumHouse" id="shareType" value="电信独享"
                            @if(isset($siteInfo->share_num_house) && transShareType($siteInfo->share_num_house) =="电信独享")
                            checked="checked" @endif>电信独享
-                    <input type="radio" name="shareType_house" id="shareType" value="两家共享"
+                    <input type="radio" name="shareNumHouse" id="shareType" value="两家共享"
                            @if(isset($siteInfo->share_num_house) && transShareType($siteInfo->share_num_house)=="两家共享")
                            checked="checked" @endif>两家共享
-                    <input type="radio" name="shareType_house" id="shareType" value="三家共享"
+                    <input type="radio" name="shareNumHouse" id="shareType" value="三家共享"
                            @if(isset($siteInfo->share_num_house) && transShareType($siteInfo->share_num_house)=="三家共享") checked="checked"
                             @endif>三家共享
                 </td>
@@ -530,13 +530,13 @@
                 </th>
                 <td>
 
-                    <input type="radio" name="shareType_supporting" id="shareType" value="电信独享"
+                    <input type="radio" name="shareNumSupport" id="shareType" value="电信独享"
                            @if(isset($siteInfo->share_num_support) && transShareType($siteInfo->share_num_support) =="电信独享")
                            checked="checked" @endif>电信独享
-                    <input type="radio" name="shareType_supporting" id="shareType" value="两家共享"
+                    <input type="radio" name="shareNumSupport" id="shareType" value="两家共享"
                            @if(isset($siteInfo->share_num_support) && transShareType($siteInfo->share_num_support)=="两家共享")
                            checked="checked" @endif>两家共享
-                    <input type="radio" name="shareType_supporting" id="shareType" value="三家共享"
+                    <input type="radio" name="shareNumSupport" id="shareType" value="三家共享"
                            @if(isset($siteInfo->share_num_support) && transShareType($siteInfo->share_num_support)=="三家共享") checked="checked"
                             @endif>三家共享
                 </td>
@@ -547,13 +547,13 @@
                 </th>
                 <td>
 
-                    <input type="radio" name="shareType_maintainence" id="shareType" value="电信独享"
+                    <input type="radio" name="shareNumMaintain" id="shareType" value="电信独享"
                            @if(isset($siteInfo->share_num_maintain) && transShareType($siteInfo->share_num_maintain) =="电信独享")
                            checked="checked" @endif>电信独享
-                    <input type="radio" name="shareType_maintainence" id="shareType" value="两家共享"
+                    <input type="radio" name="shareNumMaintain" id="shareType" value="两家共享"
                            @if(isset($siteInfo->share_num_maintain) && transShareType($siteInfo->share_num_maintain)=="两家共享")
                            checked="checked" @endif>两家共享
-                    <input type="radio" name="shareType_maintainence" id="shareType" value="三家共享"
+                    <input type="radio" name="shareNumMaintain" id="shareType" value="三家共享"
                            @if(isset($siteInfo->share_num_maintain) && transShareType($siteInfo->share_num_maintain)=="三家共享") checked="checked"
                             @endif>三家共享
                 </td>
@@ -564,13 +564,13 @@
                 </th>
                 <td>
 
-                    <input type="radio" name="shareType_site" id="shareType" value="电信独享"
+                    <input type="radio" name="shareNumSite" id="shareType" value="电信独享"
                            @if(isset($siteInfo->share_num_site) && transShareType($siteInfo->share_num_site) =="电信独享")
                            checked="checked" @endif>电信独享
-                    <input type="radio" name="shareType_site" id="shareType" value="两家共享"
+                    <input type="radio" name="shareNumSite" id="shareType" value="两家共享"
                            @if(isset($siteInfo->share_num_site) && transShareType($siteInfo->share_num_site)=="两家共享")
                            checked="checked" @endif>两家共享
-                    <input type="radio" name="shareType_site" id="shareType" value="三家共享"
+                    <input type="radio" name="shareNumSite" id="shareType" value="三家共享"
                            @if(isset($siteInfo->share_num_site) && transShareType($siteInfo->share_num_site)=="三家共享") checked="checked"
                             @endif>三家共享
                 </td>
@@ -581,13 +581,13 @@
                 </th>
                 <td>
 
-                    <input type="radio" name="shareType_import" id="shareType" value="电信独享"
+                    <input type="radio" name="shareNumImport" id="shareType" value="电信独享"
                            @if(isset($siteInfo->share_num_import) && transShareType($siteInfo->share_num_import) =="电信独享")
                            checked="checked" @endif>电信独享
-                    <input type="radio" name="shareType_import" id="shareType" value="两家共享"
+                    <input type="radio" name="shareNumImport" id="shareType" value="两家共享"
                            @if(isset($siteInfo->share_num_import) && transShareType($siteInfo->share_num_import)=="两家共享")
                            checked="checked" @endif>两家共享
-                    <input type="radio" name="shareType_import" id="shareType" value="三家共享"
+                    <input type="radio" name="shareNumImport" id="shareType" value="三家共享"
                            @if(isset($siteInfo->share_num_import) && transShareType($siteInfo->share_num_import)=="三家共享") checked="checked"
                             @endif>三家共享
                 </td>
@@ -692,7 +692,7 @@
 
         function doModify() {
             var siteCode = $('#siteCode').val();
-            var modifyTime = $('#modifyTime').val();
+            var modifyTime = $('#effectiveDate').val();
             var towerType = document.getElementById('towerType');
             var sysNum = document.getElementsByName('sysNum');
             var sysHeight1 = document.getElementsByName('sysHeight1');

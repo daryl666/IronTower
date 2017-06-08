@@ -95,7 +95,7 @@ setTimeout("showTime()", 1000);
                             <td style="text-align:right">
                                 <div class="info" style="margin-right:10px;font-size: 12px">
                                     <span class="welcome" style="color:#CD3700">
-                                        账号:&nbsp;{{ Auth::user()->name }}&nbsp;
+                                        账号:&nbsp;<a href="{{url('users') . '/' .Auth::user()->id . '/edit'}}">{{ Auth::user()->name }}</a>&nbsp;
                                         地区:&nbsp;{{Auth::user()->area_level}}&nbsp;
                                         时间:&nbsp;<span id="nowTime"></span>
                                     </span>

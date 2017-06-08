@@ -31,9 +31,14 @@ class SiteStatsController extends Controller
             $region = $request->get('region');
             $irontowerBillDetailDB = new IronTowerBillDetail();
             $siteStats = $irontowerBillDetailDB->getSiteStats($region, $beginDate, $endDate, $shareType);
-            return view('backend/siteStats/index')
-            ->with('siteStats', $siteStats)
-            ->with('filter', $filter);
+            if ($siteStats === false) {
+                echo "<script language=javascript>alert('还未导入相应月份的铁塔详单，请先导入再统计！');history.back()</script>";
+            }else{
+                return view('backend/siteStats/index')
+                    ->with('siteStats', $siteStats)
+                    ->with('filter', $filter);
+            }
+
             // $siteStatsDB = new SiteStats();
             // list($site_num_stats,
             //     $old_site_share_num_stats,
@@ -187,23 +192,27 @@ class SiteStatsController extends Controller
 
     public function test()
     {
+        $ironTowerDB = new IronTowerBillDetail();
+        $ironTowerDB->toRRU();
+//        $siteStats = $ironTowerDB->getSiteStatsTemp();
+//        dd($siteStats);
 
-        $siteInfos = IronTowerBillDetail::where('month', '2017-01')
-        ->get();
-        foreach ($siteInfos as $siteInfo) {
-            if (substr($siteInfo->req_code,0,2) == '11') {
-                IronTowerBillDetail::where('id',$siteInfo->id)
-                ->update(['is_new_tower' =>0]);
-                $old_to_rm = IronTowerBillDetail::where('month', '2017-01')
-                ->where('req_code','like','10'.'%')
-                ->where('site_code', $siteInfo->site_code)
-                ->update(['is_new_tower' => 2]);
-                $old_to_rm = IronTowerBillDetail::where('month', '2017-01')
-                ->where('req_code','like','12'.'%')
-                ->where('site_code', $siteInfo->site_code)
-                ->update(['is_new_tower' => 2]);
-            }
-        }
+//        $siteInfos = IronTowerBillDetail::where('month', '2017-01')
+//        ->get();
+//        foreach ($siteInfos as $siteInfo) {
+//            if (substr($siteInfo->req_code,0,2) == '11') {
+//                IronTowerBillDetail::where('id',$siteInfo->id)
+//                ->update(['is_new_tower' =>0]);
+//                $old_to_rm = IronTowerBillDetail::where('month', '2017-01')
+//                ->where('req_code','like','10'.'%')
+//                ->where('site_code', $siteInfo->site_code)
+//                ->update(['is_new_tower' => 2]);
+//                $old_to_rm = IronTowerBillDetail::where('month', '2017-01')
+//                ->where('req_code','like','12'.'%')
+//                ->where('site_code', $siteInfo->site_code)
+//                ->update(['is_new_tower' => 2]);
+//            }
+//        }
 
 
 

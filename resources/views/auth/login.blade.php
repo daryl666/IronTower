@@ -82,8 +82,8 @@
             <div class="brnlogin" id="submitBtn">登录</div>
             <br>
             <div class="brnlogin" id="registerBtn" onclick="doRegister()">注册</div>
-            <br>
-            <div class="brnlogin" id="registerBtn" onclick="doReset()">修改密码</div>
+            {{--<br>--}}
+            {{--<div class="brnlogin" id="registerBtn" onclick="doReset()">修改密码</div>--}}
         </div>
     </div>
     <div class="copy">© 铁塔综合服务管理平台  版权所有</div>
@@ -93,7 +93,8 @@
 <script type="text/javascript">
     function doRegister() {
         var listForm = document.getElementById('loginForm');
-        listForm.action = "{{url('auth/register')}}";
+        {{--listForm.action = "{{url('auth/register')}}";--}}
+        listForm.action = "{{url('users/create')}}";
         listForm.method = "get";
         listForm.submit();
     }

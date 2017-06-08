@@ -297,6 +297,7 @@
                 <th>
                     <a href="#" class="sort" hidefocus>月服务成本</a>
                 </th>
+            </tr>
 
             @if (isset($telecomBills))
                 @foreach($telecomBills as $telecomBill)

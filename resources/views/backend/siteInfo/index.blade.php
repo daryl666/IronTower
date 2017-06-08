@@ -301,9 +301,14 @@
                         @endif
                     </td>
                     <td>
-                        &nbsp;&nbsp;&nbsp;站址编码：
+                        &nbsp;&nbsp;&nbsp;铁塔站址编码：
                         <input type="text" name="siteCode"
                                @if(isset($filter['siteCode'])) value="{{$filter['siteCode']}}" @endif>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;电信基站名称：
+                        <input type="text" name="telecomSiteName"
+                               @if(isset($filter['telecomSiteName'])) value="{{$filter['telecomSiteName']}}" @endif>
                     </td>
 
 
@@ -519,7 +524,8 @@
                         </tr>
                     @endforeach
                     @if(isset($filter))
-                        {!! $infoSites->appends(['region' => $filter['region']])->render() !!}@endif
+                        {!! $infoSites->appends(['region' => $filter['region']])->render() !!}
+                        @endif
                 @endif
 
 

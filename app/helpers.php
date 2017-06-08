@@ -773,11 +773,11 @@ if (!function_exists('transShareDisc')) {
 
     function transShareDisc($disc1, $disc2)
     {
-        if (!empty($disc2)) {
+        if (!empty($disc2) && $disc2 != '0.00') {
             return $disc2;
-        } elseif (empty($disc2) && !empty($disc1)) {
+        } elseif ((empty($disc2) || $disc2 == '0.00') && !empty($disc1) && $disc1 != '0.00') {
             return $disc1;
-        } elseif (empty($disc2) && empty($dis1)) {
+        } elseif ((empty($disc2) && empty($disc1)) || ($disc1 == '0.00' && $disc2 == '0.00')) {
             return 1;
         }
     }
@@ -800,7 +800,7 @@ if (!function_exists('compareTheSiteAttributes')) {
                 if ($origSiteInfo->import_site_exception_id === $id) {
                     if ($origSiteInfo->$attributeName === $attributeValue) {
                         return true;
-                    }else{
+                    } else {
                         return false;
                     }
                 }
@@ -811,7 +811,7 @@ if (!function_exists('compareTheSiteAttributes')) {
                 if ($excepSiteInfo->site_info_id === $id && $excepSiteInfo->id === $importSiteExceptionId) {
                     if ($excepSiteInfo->$attributeName === $attributeValue) {
                         return true;
-                    }else{
+                    } else {
                         return false;
                     }
                 }

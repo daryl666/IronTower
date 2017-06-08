@@ -920,4 +920,115 @@ class ExcelController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * 何龙临时要求统计站址数据
+     */
+    public function exportSiteStatsTemp(Request $request)
+    {
+        $IronTowerBillDetailDB = new IronTowerBillDetail();
+        $siteStats = $IronTowerBillDetailDB->getSiteStatsTemp();
+        $excel = new PHPExcel();
+        $excel->getProperties()->setCreator("yy")
+            ->setLastModifiedBy("yy")
+            ->setTitle("test_siteStats")
+            ->setSubject("test_siteStats")
+            ->setDescription("test_siteStats")
+            ->setKeywords("excel")
+            ->setCategory("result file");
+        $letter = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA'];
+        for ($i = 0; $i < count($siteStats); $i++) {
+            foreach ($siteStats[$i] as $key => $value) {
+                $column = $i + 5;
+                $excel->getActiveSheet()->setCellValueExplicit("$letter[$key]$column", formatNumber_wan($value), \PHPExcel_Cell_DataType::TYPE_STRING);
+
+            }
+        }
+        $excel->getActiveSheet()->mergeCells("A1:AA1");
+
+        $excel->getActiveSheet()->mergeCells("A2:B4");
+        $excel->getActiveSheet()->setCellValueExplicit("A2", '铁塔类型', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("C2:C4");
+        $excel->getActiveSheet()->setCellValueExplicit("C2", '挂高（m）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("D2:AA2");
+        $excel->getActiveSheet()->setCellValueExplicit("D2", '存量塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+
+        $excel->getActiveSheet()->mergeCells("D3:I3");
+        $excel->getActiveSheet()->setCellValueExplicit("D3", '鄂州', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("J3:O3");
+        $excel->getActiveSheet()->setCellValueExplicit("J3", '黄冈', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("P3:U3");
+        $excel->getActiveSheet()->setCellValueExplicit("P3", '黄石', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("V3:AA3");
+        $excel->getActiveSheet()->setCellValueExplicit("V3", '咸宁', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("A5:A15");
+        $excel->getActiveSheet()->setCellValueExplicit("D4", '铁塔基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("E4", '机房基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("F4", '配套基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("G4", '场地费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("H4", '维护费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("I4", '电力引入费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("J4", '铁塔基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("K4", '机房基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("L4", '配套基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("M4", '场地费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("N4", '维护费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("O4", '电力引入费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("P4", '铁塔基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Q4", '机房基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("R4", '配套基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("S4", '场地费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("T4", '维护费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("U4", '电力引入费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("V4", '铁塔基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("W4", '机房基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("X4", '配套基准价格（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Y4", '场地费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("Z4", '维护费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("AA4", '电力引入费（万元）', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("A5", '地面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("B5:B9");
+        $excel->getActiveSheet()->mergeCells("A16:A17");
+        $excel->getActiveSheet()->setCellValueExplicit("A16", '楼面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B5", '普通地面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->mergeCells("B10:B14");
+        $excel->getActiveSheet()->setCellValueExplicit("B10", '灯杆景观塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C5", 'H<30', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C6", '30≤H<35', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C7", '35≤H<40', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C8", '40≤H<45', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C9", '45≤H≤50', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C10", 'H<20', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C11", '20≤H<25', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C12", '25≤H<30', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C13", '30≤H<35', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C14", '35≤H≤40', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C15", 'H≤20', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C16", '-', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("C17", '-', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B15", '简易灯杆塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B16", '普通楼面塔', \PHPExcel_Cell_DataType::TYPE_STRING);
+        $excel->getActiveSheet()->setCellValueExplicit("B17", '楼面抱杆', \PHPExcel_Cell_DataType::TYPE_STRING);
+
+        $excel->getActiveSheet()->getStyle('A1:AG1')->getFont()->setSize(18)->setBold(true);
+        $excel->getActiveSheet()->getStyle('A1:AG1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $excel->getActiveSheet()->getStyle('A2:AG18')->getFont()->setSize(13);
+        $excel->getActiveSheet()->getStyle('A2:AG18')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        $excel->getActiveSheet()->getStyle('A2:AG18')->getAlignment()->setWrapText(true);
+        $write = new \PHPExcel_Writer_Excel5($excel);
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-execl");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");
+        header("Content-Disposition:attachment;filename='铁塔租费调查表 . xls'");
+        header("Content-Transfer-Encoding:binary");
+        $write->save('php://output');
+    }
+
+
+
+
 }

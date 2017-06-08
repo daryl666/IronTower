@@ -184,7 +184,6 @@ trait AuthenticatesUsers
     public function guestMiddleware()
     {
         $guard = $this->getGuard();
-
         return $guard ? 'guest:'.$guard : 'guest';
     }
 

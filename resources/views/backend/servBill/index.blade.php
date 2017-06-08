@@ -542,6 +542,7 @@
                         var tmp = data;
                         if (tmp.code == 0) {
                             // 刷新本页面
+                            alert('出账成功！');
                             var form = $('#listForm');
                             form.submit();
                         }

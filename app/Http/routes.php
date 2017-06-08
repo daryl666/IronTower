@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
     //返回
     Route::post('back', ['uses' => 'SiteInfoController@back', 'permissions' => ['site_view_basic']]);
 
+    Route::any('test', ['uses' => 'SiteInfoController@test', 'permissions' => ['site_view_basic']]);
 
 });
 
@@ -105,6 +106,9 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
     Route::any('billCheck/orders/{id}', ['uses' => 'ServBillController@orderCheck', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
     Route::any('billCheck/orders/view/{id}', ['uses' => 'ServBillController@viewOrders', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
     Route::any('billCheck/orders/editPage/{id}', ['uses' => 'ServBillController@editPage', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck/orders/update/{id}', ['uses' => 'ServBillController@updateOrder', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('billCheck/orders/delete/{id}', ['uses' => 'ServBillController@deleteOrder', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
+    Route::any('irontowerBillImportPage', ['uses' => 'ServBillController@irontowerBillImportPage', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
     Route::any('irontowerBillImportPage', ['uses' => 'ServBillController@irontowerBillImportPage', 'permissions' => ['bill_view', 'is_verified', 'bill_out']]);
 
 });
@@ -149,10 +153,11 @@ Route::group(['middleware' => ['auth', 'permission'], 'namespace' => 'Backend', 
 //     Route::any('/add', ['uses' => 'ElecChargeController@addPage']);
 
 // });
-
+Route::resource('users', 'UsersController');
 /**
  * 用户注册
  */
+
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 /**
  * 密码重置
@@ -256,6 +261,8 @@ Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['site_vi
     Route::any('/', ['uses' => 'SiteStatsController@indexPage']);
     Route::any('import', ['uses' => 'ExcelController@importBillDetail']);
     Route::any('export', ['uses' => 'ExcelController@exportSiteStats']);
+    Route::any('testExport', ['uses' => 'ExcelController@exportSiteStatsTemp']);
+    Route::any('test', ['uses' => 'SiteStatsController@test']);
 });
 
 
