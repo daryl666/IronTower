@@ -578,6 +578,8 @@ if (!function_exists('transOsReason')) {
             6 => '核心网',
             7 => '高温',
             8 => '其他',
+            9 => '局端',
+            10 => '主设备',
             '停电' => 1,
             '电源设备' => 2,
             '传输线路' => 3,
@@ -586,6 +588,8 @@ if (!function_exists('transOsReason')) {
             '核心网' => 6,
             '高温' => 7,
             '其他' => 8,
+            '局端' => 9,
+            '主设备' => 10,
         ];
 
         if ($post_type === 'all') {
@@ -609,10 +613,14 @@ if (!function_exists('transRespUnit')) {
     function transRespUnit($post_type)
     {
         $map = [
-            0 => '其他',
             1 => '铁塔',
-            '其他' => 0,
+            2 => '电信',
+            3 => '移动',
+            4 => '联通',
             '铁塔' => 1,
+            '电信' => 2,
+            '移动' => 3,
+            '联通' => 4,
         ];
 
         if ($post_type === 'all') {
@@ -832,6 +840,559 @@ if (!function_exists('compareOrderDetail')) {
     {
         return $orderIronTower === $orderTelecom;
 
+    }
+}
+
+if (!function_exists('transGnrStatus')) {
+    function transGnrStatus($post_type)
+    {
+        $map = [
+            1 => '发电前退服',
+            2 => '发电过程中退服',
+            3 => '发结束后仍然退服',
+            '发电前退服' => 1,
+            '发电过程中退服' => 2,
+            '发结束后仍然退服' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+
+if (!function_exists('transRentSiteType')) {
+    function transRentSiteType($post_type)
+    {
+        $map = [
+            1 => '租用站址',
+            2 => '自有站址',
+            3 => '第三方站址',
+            '租用站址' => 1,
+            '自有站址' => 2,
+            '第三方站址' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transSiteProperty')) {
+    function transSiteProperty($post_type)
+    {
+        $map = [
+            1 => '存量原产权',
+            2 => '存量既有共享',
+            3 => '存量自改',
+            4 => '存量共享改造',
+            5 => '新建铁塔',
+            '存量原产权' => 1,
+            '存量既有共享' => 2,
+            '存量自改' => 3,
+            '存量共享改造' => 4,
+            '新建铁塔' => 5,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transSiteNet')) {
+    function transSiteNet($post_type)
+    {
+        $map = [
+            1 => '村通',
+            2 => 'C村',
+            3 => 'CDMA',
+            4 => 'C村L',
+            5 => 'CL',
+            '村通' => 1,
+            'C村' => 2,
+            'CDMA' => 3,
+            'C村L' => 4,
+            'CL' => 5,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transTowerOriProperty')) {
+    function transTowerOriProperty($post_type)
+    {
+        $map = [
+            1 => '铁塔',
+            2 => '电信',
+            3 => '移动',
+            4 => '联通',
+            5 => '广电',
+            6 => '第三方',
+            '铁塔' => 1,
+            '电信' => 2,
+            '移动' => 3,
+            '联通' => 4,
+            '广电' => 5,
+            '第三方' => 6,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transPowerSupplyMode')) {
+    function transPowerSupplyMode($post_type)
+    {
+        $map = [
+            1 => '直供电',
+            2 => '转供电',
+            '直供电' => 1,
+            '转供电' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transBBULocation')) {
+    function transBBULocation($post_type)
+    {
+        $map = [
+            1 => '铁塔机房',
+            2 => '自有机房',
+            3 => '第三方机房',
+            '铁塔机房' => 1,
+            '自有机房' => 2,
+            '第三方机房' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transRRULocation')) {
+    function transRRULocation($post_type)
+    {
+        $map = [
+            1 => '机房',
+            2 => '塔上',
+            '机房' => 1,
+            '塔上' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transSiteLevel')) {
+    function transSiteLevel($post_type)
+    {
+        $map = [
+            1 => '高等级',
+            2 => '标准等级',
+            '高等级' => 1,
+            '标准等级' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transIsMountainSite')) {
+    function transIsMountainSite($post_type)
+    {
+        $map = [
+            1 => '非高山站',
+            2 => '高山站',
+            '非高山站' => 1,
+            '高山站' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transSPDLevel')) {
+    function transSPDLevel($post_type)
+    {
+        $map = [
+            1 => '正常',
+            2 => '故障',
+            3 => '无',
+            '正常' => 1,
+            '故障' => 2,
+            '无' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transIsBusinessEarth')) {
+    function transIsBusinessEarth($post_type)
+    {
+        $map = [
+            1 => '未接地',
+            2 => '正常',
+            '未接地' => 1,
+            '正常' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transEarthBusbarWire')) {
+    function transEarthBusbarWire($post_type)
+    {
+        $map = [
+            1 => '正常',
+            2 => '被盗',
+            3 => '未接地',
+            '正常' => 1,
+            '被盗' => 2,
+            '未接地' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transSPDEarthStatus')) {
+    function transSPDEarthStatus($post_type)
+    {
+        $map = [
+            1 => 'SPD正常',
+            2 => 'SPD故障',
+            3 => '接地线被盗',
+            4 => '设备未接地',
+            'SPD正常' => 1,
+            'SPD故障' => 2,
+            '接地线被盗' => 3,
+            '设备未接地' => 4,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transPowerCabinetCapacity')) {
+    function transPowerCabinetCapacity($post_type)
+    {
+        $map = [
+            1 => '正常',
+            2 => '故障',
+            3 => '容量不足',
+            '正常' => 1,
+            '故障' => 2,
+            '容量不足' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transBatteryVolume')) {
+    function transBatteryVolume($post_type)
+    {
+        $map = [
+            1 => '300AH',
+            2 => '500AH',
+            3 => '1000AH',
+            '300AH' => 1,
+            '500AH' => 2,
+            '1000AH' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transBatteryNum')) {
+    function transBatteryNum($post_type)
+    {
+        $map = [
+            1 => '1',
+            2 => '2',
+            '1' => 1,
+            '2' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transBatteryCapacity')) {
+    function transBatteryCapacity($post_type)
+    {
+        $map = [
+            1 => '秒退',
+            2 => '1小时',
+            3 => '2小时',
+            3 => '3小时',
+            3 => '大于3小时',
+            '秒退' => 1,
+            '1小时' => 2,
+            '2小时' => 3,
+            '3小时' => 3,
+            '大于3小时' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transEnvirEquip')) {
+    function transEnvirEquip($post_type)
+    {
+        $map = [
+            1 => '空调',
+            2 => '风机',
+            3 => '无',
+            '空调' => 1,
+            '风机' => 2,
+            '无' => 3,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transEnvirEquipStatus')) {
+    function transEnvirEquipStatus($post_type)
+    {
+        $map = [
+            1 => '故障',
+            2 => '正常',
+            '故障' => 1,
+            '正常' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transTowerDEStatus')) {
+    function transTowerDEStatus($post_type)
+    {
+        $map = [
+            1 => '故障',
+            2 => '正常',
+            '鼓掌' => 1,
+            '正常' => 2,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
+    }
+}
+
+if (!function_exists('transWhetherOrNot')) {
+    function transWhetherOrNot($post_type)
+    {
+        $map = [
+            0 => '否',
+            1 => '是',
+            '否' => 0,
+            '是' => 1,
+        ];
+
+        if ($post_type === 'all') {
+            return $map;
+        }
+
+
+        if (isset($map[$post_type])) {
+            return $map[$post_type];
+        }
+
+        return '';
     }
 }
 

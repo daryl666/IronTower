@@ -20,7 +20,9 @@
                         <a href="{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">上站记录管理</a>
                     </li>
                     <li class="inactive">
-                        @if(Auth::user()->area_level == '湖北省')                             <a href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')                             <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
+                        @if(Auth::user()->area_level == '湖北省')                             <a
+                                href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')
+                            <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
                     </li>
                     <li class="inactive">
                         <a href="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">退服原因管理</a>
@@ -141,7 +143,20 @@
                 <td>
 
                     <input type="text"
-                           @if(isset($siteInfo->region_name)) value="{{$siteInfo->region_name}}" @endif id="region" name="regionName"
+                           @if(isset($siteInfo->region_name)) value="{{$siteInfo->region_name}}" @endif id="region"
+                           name="regionName"
+                           readonly>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    区县 :
+                </th>
+                <td>
+
+                    <input type="text"
+                           @if(isset($siteInfo->city_name)) value="{{$siteInfo->city_name}}" @endif id="cityName"
+                           name="cityName"
                            readonly>
                 </td>
             </tr>
@@ -246,19 +261,24 @@
                 </th>
                 <td>
                     <input type="radio" name="towerType" id="towerType" value="普通地面塔"
-                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type) =="普通地面塔") checked="checked" @endif
+                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type) =="普通地面塔") checked="checked"
+                           @endif
                            onclick="towerTypeChange(this)">普通地面塔
                     <input type="radio" name="towerType" id="towerType" value="景观塔"
-                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="景观塔") checked="checked" @endif
+                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="景观塔") checked="checked"
+                           @endif
                            onclick="towerTypeChange(this)">景观塔
                     <input type="radio" name="towerType" id="towerType" value="简易塔"
-                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="简易塔") checked="checked" @endif
+                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="简易塔") checked="checked"
+                           @endif
                            onclick="towerTypeChange(this)">简易塔
                     <input type="radio" name="towerType" id="towerType" value="普通楼面塔"
-                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="普通楼面塔") checked="checked" @endif
+                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="普通楼面塔") checked="checked"
+                           @endif
                            onclick="towerTypeChange(this)">普通楼面塔
                     <input type="radio" name="towerType" id="towerType" value="楼面抱杆"
-                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="楼面抱杆") checked="checked" @endif
+                           @if(isset($siteInfo->tower_type) && transTowerType($siteInfo->tower_type)=="楼面抱杆") checked="checked"
+                           @endif
                            onclick="towerTypeChange(this)">楼面抱杆
 
 
@@ -662,6 +682,655 @@
                     <input type="text" name="feeBbu" value="{{$siteInfo->fee_bbu}}">
                 </td>
             </tr>
+
+            <tr>
+                <th>
+                    站址起租标示：
+                </th>
+                <td>
+                    <input name="rentSiteType" type="radio" value="租用站址"
+                           @if(isset($siteInfo->rent_site_type) && transRentSiteType($siteInfo->rent_site_type) == '租用站址') checked="checked" @endif >
+                    租用站址
+                    <input name="rentSiteType" type="radio" value="自有站址"
+                           @if(isset($siteInfo->rent_site_type) && transRentSiteType($siteInfo->rent_site_type) == '自有站址') checked="checked" @endif>
+                    自有站址
+                    <input name="rentSiteType" type="radio" value="第三方站址"
+                           @if(isset($siteInfo->rent_site_type) && transRentSiteType($siteInfo->rent_site_type) == '第三方站址') checked="checked" @endif>
+                    第三方站址
+
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    站址属性：
+                </th>
+                <td>
+                    <input name="siteProperty" type="radio" value="存量原产权"
+                           @if(isset($siteInfo->site_property) && transSiteProperty($siteInfo->site_property) == '存量原产权') checked="checked" @endif>
+                    存量原产权
+                    <input name="siteProperty" type="radio" value="存量既有共享"
+                           @if(isset($siteInfo->site_property) && transSiteProperty($siteInfo->site_property) == '存量既有共享') checked="checked" @endif>
+                    存量既有共享
+                    <input name="siteProperty" type="radio" value="存量自改"
+                           @if(isset($siteInfo->site_property) && transSiteProperty($siteInfo->site_property) == '存量自改') checked="checked" @endif>
+                    存量自改
+                    <input name="siteProperty" type="radio" value="存量共享改造"
+                           @if(isset($siteInfo->site_property) && transSiteProperty($siteInfo->site_property) == '存量共享改造') checked="checked" @endif>
+                    存量共享改造
+                    <input name="siteProperty" type="radio" value="新建铁塔"
+                           @if(isset($siteInfo->site_property) && transSiteProperty($siteInfo->site_property) == '新建铁塔') checked="checked" @endif>
+                    新建铁塔
+
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    村通站号：
+                </th>
+                <td>
+                    <input name="villageSiteCode" type="text" value="{{$siteInfo->village_site_code}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    移动站址名称：
+                </th>
+                <td>
+                    <input name="mobileSiteName" type="text" value="{{$siteInfo->mobile_site_name}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    联通站址名称：
+                </th>
+                <td>
+                    <input name="unicomSiteName" type="text" value="{{$siteInfo->unicom_site_name}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    站址网络：
+                </th>
+                <td>
+                    <input name="siteNet" type="radio" value="村通"
+                           @if(isset($siteInfo->site_net) && transSiteNet($siteInfo->site_net) == '村通') checked="checked" @endif>
+                    村通
+                    <input name="siteNet" type="radio" value="C村"
+                           @if(isset($siteInfo->site_net) && transSiteNet($siteInfo->site_net) == 'C村') checked="checked" @endif>
+                    C村
+                    <input name="siteNet" type="radio" value="CDMA"
+                           @if(isset($siteInfo->site_net) && transSiteNet($siteInfo->site_net) == 'CDMA') checked="checked" @endif>
+                    CDMA
+                    <input name="siteNet" type="radio" value="C村L"
+                           @if(isset($siteInfo->site_net) && transSiteNet($siteInfo->site_net) == 'C村L') checked="checked" @endif>
+                    C村L
+                    <input name="siteNet" type="radio" value="CL"
+                           @if(isset($siteInfo->site_net) && transSiteNet($siteInfo->site_net) == 'CL') checked="checked" @endif>
+                    CL
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    铁塔原产权：
+                </th>
+                <td>
+                    <input name="towerOriProperty" type="radio" value="铁塔"
+                           @if(isset($siteInfo->tower_ori_property) && transTowerOriProperty($siteInfo->tower_ori_property) == '铁塔') checked="checked" @endif>
+                    铁塔
+                    <input name="towerOriProperty" type="radio" value="电信"
+                           @if(isset($siteInfo->tower_ori_property) && transTowerOriProperty($siteInfo->tower_ori_property) == '电信') checked="checked" @endif>
+                    电信
+                    <input name="towerOriProperty" type="radio" value="移动"
+                           @if(isset($siteInfo->tower_ori_property) && transTowerOriProperty($siteInfo->tower_ori_property) == '移动') checked="checked" @endif>
+                    移动
+                    <input name="towerOriProperty" type="radio" value="联通"
+                           @if(isset($siteInfo->tower_ori_property) && transTowerOriProperty($siteInfo->tower_ori_property) == '联通') checked="checked" @endif>
+                    联通
+                    <input name="towerOriProperty" type="radio" value="广电"
+                           @if(isset($siteInfo->tower_ori_property) && transTowerOriProperty($siteInfo->tower_ori_property) == '广电') checked="checked" @endif>
+                    广电
+                    <input name="towerOriProperty" type="radio" value="第三方"
+                           @if(isset($siteInfo->tower_ori_property) && transTowerOriProperty($siteInfo->tower_ori_property) == '第三方') checked="checked" @endif>
+                    第三方
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    机房占用：
+                </th>
+                <td>
+                    <input name="houseOccupation" type="radio" value="0"
+                           @if(isset($siteInfo->house_occupation) && transWhetherOrNot($siteInfo->house_occupation) == '0') checked="checked" @endif>
+                    否
+                    <input name="houseOccupation" type="radio" value="1"
+                           @if(isset($siteInfo->house_occupation) && transWhetherOrNot($siteInfo->house_occupation) == '1') checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    供电方式：
+                </th>
+                <td>
+                    <input name="powerSupplyMode" type="radio" value="直供电"
+                           @if(isset($siteInfo->power_supply_mode) && transPowerSupplyMode($siteInfo->power_supply_mode) == '直供电') checked="checked" @endif>
+                    直供电
+                    <input name="powerSupplyMode" type="radio" value="转供电"
+                           @if(isset($siteInfo->power_supply_mode) && transPowerSupplyMode($siteInfo->power_supply_mode) == '转供电') checked="checked" @endif>
+                    转供电
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    站址是否有铁塔政企业务：
+                </th>
+                <td>
+                    <input name="hasGovAffairs" type="radio" value="0"
+                           @if(isset($siteInfo->has_gov_affairs) && transWhetherOrNot($siteInfo->has_gov_affairs) == '0') checked="checked" @endif>
+                    否
+                    <input name="hasGovAffairs" type="radio" value="1"
+                           @if(isset($siteInfo->has_gov_affairs) && transWhetherOrNot($siteInfo->has_gov_affairs) == '1') checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    双频天线数：
+                </th>
+                <td>
+                    <input name="dualBandAntennaNum" type="text" value="{{$siteInfo->dual_band_antenna_num}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    维护/电力引入费场景：
+                </th>
+                <td>
+                    <input name=" maintainImportScene" type="text" value="{{$siteInfo->maintain_import_scene}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    场地费场景：
+                </th>
+                <td>
+                    <input name=" siteFeeScene" type="text" value="{{$siteInfo->site_fee_scene}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    场地费合同起始日期：
+                </th>
+                <td>
+                    <input name=" siteFeeBeginDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                           readonly="true" style="width:65px;padding-left:5px" type="text"/
+                    value="{{$siteInfo->site_fee_begin_date}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    场地费合同编号：
+                </th>
+                <td>
+                    <input name="siteFeeContractCode" type="text" value="{{$siteInfo->site_fee_contract_code}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    BBU安装位置：
+                </th>
+                <td>
+                    <input name=" BBULocation" type="radio"
+                           value="铁塔机房"
+                           @if(isset($siteInfo->BBU_location) && transBBULocation($siteInfo->BBU_location)=="铁塔机房")
+                           checked="checked"
+                            @endif>
+                    铁塔机房
+                    <input name="BBULocation" type="radio" value="自有机房"
+                           @if(isset($siteInfo->BBU_location) && transBBULocation($siteInfo->BBU_location)=="自有机房") checked="checked"
+                            @endif>
+                    自有机房
+                    <input name="BBULocation" type="radio" value="第三方机房"
+                           @if(isset($siteInfo->BBU_location) && transBBULocation($siteInfo->BBU_location)=="第三方机房") checked="checked"
+                            @endif>
+                    第三方机房
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    RRU安装位置：
+                </th>
+                <td>
+                    <input name="RRULocation" type="radio" value="机房"
+                           @if(isset($siteInfo->RRU_location) && transRRULocation($siteInfo->RRU_location) == '机房') checked="checked" @endif>
+                    机房
+                    <input name="RRULocation" type="radio" value="塔上"
+                           @if(isset($siteInfo->RRU_location) && transRRULocation($siteInfo->RRU_location) == '塔上') checked="checked" @endif>
+                    塔上
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    站址等级：
+                </th>
+                <td>
+                    <input name="siteLevel" type="radio" value="高等级"
+                           @if(isset($siteInfo->site_level) && transSiteLevel($siteInfo->site_level) == '高等级') checked="checked" @endif>
+                    高等级
+                    <input name="siteLevel" type="radio" value="标准等级"
+                           @if(isset($siteInfo->site_level) && transSiteLevel($siteInfo->site_level) == '标准等级') checked="checked" @endif>
+                    标准等级
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    高山站标示：
+                </th>
+                <td>
+                    <input name="isMountainSite" type="radio" value="非高山站"
+                           @if(isset($siteInfo->is_mountain_site) && transIsMountainSite($siteInfo->is_mountain_site) == '非高山站') checked="checked" @endif>
+                    非高山站
+                    <input name="isMountainSite" type="radio" value="高山站"
+                           @if(isset($siteInfo->is_mountain_site) && transIsMountainSite($siteInfo->is_mountain_site) == '高山站') checked="checked" @endif>
+                    高山站
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    一级防雷SPD状态：
+                </th>
+                <td>
+                    <input name="SPDLevel1" type="radio" value="正常"
+                           @if(isset($siteInfo->SPD_level1) && transSPDLevel($siteInfo->SPD_level1) == '正常') checked="checked" @endif>
+                    正常
+                    <input name="SPDLevel1" type="radio" value="故障"
+                           @if(isset($siteInfo->SPD_level1) && transSPDLevel($siteInfo->SPD_level1) == '故障') checked="checked" @endif>
+                    故障
+                    <input name="SPDLevel1" type="radio" value="无"
+                           @if(isset($siteInfo->SPD_level1) && transSPDLevel($siteInfo->SPD_level1) == '无') checked="checked" @endif>
+                    无
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    二级防雷SPD状态：
+                </th>
+                <td>
+                    <input name="SPDLevel2" type="radio" value="正常"
+                           @if(isset($siteInfo->SPD_level1) && transSPDLevel($siteInfo->SPD_level2) == '正常') checked="checked" @endif>
+                    正常
+                    <input name="SPDLevel2" type="radio" value="故障"
+                           @if(isset($siteInfo->SPD_level1) && transSPDLevel($siteInfo->SPD_level2) == '故障') checked="checked" @endif>
+                    故障
+                    <input name="SPDLevel2" type="radio" value="无"
+                           @if(isset($siteInfo->SPD_level1) && transSPDLevel($siteInfo->SPD_level2) == '无') checked="checked" @endif>
+                    无
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    三级防雷SPD状态：
+                </th>
+                <td>
+                    <input name="SPDLevel3" type="radio" value="正常"
+                           @if(isset($siteInfo->SPD_level3) && transSPDLevel($siteInfo->SPD_level3) == '正常') checked="checked" @endif>
+                    正常
+                    <input name="SPDLevel3" type="radio" value="故障"
+                           @if(isset($siteInfo->SPD_level3) && transSPDLevel($siteInfo->SPD_level3) == '故障') checked="checked" @endif>
+                    故障
+                    <input name="SPDLevel3" type="radio" value="无"
+                           @if(isset($siteInfo->SPD_level3) && transSPDLevel($siteInfo->SPD_level3) == '无') checked="checked" @endif>
+                    无
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    零地混接：
+                </th>
+                <td>
+                    <input name="NEWireMixed" type="radio" value="0"
+                           @if(isset($siteInfo->NE_wire_mixed) && transWhetherOrNot($siteInfo->NE_wire_mixed) == '0') checked="checked" @endif>
+                    否
+                    <input name="NEWireMixed" type="radio" value="1"
+                           @if(isset($siteInfo->NE_wire_mixed) && transWhetherOrNot($siteInfo->NE_wire_mixed) == '1') checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    业务设备接地：
+                </th>
+                <td>
+                    <input name="isBusinessEarth" type="radio" value="未接地"
+                           @if(isset($siteInfo->is_business_earth) && transIsBusinessEarth($siteInfo->is_business_earth) == '未接地') checked="checked" @endif>
+                    未接地
+                    <input name="isBusinessEarth" type="radio" value="正常"
+                           @if(isset($siteInfo->is_business_earth) && transIsBusinessEarth($siteInfo->is_business_earth) == '正常') checked="checked" @endif>
+                    正常
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    接地线缆/汇流排：
+                </th>
+                <td>
+                    <input name="earthBusBarWire" type="radio" value="正常"
+                           @if(isset($siteInfo->earth_bus_bar_wire) && transEarthBusBarWire($siteInfo->earth_bus_bar_wire) == '正常') checked="checked" @endif>
+                    正常
+                    <input name="earthBusBarWire" type="radio" value="被盗"
+                           @if(isset($siteInfo->earth_bus_bar_wire) && transEarthBusBarWire($siteInfo->earth_bus_bar_wire) == '被盗') checked="checked" @endif>
+                    被盗
+                    <input name="earthBusBarWire" type="radio" value="未接地"
+                           @if(isset($siteInfo->earth_bus_bar_wire) && transEarthBusBarWire($siteInfo->earth_bus_bar_wire) == '未接地') checked="checked" @endif>
+                    未接地
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    防雷接地状态：
+                </th>
+                <td>
+                    <input name="SPDEarthStatus" type="radio" value="SPD正常"
+                           @if(isset($siteInfo->SPD_earth_status) && transSPDEarthStatus($siteInfo->SPD_earth_status) == 'SPD正常') checked="checked" @endif>
+                    SPD正常
+                    <input name="SPDEarthStatus" type="radio" value="SPD故障"
+                           @if(isset($siteInfo->SPD_earth_status) && transSPDEarthStatus($siteInfo->SPD_earth_status) == 'SPD故障') checked="checked" @endif>
+                    SPD故障
+                    <input name="SPDEarthStatus" type="radio" value="接地线被盗"
+                           @if(isset($siteInfo->SPD_earth_status) && transSPDEarthStatus($siteInfo->SPD_earth_status) == '接地线被盗') checked="checked" @endif>
+                    接地线被盗
+                    <input name="SPDEarthStatus" type="radio" value="设备未接地"
+                           @if(isset($siteInfo->SPD_earth_status) && transSPDEarthStatus($siteInfo->SPD_earth_status) == '设备未接地') checked="checked" @endif>
+                    设备未接地
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    是否安装发电倒换箱：
+                </th>
+                <td>
+                    <input name="hadPowerConversion" type="radio" value="0"
+                           @if(isset($siteInfo->had_power_conversion) && transWhetherOrNot($siteInfo->had_power_conversion) == '0') checked="checked" @endif>
+                    否
+                    <input name="hadPowerConversion" type="radio" value="1"
+                           @if(isset($siteInfo->had_power_conversion) && transWhetherOrNot($siteInfo->had_power_conversion) == '1') checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    零地电压：
+                </th>
+                <td>
+                    <input name="NEVoltage" type="text" value="{{$siteInfo->NE_voltage}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    是否具备发电条件：
+                </th>
+                <td>
+                    <input name="hasGeCondition" type="radio" value="0"
+                           @if(isset($siteInfo->has_ge_condition) && transWhetherOrNot($siteInfo->has_ge_condition) == '0') checked="checked" @endif>
+                    否
+                    <input name="hasGeCondition" type="radio" value="1"
+                           @if(isset($siteInfo->has_ge_condition) && transWhetherOrNot($siteInfo->has_ge_condition) == '1') checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    是否包干发电：
+                </th>
+                <td>
+                    <input name="isGnrAllInCharge" type="radio" value="0"
+                           @if(isset($siteInfo->is_gnr_all_in_charge) && transIsGnrAllInCharge($siteInfo->is_gnr_all_in_charge) == '0') checked="checked" @endif>
+                    否
+                    <input name="isGnrAllInCharge" type="radio" value="1"
+                           @if(isset($siteInfo->is_gnr_all_in_charge) && transIsGnrAllInCharge($siteInfo->is_gnr_all_in_charge) == '1') checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电源柜性能：
+                </th>
+                <td>
+                    <input name="powerCabinetCapacity" type="radio" value="正常"
+                           @if(isset($siteInfo->power_cabinet_capacity) && transPowerCabinetCapacity($siteInfo->power_cabinet_capacity) == '正常') checked="checked" @endif>
+                    正常
+                    <input name="powerCabinetCapacity" type="radio" value="故障"
+                           @if(isset($siteInfo->power_cabinet_capacity) && transPowerCabinetCapacity($siteInfo->power_cabinet_capacity) == '故障') checked="checked" @endif>
+                    故障
+                    <input name="powerCabinetCapacity" type="radio" value="容量不足"
+                           @if(isset($siteInfo->power_cabinet_capacity) && transPowerCabinetCapacity($siteInfo->power_cabinet_capacity) == '容量不足') checked="checked" @endif>
+                    容量不足
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    模块总容量：
+                </th>
+                <td>
+                    <input name="moduleVolume" type="text" value="{{$siteInfo->module_volume}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电池容量：
+                </th>
+                <td>
+                    <input name="batteryVolume" type="radio" value="300AH"
+                           @if(isset($siteInfo->battery_volume) && transBatteryVolume($siteInfo->battery_volume) == '300AH') checked="checked" @endif>
+                    300AH
+                    <input name="batteryVolume" type="radio" value="500AH"
+                           @if(isset($siteInfo->battery_volume) && transBatteryVolume($siteInfo->battery_volume) == '500AH') checked="checked" @endif>
+                    500AH
+                    <input name="batteryVolume" type="radio" value="1000AH"
+                           @if(isset($siteInfo->battery_volume) && transBatteryVolume($siteInfo->battery_volume) == '1000AH') checked="checked" @endif>
+                    1000AH
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电池组数：
+                </th>
+                <td>
+                    <input name="batteryNum" type="radio" value="1"
+                           @if(isset($siteInfo->battery_num) && transBatteryNum($siteInfo->battery_num) == '1') checked="checked" @endif>
+                    1
+                    <input name="batteryNum" type="radio" value="2"
+                           @if(isset($siteInfo->battery_num) && transBatteryNum($siteInfo->battery_num) == '2') checked="checked" @endif>
+                    2
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电池性能：
+                </th>
+                <td>
+                    <input name="batteryCapability" type="radio" value="秒退"
+                           @if(isset($siteInfo->battery_capability) && transBatteryCapability($siteInfo->battery_capability) == '秒退') checked="checked" @endif>
+                    秒退
+                    <input name="batteryCapability" type="radio" value="1小时"
+                           @if(isset($siteInfo->battery_capability) && transBatteryCapability($siteInfo->battery_capability) == '1小时') checked="checked" @endif>
+                    1小时
+                    <input name="batteryCapability" type="radio" value="2小时"
+                           @if(isset($siteInfo->battery_capability) && transBatteryCapability($siteInfo->battery_capability) == '2小时') checked="checked" @endif>
+                    2小时
+                    <input name="batteryCapability" type="radio" value="3小时"
+                           @if(isset($siteInfo->battery_capability) && transBatteryCapability($siteInfo->battery_capability) == '3小时') checked="checked" @endif>
+                    3小时
+                    <input name="batteryCapability" type="radio" value="大于3小时"
+                           @if(isset($siteInfo->battery_capability) && transBatteryCapability($siteInfo->battery_capability) == '大于3小时') checked="checked" @endif>
+                    大于3小时
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    站址交流负荷：
+                </th>
+                <td>
+                    <input name="AloadSite" type="text" value="{{$siteInfo->Aload_site}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电信直流负荷：
+                </th>
+                <td>
+                    <input name="DloadTele" type="text" value="{{$siteInfo->Dload_tele}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    移动直流负荷：
+                </th>
+                <td>
+                    <input name="DloadMobile" type="text" value="{{$siteInfo->Dload_mobile}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    联通直流负荷：
+                </th>
+                <td>
+                    <input name="DloadUnicom" type="text" value="{{$siteInfo->Dload_unicom}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    铁塔政企业务直流负荷：
+                </th>
+                <td>
+                    <input name="DloadTowerGov" type="text" value="{{$siteInfo->Dload_tower_gov}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    环境设备：
+                </th>
+                <td>
+                    <input name="envirEquip" type="radio" value="空调"
+                           @if(isset($siteInfo->envir_equip) && transEnvirEquip($siteInfo->envir_equip) =="空调")
+                           checked="checked" @endif>
+                    空调
+                    <input name="envirEquip" type="radio" value="风机"
+                           @if(isset($siteInfo->envir_equip) && transEnvirEquip($siteInfo->envir_equip) =="风机")
+                           checked="checked" @endif>
+                    风机
+                    <input name="envirEquip" type="radio" value="无"
+                           @if(isset($siteInfo->envir_equip) && transEnvirEquip($siteInfo->envir_equip) =="无")
+                           checked="checked" @endif>
+                    无
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    环境设备状态：
+                </th>
+                <td>
+                    <input name="envirEquipStatus" type="radio" value="故障"
+                           @if(isset($siteInfo->envir_equip_status) && transEnvirEquipStatus($siteInfo->envir_equip_status) =="故障") checked="checked" @endif>
+                    故障
+                    <input name="envirEquipStatus" type="radio" value="正常"
+                           @if(isset($siteInfo->envir_equip_status) && transEnvirEquipStatus($siteInfo->envir_equip_status) =="正常") checked="checked" @endif>
+                    正常
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电信主设备：
+                </th>
+                <td>
+                    <input name="teleMainEquip" type="text" value="{{$siteInfo->tele_main_equip}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    铁塔动环状态：
+                </th>
+                <td>
+                    <input name="towerDEStatus" type="radio" value="故障"
+                           @if(isset($siteInfo->tower_DE_status) && transTowerDEStatus($siteInfo->tower_DE_status) =="故障") checked="checked" @endif>
+                    故障
+                    <input name="towerDEStatus" type="radio" value="正常"
+                           @if(isset($siteInfo->tower_DE_status) && transTowerDEStatus($siteInfo->tower_DE_status) =="正常") checked="checked" @endif>
+                    正常
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    直接上站：
+                </th>
+                <td>
+                    <input name="directCheck" type="text" value="{{$siteInfo->direct_check}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    需证件上站：
+                </th>
+                <td>
+                    <input name="certificateCheck" type="text" value="{{$siteInfo->certificate_check}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    楼顶管控：
+                </th>
+                <td>
+                    <input name="roofControl" type="text" value="{{$siteInfo->roof_control}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    不可抵达：
+                </th>
+                <td>
+                    <input name="unreachable" type="text" value="{{$siteInfo->unreachable}}">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    铁塔全景照片(采集/上传)：
+                </th>
+                <td>
+                    <input name="CUTowerView" type="radio" value="0"
+                           @if(isset($siteInfo->CU_tower_view) && transWhetherOrNot($siteInfo->CU_tower_view) =="0") checked="checked" @endif>
+                    否
+                    <input name="CUTowerView" type="radio" value="1"
+                           @if(isset($siteInfo->CU_tower_view) && transWhetherOrNot($siteInfo->CU_tower_view) =="1") checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    机房全景照片(采集/上传)：
+                </th>
+                <td>
+                    <input name="CUHouseView" type="radio" value="0"
+                           @if(isset($siteInfo->CU_house_view) && transWhetherOrNot($siteInfo->CU_house_view) =="0") checked="checked" @endif>
+                    否
+                    <input name="CUHouseView" type="radio" value="1"
+                           @if(isset($siteInfo->CU_house_view) && transWhetherOrNot($siteInfo->CU_house_view) =="1") checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    配套全景照片(采集/上传)：
+                </th>
+                <td>
+                    <input name="CUSupportView" type="radio" value="0"
+                           @if(isset($siteInfo->CU_support_view) && transWhetherOrNot($siteInfo->CU_support_view) =="0") checked="checked" @endif>
+                    否
+                    <input name="CUSupportView" type="radio" value="1"
+                           @if(isset($siteInfo->CU_support_view) && transWhetherOrNot($siteInfo->CU_support_view) =="1") checked="checked" @endif>
+                    是
+                </td>
+            </tr>
+
 
 
         </table>

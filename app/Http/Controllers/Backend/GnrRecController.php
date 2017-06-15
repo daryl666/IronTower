@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\EventLog;
+use App\Models\FeeOutGnr;
 use App\Models\GnrRec;
+use App\Models\SiteStation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\SiteInfo;
@@ -41,12 +43,12 @@ class GnrRecController extends Controller
             $gnrRecs = $gnrRecDB->searchGnr($regionName, $checkStatus, $beginDate, $endDate);
             if ($checkStatus == 0) {
                 return view('backend/gnrRec/index')
-                ->with('filter', $filter)
-                ->with('gnrRecs', $gnrRecs);
+                    ->with('filter', $filter)
+                    ->with('gnrRecs', $gnrRecs);
             } elseif ($checkStatus == 1) {
                 return view('backend/gnrRec/index-handled')
-                ->with('filter', $filter)
-                ->with('gnrRecs', $gnrRecs);
+                    ->with('filter', $filter)
+                    ->with('gnrRecs', $gnrRecs);
             }
         } else {
             // if (!empty(session('filter'))) {
@@ -81,22 +83,24 @@ class GnrRecController extends Controller
                     echo "<script language=javascript>alert('删除成功！');</script>";
                 } elseif ($flag == 'import') {
                     echo "<script language=javascript>alert('导入成功！');</script>";
+                } elseif ($flag == 'withdraw') {
+                    echo "<script language=javascript>alert('撤回成功！');</script>";
                 }
             }
             $filter = $request->all();
             $regionName = $request->get('region');
             $beginDate = $request->get('beginDate');
-            $endDate = $request->get('$endDate');
+            $endDate = $request->get('endDate');
             $checkStatus = $request->get('checkStatus');
             $gnrRecs = $gnrRecDB->searchGnr($regionName, $checkStatus, $beginDate, $endDate)->paginate(15);
             if ($checkStatus == 0) {
                 return view('backend/gnrRec/index')
-                ->with('gnrRecs', $gnrRecs)
-                ->with('filter', $filter);
+                    ->with('gnrRecs', $gnrRecs)
+                    ->with('filter', $filter);
             } else {
                 return view('backend/gnrRec/index-handled')
-                ->with('gnrRecs', $gnrRecs)
-                ->with('filter', $filter);
+                    ->with('gnrRecs', $gnrRecs)
+                    ->with('filter', $filter);
             }
 
 
@@ -116,7 +120,7 @@ class GnrRecController extends Controller
             $stationCode = $request->get('stationCode');
 //            if ($stationCode != '') {
 //                $siteInfos = DB::table('site_info')
-                   // ->where('site_code', 'like', '%' . $stationCode . '%')
+            // ->where('site_code', 'like', '%' . $stationCode . '%')
 //                    ->get();
 //            } else {
             $siteInfos = $siteinfoDB->searchInfoSite($region, $stationCode);
@@ -152,10 +156,10 @@ class GnrRecController extends Controller
                 $siteInfos = json_encode($siteInfos);
                 $siteInfos = json_decode($siteInfos);
                 return view('backend/gnrRec/index')->with('siteInfos', $siteInfos)
-                ->with('filter', $filter);
+                    ->with('filter', $filter);
             } else {
                 return view('backend/gnrRec/index')
-                ->with('filter', $filter);
+                    ->with('filter', $filter);
             }
         } elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
             return view('backend/gnrRec/index');
@@ -194,14 +198,14 @@ class GnrRecController extends Controller
             }
             if ($checkStatus == 0) {
                 return view('backend/gnrRec/index')->with('siteInfos', $siteInfos)
-                ->with('filter', $filter)
-                ->with('gnrRecs', $gnrRecs)
-                ->with('siteID', $siteID);
+                    ->with('filter', $filter)
+                    ->with('gnrRecs', $gnrRecs)
+                    ->with('siteID', $siteID);
             } elseif ($checkStatus == 1) {
                 return view('backend/gnrRec/index-handled')->with('siteInfos', $siteInfos)
-                ->with('filter', $filter)
-                ->with('gnrRecs', $gnrRecs)
-                ->with('siteID', $siteID);
+                    ->with('filter', $filter)
+                    ->with('gnrRecs', $gnrRecs)
+                    ->with('siteID', $siteID);
             }
 
         } else {
@@ -223,9 +227,9 @@ class GnrRecController extends Controller
                     echo "<script language=javascript>alert('导入成功！');</script>";
                 }
                 return view('backend/gnrRec/index')
-                ->with('gnrRecs', $gnrRecs)
-                ->with('filter', $filter)
-                ->with('status_update', $filter);
+                    ->with('gnrRecs', $gnrRecs)
+                    ->with('filter', $filter)
+                    ->with('status_update', $filter);
             } else {
                 return view('backend/gnrRec/index');
             }
@@ -263,12 +267,12 @@ class GnrRecController extends Controller
     {
         $filter = $request->all();
         $gnrRecs = DB::table('fee_out_gnr')
-        ->where('id', $id)
-        ->get();
+            ->where('id', $id)
+            ->get();
         return view('backend/gnrRec/handle')
-        ->with('id', $id)
-        ->with('gnrRecs', $gnrRecs)
-        ->with('filter', $filter);
+            ->with('id', $id)
+            ->with('gnrRecs', $gnrRecs)
+            ->with('filter', $filter);
     }
 
     public function editPage($gnrID, $siteID, $siteChoose, $lastGnrTime)
@@ -292,8 +296,8 @@ class GnrRecController extends Controller
         $siteInfos[0]->gnr_total_fee_taxed = $gnr_total_fee_taxed;
         $siteInfos[0]->last_gnr_time = $lastGnrTime;
         return view('backend/gnrRec/edit')->with('gnrRecs', $gnrRec)
-        ->with('siteInfos', $siteInfos)
-        ->with('sitechoose', $siteChoose);
+            ->with('siteInfos', $siteInfos)
+            ->with('sitechoose', $siteChoose);
     }
 
     public function addGnr(Request $request)
@@ -303,17 +307,17 @@ class GnrRecController extends Controller
         $filter = $request->all();
         $siteCode = $request->get('siteCode');
         $siteInfo = DB::table('site_info')
-        ->where('site_code', $siteCode)
-        ->where('region_id', transRegion($filter['region']))
-        ->get();
-        $stationCode = $request->get('stationCode');
-        $stationSiteMap = DB::table('site_station')
-        ->where('cdma_code', $stationCode)
-        ->where('tower_site_code', $siteCode)
-        ->where('region_id', transRegion($filter['region']))
-        ->get();
-        // dd($stationSiteMap);
-        if (empty($stationSiteMap)) {
+            ->where('site_code', $siteCode)
+            ->where('region_id', transRegion($filter['region']))
+            ->get();
+        $cdmaCode = $request->get('cdmaCode');
+        $lteCode = $request->get('lteCode');
+        $stationSiteMap = SiteStation::where('cdma_code', 'like', ($cdmaCode == null) ? '%' : $cdmaCode)
+            ->where('lte_code', 'like', ($lteCode == null) ? '%' : $lteCode)
+            ->where('tower_site_code', 'like', ($siteCode == null) ? '%' : $siteCode)
+            ->where('region_id', transRegion($filter['region']))
+            ->get();
+        if ($stationSiteMap->isEmpty()) {
             echo "<script language=javascript>alert('站址编码和基站编号映射关系不正确！');history.back();</script>";
         } elseif (empty($siteInfo)) {
             echo "<script language=javascript>alert('该站址不存在！');history.back();</script>";
@@ -322,14 +326,14 @@ class GnrRecController extends Controller
             $gnrRaiseSide = $request->get('gnrRaiseSide');
             $gnrReqTime = $request->get('gnrReqTime');
             $addGnr = DB::table('fee_out_gnr')
-            ->insert([
-                'site_code' => $siteCode,
-                'gnr_req_time' => $gnrReqTime,
-                'gnr_raise_side' => transGnrRaiseSide($gnrRaiseSide),
-                'check_status' => 0,
-                'region_name' => $region,
-                'region_id' => transRegion($region)
-            ]);
+                ->insert([
+                    'site_code' => $siteCode,
+                    'gnr_req_time' => $gnrReqTime,
+                    'gnr_raise_side' => transGnrRaiseSide($gnrRaiseSide),
+                    'check_status' => 0,
+                    'region_name' => $region,
+                    'region_id' => transRegion($region)
+                ]);
             if ($addGnr == true) {
                 $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报发电申请',
                     'fee_out_gnr', '');
@@ -337,14 +341,14 @@ class GnrRecController extends Controller
                 $filter['beginDate'] = '';
                 $filter['endDate'] = '';
                 $filter['checkStatus'] = 0;
-                return redirect('backend/gnrRec?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
-                // ->with('gnrRecs', 1)
-                // ->with('filter', $filter)
-                // ->with('region', $filter['region'])
-                // ->with('beginDate', $filter['beginDate'])
-                // ->with('endDate', $filter['endDate'])
-                // ->with('checkStatus', $filter['checkStatus'])
-                ->with('flag', 'add');
+                return redirect('backend/gnrRec?region=' . $filter['region'] . '&checkStatus=' . $filter['checkStatus'] . '&beginDate=' . $filter['beginDate'] . '&endDate=' . $filter['endDate'])
+                    // ->with('gnrRecs', 1)
+                    // ->with('filter', $filter)
+                    // ->with('region', $filter['region'])
+                    // ->with('beginDate', $filter['beginDate'])
+                    // ->with('endDate', $filter['endDate'])
+                    // ->with('checkStatus', $filter['checkStatus'])
+                    ->with('flag', 'add');
 
             } else {
                 echo "<script language=javascript>alert('提交失败！');history.back();</script>";
@@ -360,11 +364,12 @@ class GnrRecController extends Controller
         $filter = $request->all();
 
         $gnrResult = $request->get('gnrResult');
+        $gnrStatus = $request->get('gnrStatus');
         $gnrStartTime = ($gnrResult == '失败') ? null : $request->get('gnrStartTime');
         $gnrEndTime = ($gnrResult == '失败') ? null : $request->get('gnrEndTime');
         $siteCode = DB::table('fee_out_gnr')
-        ->where('id', $id)
-        ->pluck('site_code');
+            ->where('id', $id)
+            ->pluck('site_code');
         $gnr_len_minute = floor((strtotime($gnrEndTime) - strtotime($gnrStartTime)) / 60);
         $gnr_hour = floor($gnr_len_minute / 60);
         $gnr_minute = $gnr_len_minute % 60;
@@ -373,33 +378,34 @@ class GnrRecController extends Controller
         $land_form = DB::table('site_info')->where('site_code', $siteCode[0])->pluck('land_form');
         if ($land_form[0] == 1) {
             $gnr_fee = 270 + 20 * ($gnr_compute_len - 5);
-        } elseif ($land_form[0] ==0) {
+        } elseif ($land_form[0] == 0) {
             $gnr_fee = 220 + 20 * ($gnr_compute_len - 5);
         }
         $handleGnr = DB::table('fee_out_gnr')
-        ->where('id', $id)
-        ->update([
-            'gnr_result' => transGnrResult($gnrResult),
-            'check_status' => 1,
-            'gnr_start_time' => $gnrStartTime,
-            'gnr_stop_time' => $gnrEndTime,
-            'gnr_len' => $gnr_len,
-            'gnr_len_minute' => $gnr_len_minute,
-            'gnr_compute_len' => $gnr_compute_len,
-            'gnr_fee' => $gnr_fee,
-            'gnr_fee_taxed' => $gnr_fee * 1.06,
-        ]);
+            ->where('id', $id)
+            ->update([
+                'gnr_result' => transGnrResult($gnrResult),
+                'gnr_status' => transGnrStatus($gnrStatus),
+                'check_status' => 1,
+                'gnr_start_time' => $gnrStartTime,
+                'gnr_stop_time' => $gnrEndTime,
+                'gnr_len' => $gnr_len,
+                'gnr_len_minute' => $gnr_len_minute,
+                'gnr_compute_len' => $gnr_compute_len,
+                'gnr_fee' => $gnr_fee,
+                'gnr_fee_taxed' => $gnr_fee * 1.06,
+            ]);
         if ($handleGnr == true) {
             $eventLogDB->addEvent(Auth::user()->area_level, '', Auth::user()->name, '填报发电结果',
                 'fee_out_gnr', $id);
-            return redirect('backend/gnrRec?region='.$filter['region'].'&checkStatus='.$filter['checkStatus'].'&beginDate='.$filter['beginDate'].'&endDate='.$filter['endDate'])
-            // ->with('gnrRecs', 1)
-            // ->with('filter', $filter)
-            // ->with('region', $filter['region'])
-            // ->with('beginDate', $filter['beginDate'])
-            // ->with('endDate', $filter['endDate'])
-            // ->with('checkStatus', $filter['checkStatus'])
-            ->with('flag', 'add');
+            return redirect('backend/gnrRec?region=' . $filter['region'] . '&checkStatus=' . $filter['checkStatus'] . '&beginDate=' . $filter['beginDate'] . '&endDate=' . $filter['endDate'])
+                // ->with('gnrRecs', 1)
+                // ->with('filter', $filter)
+                // ->with('region', $filter['region'])
+                // ->with('beginDate', $filter['beginDate'])
+                // ->with('endDate', $filter['endDate'])
+                // ->with('checkStatus', $filter['checkStatus'])
+                ->with('flag', 'add');
         } else {
             echo "<script language=javascript>alert('提交失败！');history.back();</script>";
         }
@@ -430,9 +436,9 @@ class GnrRecController extends Controller
                 $siteInfos[0]->gnr_num = $gnr_num;
                 $siteInfos[0]->gnr_total_fee = $gnr_total_fee;
                 return redirect('backend/gnrRec/indexGnr')->with('siteInfos', $siteInfos)
-                ->with('gnrRecs', $gnrRecs)
-                ->with('filter', $filter)
-                ->with('flag', 'update');
+                    ->with('gnrRecs', $gnrRecs)
+                    ->with('filter', $filter)
+                    ->with('flag', 'update');
 
             } else {
                 echo "<script language=javascript>alert('修改失败！');history.back();</script>";
@@ -458,8 +464,8 @@ class GnrRecController extends Controller
         $siteInfos[0]->gnr_num = $gnr_num;
         $siteInfos[0]->gnr_total_fee = $gnr_total_fee;
         return view('backend/gnrRec/index')->with('siteInfos', $siteInfos)
-        ->with('gnrRecs', $gnrRecs)
-        ->with('filter', $filter);
+            ->with('gnrRecs', $gnrRecs)
+            ->with('filter', $filter);
     }
 
     public function delete($id, Request $request)
@@ -480,9 +486,9 @@ class GnrRecController extends Controller
             $siteInfos[0]->gnr_num = $gnr_num;
             $siteInfos[0]->gnr_total_fee = $gnr_total_fee;
             return redirect('backend/gnrRec/indexGnr')->with('siteInfos', $siteInfos)
-            ->with('gnrRecs', $gnrRecs)
-            ->with('filter', $filter)
-            ->with('flag', 'delete');
+                ->with('gnrRecs', $gnrRecs)
+                ->with('filter', $filter)
+                ->with('flag', 'delete');
         } else {
             echo "<script language=javascript>alert('删除失败！');history.back();</script>";
         }
@@ -533,9 +539,45 @@ class GnrRecController extends Controller
             $siteInfos[0]->gnr_total_fee = $gnr_total_fee;
 
             return redirect('backend/gnrRec/indexGnr')->with('siteInfos', $siteInfos)
-            ->with('gnrRecs', $gnrRecs)
-            ->with('filter', $filter)
-            ->with('flag', 'import');
+                ->with('gnrRecs', $gnrRecs)
+                ->with('filter', $filter)
+                ->with('flag', 'import');
+        }
+
+    }
+
+    public function withdraw($id, Request $request)
+    {
+        FeeOutGnr::destroy($id);
+        $filter = $request->all();
+        $flag = 'withdraw';
+        return redirect('backend/gnrRec?region=' . $filter['region'] . '&checkStatus=' . $filter['checkStatus'] . '&beginDate=' . $filter['beginDate'] . '&endDate=' . $filter['endDate'])
+            ->with('flag', $flag);
+    }
+
+    public function associatedSearch(Request $request)
+    {
+        $cdmaCode = $request->get('cdmaCode');
+        $lteCode = $request->get('lteCode');
+        $stationName = $request->get('stationName');
+        $siteCode = $request->get('siteCode');
+        $siteName = $request->get('siteName');
+        $region = $request->get('region');
+        $siteStation = SiteStation::whereRegion_id(transRegion($region))
+            ->where('cdma_code', 'like', ($cdmaCode == null) ? '%' : $cdmaCode)
+            ->where('lte_code', 'like', ($lteCode == null) ? '%' : $lteCode)
+            ->where('tele_site_name', 'like', ($stationName == null) ? '%' : $stationName)
+            ->where('tower_site_code', 'like', ($siteCode == null) ? '%' : $siteCode)
+            ->where('tower_site_name', 'like', ($siteName == null) ? '%' : $siteName)
+            ->get();
+        if ($siteStation->count() == 1) {
+            return response()->json([
+                'towerSiteCode' => $siteStation[0]->tower_site_code,
+                'towerSiteName' => $siteStation[0]->tower_site_name,
+                'teleSiteName' => $siteStation[0]->tele_site_name,
+                'cdmaCode' => $siteStation[0]->cdma_code,
+                'lteCode' => $siteStation[0]->lte_code,
+            ]);
         }
 
     }

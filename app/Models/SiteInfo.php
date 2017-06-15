@@ -57,6 +57,61 @@ class SiteInfo extends Model
         $fee_battery = $request->get('feeBat');
         $fee_bbu = $request->get('feeBbu');
 
+        // 培训后新增的属性
+        $citeName = $request->get('citeName');
+        $rentSiteType = $request->get('rentSiteType');
+        $siteProperty = $request->get('siteQuality');
+        $villageSiteCode = $request->get('villageSiteCode');
+        $mobileSiteName = $request->get('mobileSiteName');
+        $unicomSiteName = $request->get('unicomSiteName');
+        $siteNet = $request->get('siteNet');
+        $towerOriProterty = $request->get('towerOriProterty');
+        $houseOccupation = $request->get('houseOccupation');
+        $powerSupplyMode = $request->get('powerSupplyMode');
+        $hasGovAffairs = $request->get('hasGovAffairs');
+        $dualBandAntennaNum = $request->get('dualBandAntennaNum');
+        $maintainImportScene = $request->get('maintainImportScene');
+        $siteFeeScene = $request->get('siteFeeScene');
+        $siteFeeBeginDate = $request->get('siteFeeBeginDate');
+        $siteFeeContractCode = $request->get('siteFeeContractCode');
+        $BBULocation = $request->get('BBULocation');
+        $RRULocation = $request->get('RRULocation');
+        $siteLevel = $request->get('siteLevel');
+        $isMountainSite = $request->get('isMountainSite');
+        $SPDLevel1 = $request->get('SPDLevel1');
+        $SPDLevel2 = $request->get('SPDLevel2');
+        $SPDLevel3 = $request->get('SPDLevel3');
+        $NEWireMixed = $request->get('NEWireMixed');
+        $isBusinessEarth = $request->get('isBusinessEarth');
+        $earthBusbarWire = $request->get('earthBusbarWire');
+        $SPDEarthStatus = $request->get('SPDEarthStatus');
+        $hasPowerConversion = $request->get('hasPowerConversion');
+        $NEVoltage = $request->get('NEVoltage');
+        $hasGeCondition = $request->get('hasGeCondition');
+        $isGnrAllincharge = $request->get('isGnrAllincharge');
+        $powerCabinetCapacity = $request->get('powerCabinetCapacity');
+        $moduleVolume = $request->get('moduleVolume');
+        $batteryVolume = $request->get('batteryVolume');
+        $batteryNum = $request->get('batteryNum');
+        $batteryCapacity = $request->get('batteryCapacity');
+        $AloadSite = $request->get('AloadSite');
+        $DloadTele = $request->get('DloadTele');
+        $DloadMobile = $request->get('DloadMobile');
+        $DloadUnicom = $request->get('DloadUnicom');
+        $DloadTowerGov = $request->get('DloadTowerGov');
+        $envirEquip = $request->get('envirEquip');
+        $envireEquipStatus = $request->get('envireEquipStatus');
+        $teleMainEquip = $request->get('teleMainEquip');
+        $towerDEStatus = $request->get('towerDEStatus');
+        $unreachable = $request->get('unreachable');
+        $roofControl = $request->get('roofControl');
+        $certificateCheck = $request->get('certificateCheck');
+        $directCheck = $request->get('directCheck');
+        $CUTowerView = $request->get('CUTowerView');
+        $CUHouseView = $request->get('CUHouseView');
+        $CUSupportView = $request->get('CUSupportView');
+
+
         $siteIsExist = DB::table('site_info')
             ->where('business_code', $request->get('business_code'))
             ->where('is_valid', 1)->get();
@@ -79,8 +134,6 @@ class SiteInfo extends Model
             $site_share_discount = ($site_share_discount == null) ? 1 : $site_share_discount;
             $import_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_import, $user_type, $is_newly_added)->value('discount_import');
             $import_share_discount = ($import_share_discount == null) ? 1 : $import_share_discount;
-
-
 
 
             $fee_house1 = FeeHouseStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_house');
@@ -277,8 +330,59 @@ class SiteInfo extends Model
                 'land_form' => transLandForm($land_form),
                 'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
-                'fee_out_site_price_table_id' => $insSitePrice->id
-
+                'fee_out_site_price_table_id' => $insSitePrice->id,
+                'city_name' => $citeName,
+                'rent_site_type' => $rentSiteType,
+                'site_property' => $siteProperty,
+                'village_site_code' => $villageSiteCode,
+                'mobile_site_name' => $mobileSiteName,
+                'unicom_site_name' => $unicomSiteName,
+                'site_net' => transSiteNet($siteNet),
+                'tower_ori_property' => transTowerOriProperty($towerOriProterty),
+                'house_occupation' => $houseOccupation,
+                'power_supply_mode' => transPowerSupplyMode($powerSupplyMode),
+                'has_gov_affairs' => $hasGovAffairs,
+                'dual_band_antenna_num' => $dualBandAntennaNum,
+                'maintain_import_scene' => $maintainImportScene,
+                'site_fee_scene' => $siteFeeScene,
+                'site_fee_begin_date' => $siteFeeBeginDate,
+                'site_fee_contract_code' => $siteFeeContractCode,
+                'BBU_location' => transBBULocation($BBULocation),
+                'RRU_location' => transRRULocation($RRULocation),
+                'site_level' => transSiteLevel($siteLevel),
+                'is_mountain_site' => transIsMountainSite($isMountainSite),
+                'SPD_level1' => transSPDLevel($SPDLevel1),
+                'SPD_level2' => transSPDLevel($SPDLevel2),
+                'SPD_level3' => transSPDLevel($SPDLevel3),
+                'NE_wire_mixed' => $NEWireMixed,
+                'is_business_earth' => transIsBusinessEarth($isBusinessEarth),
+                'earth_busbar_wire' => transEarthBusbarWire($earthBusbarWire),
+                'SPD_earth_status' => transSPDEarthStatus($SPDEarthStatus),
+                'has_power_conversion' => $hasPowerConversion,
+                'NE_voltage' => $NEVoltage,
+                'has_ge_condition' => $hasGeCondition,
+                'is_gnr_allincharge' => $isGnrAllincharge,
+                'power_cabinet_capacity' => transPowerCabinetCapacity($powerCabinetCapacity),
+                'module_volume' => $moduleVolume,
+                'battery_volume' => transBatteryVolume($batteryVolume),
+                'battery_num' => transBatteryNum($batteryNum),
+                'battery_capacity' => transBatteryCapacity($batteryCapacity),
+                'Aload_site' => $AloadSite,
+                'Dload_tele' => $DloadTele,
+                'Dload_mobile' => $DloadMobile,
+                'Dload_unicom' => $DloadUnicom,
+                'Dload_tower_gov' => $DloadTowerGov,
+                'envir_equip' => transEnvirEquip($envirEquip),
+                'envir_equip_status' => transEnvirEquipStatus($envireEquipStatus),
+                'tele_main_equip' => $teleMainEquip,
+                'tower_DE_status' => transTowerDEStatus($towerDEStatus),
+                'unreachable' => $unreachable,
+                'roof_control' => $roofControl,
+                'certificate_check' => $certificateCheck,
+                'direct_check' => $directCheck,
+                'CU_tower_view' => $CUTowerView,
+                'CU_house_view' => $CUHouseView,
+                'CU_support_view' => $CUSupportView,
             ]);
 
             return array($siteIsExist, $insSiteInfo, $insSitePrice);
@@ -339,6 +443,61 @@ class SiteInfo extends Model
             $fee_add = $request->get('feeAdd');
             $fee_battery = $request->get('feeBat');
             $fee_bbu = $request->get('feeBbu');
+
+            // 培训后新增的属性
+            $citeName = $request->get('citeName');
+            $rentSiteType = $request->get('rentSiteType');
+            $siteProperty = $request->get('siteQuality');
+            $villageSiteCode = $request->get('villageSiteCode');
+            $mobileSiteName = $request->get('mobileSiteName');
+            $unicomSiteName = $request->get('unicomSiteName');
+            $siteNet = $request->get('siteNet');
+            $towerOriProterty = $request->get('towerOriProterty');
+            $houseOccupation = $request->get('houseOccupation');
+            $powerSupplyMode = $request->get('powerSupplyMode');
+            $hasGovAffairs = $request->get('hasGovAffairs');
+            $dualBandAntennaNum = $request->get('dualBandAntennaNum');
+            $maintainImportScene = $request->get('maintainImportScene');
+            $siteFeeScene = $request->get('siteFeeScene');
+            $siteFeeBeginDate = $request->get('siteFeeBeginDate');
+            $siteFeeContractCode = $request->get('siteFeeContractCode');
+            $BBULocation = $request->get('BBULocation');
+            $RRULocation = $request->get('RRULocation');
+            $siteLevel = $request->get('siteLevel');
+            $isMountainSite = $request->get('isMountainSite');
+            $SPDLevel1 = $request->get('SPDLevel1');
+            $SPDLevel2 = $request->get('SPDLevel2');
+            $SPDLevel3 = $request->get('SPDLevel3');
+            $NEWireMixed = $request->get('NEWireMixed');
+            $isBusinessEarth = $request->get('isBusinessEarth');
+            $earthBusbarWire = $request->get('earthBusbarWire');
+            $SPDEarthStatus = $request->get('SPDEarthStatus');
+            $hasPowerConversion = $request->get('hasPowerConversion');
+            $NEVoltage = $request->get('NEVoltage');
+            $hasGeCondition = $request->get('hasGeCondition');
+            $isGnrAllincharge = $request->get('isGnrAllincharge');
+            $powerCabinetCapacity = $request->get('powerCabinetCapacity');
+            $moduleVolume = $request->get('moduleVolume');
+            $batteryVolume = $request->get('batteryVolume');
+            $batteryNum = $request->get('batteryNum');
+            $batteryCapacity = $request->get('batteryCapacity');
+            $AloadSite = $request->get('AloadSite');
+            $DloadTele = $request->get('DloadTele');
+            $DloadMobile = $request->get('DloadMobile');
+            $DloadUnicom = $request->get('DloadUnicom');
+            $DloadTowerGov = $request->get('DloadTowerGov');
+            $envirEquip = $request->get('envirEquip');
+            $envireEquipStatus = $request->get('envireEquipStatus');
+            $teleMainEquip = $request->get('teleMainEquip');
+            $towerDEStatus = $request->get('towerDEStatus');
+            $unreachable = $request->get('unreachable');
+            $roofControl = $request->get('roofControl');
+            $certificateCheck = $request->get('certificateCheck');
+            $directCheck = $request->get('directCheck');
+            $CUTowerView = $request->get('CUTowerView');
+            $CUHouseView = $request->get('CUHouseView');
+            $CUSupportView = $request->get('CUSupportView');
+
             $tower_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_tower, $user_type, $is_newly_added)->value('discount_basic');
             $tower_share_discount = ($tower_share_discount == null) ? 1 : $tower_share_discount;
             $house_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_house, $user_type, $is_newly_added)->value('discount_basic');
@@ -542,7 +701,59 @@ class SiteInfo extends Model
                 'land_form' => transLandForm($land_form),
                 'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
-                'fee_out_site_price_table_id' => $insSitePrice->id
+                'fee_out_site_price_table_id' => $insSitePrice->id,
+                'city_name' => $citeName,
+                'rent_site_type' => $rentSiteType,
+                'site_property' => $siteProperty,
+                'village_site_code' => $villageSiteCode,
+                'mobile_site_name' => $mobileSiteName,
+                'unicom_site_name' => $unicomSiteName,
+                'site_net' => transSiteNet($siteNet),
+                'tower_ori_property' => transTowerOriProperty($towerOriProterty),
+                'house_occupation' => $houseOccupation,
+                'power_supply_mode' => transPowerSupplyMode($powerSupplyMode),
+                'has_gov_affairs' => $hasGovAffairs,
+                'dual_band_antenna_num' => $dualBandAntennaNum,
+                'maintain_import_scene' => $maintainImportScene,
+                'site_fee_scene' => $siteFeeScene,
+                'site_fee_begin_date' => $siteFeeBeginDate,
+                'site_fee_contract_code' => $siteFeeContractCode,
+                'BBU_location' => transBBULocation($BBULocation),
+                'RRU_location' => transRRULocation($RRULocation),
+                'site_level' => transSiteLevel($siteLevel),
+                'is_mountain_site' => transIsMountainSite($isMountainSite),
+                'SPD_level1' => transSPDLevel($SPDLevel1),
+                'SPD_level2' => transSPDLevel($SPDLevel2),
+                'SPD_level3' => transSPDLevel($SPDLevel3),
+                'NE_wire_mixed' => $NEWireMixed,
+                'is_business_earth' => transIsBusinessEarth($isBusinessEarth),
+                'earth_busbar_wire' => transEarthBusbarWire($earthBusbarWire),
+                'SPD_earth_status' => transSPDEarthStatus($SPDEarthStatus),
+                'has_power_conversion' => $hasPowerConversion,
+                'NE_voltage' => $NEVoltage,
+                'has_ge_condition' => $hasGeCondition,
+                'is_gnr_allincharge' => $isGnrAllincharge,
+                'power_cabinet_capacity' => transPowerCabinetCapacity($powerCabinetCapacity),
+                'module_volume' => $moduleVolume,
+                'battery_volume' => transBatteryVolume($batteryVolume),
+                'battery_num' => transBatteryNum($batteryNum),
+                'battery_capacity' => transBatteryCapacity($batteryCapacity),
+                'Aload_site' => $AloadSite,
+                'Dload_tele' => $DloadTele,
+                'Dload_mobile' => $DloadMobile,
+                'Dload_unicom' => $DloadUnicom,
+                'Dload_tower_gov' => $DloadTowerGov,
+                'envir_equip' => transEnvirEquip($envirEquip),
+                'envir_equip_status' => transEnvirEquipStatus($envireEquipStatus),
+                'tele_main_equip' => $teleMainEquip,
+                'tower_DE_status' => transTowerDEStatus($towerDEStatus),
+                'unreachable' => $unreachable,
+                'roof_control' => $roofControl,
+                'certificate_check' => $certificateCheck,
+                'direct_check' => $directCheck,
+                'CU_tower_view' => $CUTowerView,
+                'CU_house_view' => $CUHouseView,
+                'CU_support_view' => $CUSupportView,
 
             ]);
             return array($siteIsExist, $insSiteInfo, $insSitePrice);
@@ -603,6 +814,60 @@ class SiteInfo extends Model
                 $fee_battery = $infoSites[$i][44];
                 $fee_bbu = $infoSites[$i][45];
 
+                // 培训之后新增的属性
+                $citeName = $infoSites[$i][52];
+                $rentSiteType = $infoSites[$i][53];
+                $siteProperty = $infoSites[$i][54];
+                $villageSiteCode = $infoSites[$i][61];
+                $mobileSiteName = $infoSites[$i][59];
+                $unicomSiteName = $infoSites[$i][60];
+                $siteNet = $infoSites[$i][64];
+                $towerOriProterty = $infoSites[$i][65];
+                $houseOccupation = $infoSites[$i][66];
+                $powerSupplyMode = $infoSites[$i][67];
+                $hasGovAffairs = $infoSites[$i][68];
+                $dualBandAntennaNum = $infoSites[$i][69];
+                $maintainImportScene = $infoSites[$i][70];
+                $siteFeeScene = $infoSites[$i][71];
+                $siteFeeBeginDate = $infoSites[$i][72];
+                $siteFeeContractCode = $infoSites[$i][73];
+                $BBULocation = $infoSites[$i][74];
+                $RRULocation = $infoSites[$i][75];
+                $siteLevel = $infoSites[$i][78];
+                $isMountainSite = $infoSites[$i][79];
+                $SPDLevel1 = $infoSites[$i][80];
+                $SPDLevel2 = $infoSites[$i][81];
+                $SPDLevel3 = $infoSites[$i][82];
+                $NEWireMixed = $infoSites[$i][83];
+                $isBusinessEarth = $infoSites[$i][84];
+                $earthBusbarWire = $infoSites[$i][85];
+                $SPDEarthStatus = $infoSites[$i][86];
+                $hasPowerConversion = $infoSites[$i][87];
+                $NEVoltage = $infoSites[$i][88];
+                $hasGeCondition = $infoSites[$i][89];
+                $isGnrAllincharge = $infoSites[$i][90];
+                $powerCabinetCapacity = $infoSites[$i][91];
+                $moduleVolume = $infoSites[$i][92];
+                $batteryVolume = $infoSites[$i][93];
+                $batteryNum = $infoSites[$i][94];
+                $batteryCapacity = $infoSites[$i][95];
+                $AloadSite = $infoSites[$i][96];
+                $DloadTele = $infoSites[$i][97];
+                $DloadMobile = $infoSites[$i][98];
+                $DloadUnicom = $infoSites[$i][99];
+                $DloadTowerGov = $infoSites[$i][100];
+                $envirEquip = $infoSites[$i][101];
+                $envireEquipStatus = $infoSites[$i][102];
+                $teleMainEquip = $infoSites[$i][103];
+                $towerDEStatus = $infoSites[$i][104];
+                $unreachable = $infoSites[$i][108];
+                $roofControl = $infoSites[$i][107];
+                $certificateCheck = $infoSites[$i][106];
+                $directCheck = $infoSites[$i][105];
+                $CUTowerView = $infoSites[$i][109];
+                $CUHouseView = $infoSites[$i][110];
+                $CUSupportView = $infoSites[$i][111];
+
                 //推导是否存在新增共享
                 $user_rent_site_date = transShareDisc($user1_rent_site_date, $user2_rent_site_date);
                 if ($is_new_tower == '否') {
@@ -636,7 +901,6 @@ class SiteInfo extends Model
                     $support_share_discount = ($support_share_discount == null) ? 1 : $support_share_discount;
                     $maintain_share_discount = ShareDiscountStd::getDiscount($is_new_tower, $share_num_maintain, $user_type, $is_newly_added)->value('discount_basic');
                     $maintain_share_discount = ($maintain_share_discount == null) ? 1 : $maintain_share_discount;
-
 
 
                     $fee_house1 = FeeHouseStd::getStd($tower_type, $product_type, $is_new_tower)->value('fee_house');
@@ -878,7 +1142,6 @@ class SiteInfo extends Model
     }
 
 
-
     public function searchInfoSiteById($id)
     {
         $query = DB::table('site_info')
@@ -913,38 +1176,40 @@ class SiteInfo extends Model
 //                ->where('site_info.id', $id)
                 ->leftJoin('fee_out_site_price', 'site_info.req_code', '=', 'fee_out_site_price.req_code')
                 ->where('fee_out_site_price.is_valid', 1)
-                ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
-                    'fee_out_site_price.fee_maintain1', 'fee_out_site_price.fee_tower2', 'fee_out_site_price.fee_house2',
-                    'fee_out_site_price.fee_support2', 'fee_out_site_price.fee_maintain2', 'fee_out_site_price.fee_tower3',
-                    'fee_out_site_price.fee_house3', 'fee_out_site_price.fee_support3', 'fee_out_site_price.fee_maintain3',
-                    'fee_out_site_price.fee_tower', 'fee_out_site_price.fee_house', 'fee_out_site_price.fee_support',
-                    'fee_out_site_price.fee_maintain', 'fee_out_site_price.fee_wlan', 'fee_out_site_price.fee_microwave',
-                    'fee_out_site_price.fee_add', 'fee_out_site_price.fee_battery', 'fee_out_site_price.fee_bbu',
-                    'fee_out_site_price.tower_share_discount', 'fee_out_site_price.house_share_discount',
-                    'fee_out_site_price.support_share_discount', 'fee_out_site_price.maintain_share_discount', 'fee_out_site_price.fee_tower_discounted',
-                    'fee_out_site_price.fee_house_discounted', 'fee_out_site_price.fee_support_discounted', 'fee_out_site_price.fee_maintain_discounted',
-                    'fee_out_site_price.fee_site', 'fee_out_site_price.site_share_discount',
-                    'fee_out_site_price.fee_site_discounted', 'fee_out_site_price.fee_import', 'fee_out_site_price.import_share_discount',
-                    'fee_out_site_price.fee_import_discounted', 'site_info.*');
+                ->select('site_info.id as site_info_id', 'site_info.*', 'fee_out_site_price.*');
+//                ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
+//                    'fee_out_site_price.fee_maintain1', 'fee_out_site_price.fee_tower2', 'fee_out_site_price.fee_house2',
+//                    'fee_out_site_price.fee_support2', 'fee_out_site_price.fee_maintain2', 'fee_out_site_price.fee_tower3',
+//                    'fee_out_site_price.fee_house3', 'fee_out_site_price.fee_support3', 'fee_out_site_price.fee_maintain3',
+//                    'fee_out_site_price.fee_tower', 'fee_out_site_price.fee_house', 'fee_out_site_price.fee_support',
+//                    'fee_out_site_price.fee_maintain', 'fee_out_site_price.fee_wlan', 'fee_out_site_price.fee_microwave',
+//                    'fee_out_site_price.fee_add', 'fee_out_site_price.fee_battery', 'fee_out_site_price.fee_bbu',
+//                    'fee_out_site_price.tower_share_discount', 'fee_out_site_price.house_share_discount',
+//                    'fee_out_site_price.support_share_discount', 'fee_out_site_price.maintain_share_discount', 'fee_out_site_price.fee_tower_discounted',
+//                    'fee_out_site_price.fee_house_discounted', 'fee_out_site_price.fee_support_discounted', 'fee_out_site_price.fee_maintain_discounted',
+//                    'fee_out_site_price.fee_site', 'fee_out_site_price.site_share_discount',
+//                    'fee_out_site_price.fee_site_discounted', 'fee_out_site_price.fee_import', 'fee_out_site_price.import_share_discount',
+//                    'fee_out_site_price.fee_import_discounted', 'site_info.*');
         } else {
             $query = DB::table('site_info')
                 ->where('site_info.is_valid', 1)
                 ->where('site_info.site_code', 'like', '%' . $siteCode . '%')
                 ->leftJoin('fee_out_site_price', 'site_info.req_code', '=', 'fee_out_site_price.req_code')
                 ->where('fee_out_site_price.is_valid', 1)
-                ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
-                    'fee_out_site_price.fee_maintain1', 'fee_out_site_price.fee_tower2', 'fee_out_site_price.fee_house2',
-                    'fee_out_site_price.fee_support2', 'fee_out_site_price.fee_maintain2', 'fee_out_site_price.fee_tower3',
-                    'fee_out_site_price.fee_house3', 'fee_out_site_price.fee_support3', 'fee_out_site_price.fee_maintain3',
-                    'fee_out_site_price.fee_tower', 'fee_out_site_price.fee_house', 'fee_out_site_price.fee_support',
-                    'fee_out_site_price.fee_maintain', 'fee_out_site_price.fee_wlan', 'fee_out_site_price.fee_microwave',
-                    'fee_out_site_price.fee_add', 'fee_out_site_price.fee_battery', 'fee_out_site_price.fee_bbu',
-                    'fee_out_site_price.tower_share_discount', 'fee_out_site_price.house_share_discount',
-                    'fee_out_site_price.support_share_discount', 'fee_out_site_price.maintain_share_discount', 'fee_out_site_price.fee_tower_discounted',
-                    'fee_out_site_price.fee_house_discounted', 'fee_out_site_price.fee_support_discounted', 'fee_out_site_price.fee_maintain_discounted',
-                    'fee_out_site_price.fee_site', 'fee_out_site_price.site_share_discount',
-                    'fee_out_site_price.fee_site_discounted', 'fee_out_site_price.fee_import', 'fee_out_site_price.import_share_discount',
-                    'fee_out_site_price.fee_import_discounted', 'site_info.*');
+                ->select('site_info.id as site_info_id', 'site_info.*', 'fee_out_site_price.*');
+//                ->select('fee_out_site_price.fee_tower1', 'fee_out_site_price.fee_house1', 'fee_out_site_price.fee_support1',
+//                    'fee_out_site_price.fee_maintain1', 'fee_out_site_price.fee_tower2', 'fee_out_site_price.fee_house2',
+//                    'fee_out_site_price.fee_support2', 'fee_out_site_price.fee_maintain2', 'fee_out_site_price.fee_tower3',
+//                    'fee_out_site_price.fee_house3', 'fee_out_site_price.fee_support3', 'fee_out_site_price.fee_maintain3',
+//                    'fee_out_site_price.fee_tower', 'fee_out_site_price.fee_house', 'fee_out_site_price.fee_support',
+//                    'fee_out_site_price.fee_maintain', 'fee_out_site_price.fee_wlan', 'fee_out_site_price.fee_microwave',
+//                    'fee_out_site_price.fee_add', 'fee_out_site_price.fee_battery', 'fee_out_site_price.fee_bbu',
+//                    'fee_out_site_price.tower_share_discount', 'fee_out_site_price.house_share_discount',
+//                    'fee_out_site_price.support_share_discount', 'fee_out_site_price.maintain_share_discount', 'fee_out_site_price.fee_tower_discounted',
+//                    'fee_out_site_price.fee_house_discounted', 'fee_out_site_price.fee_support_discounted', 'fee_out_site_price.fee_maintain_discounted',
+//                    'fee_out_site_price.fee_site', 'fee_out_site_price.site_share_discount',
+//                    'fee_out_site_price.fee_site_discounted', 'fee_out_site_price.fee_import', 'fee_out_site_price.import_share_discount',
+//                    'fee_out_site_price.fee_import_discounted', 'site_info.*');
         }
         if (!empty($telecomSiteName)) {
             if ($region == '湖北省') {
@@ -1047,6 +1312,60 @@ class SiteInfo extends Model
             $fee_bbu = $request->get('feeBbu');
             $effective_date = $request->get('effectiveDate');
 
+            // 培训后新增的属性
+            $citeName = $request->get('citeName');
+            $rentSiteType = $request->get('rentSiteType');
+            $siteProperty = $request->get('siteQuality');
+            $villageSiteCode = $request->get('villageSiteCode');
+            $mobileSiteName = $request->get('mobileSiteName');
+            $unicomSiteName = $request->get('unicomSiteName');
+            $siteNet = $request->get('siteNet');
+            $towerOriProterty = $request->get('towerOriProterty');
+            $houseOccupation = $request->get('houseOccupation');
+            $powerSupplyMode = $request->get('powerSupplyMode');
+            $hasGovAffairs = $request->get('hasGovAffairs');
+            $dualBandAntennaNum = $request->get('dualBandAntennaNum');
+            $maintainImportScene = $request->get('maintainImportScene');
+            $siteFeeScene = $request->get('siteFeeScene');
+            $siteFeeBeginDate = $request->get('siteFeeBeginDate');
+            $siteFeeContractCode = $request->get('siteFeeContractCode');
+            $BBULocation = $request->get('BBULocation');
+            $RRULocation = $request->get('RRULocation');
+            $siteLevel = $request->get('siteLevel');
+            $isMountainSite = $request->get('isMountainSite');
+            $SPDLevel1 = $request->get('SPDLevel1');
+            $SPDLevel2 = $request->get('SPDLevel2');
+            $SPDLevel3 = $request->get('SPDLevel3');
+            $NEWireMixed = $request->get('NEWireMixed');
+            $isBusinessEarth = $request->get('isBusinessEarth');
+            $earthBusbarWire = $request->get('earthBusbarWire');
+            $SPDEarthStatus = $request->get('SPDEarthStatus');
+            $hasPowerConversion = $request->get('hasPowerConversion');
+            $NEVoltage = $request->get('NEVoltage');
+            $hasGeCondition = $request->get('hasGeCondition');
+            $isGnrAllincharge = $request->get('isGnrAllincharge');
+            $powerCabinetCapacity = $request->get('powerCabinetCapacity');
+            $moduleVolume = $request->get('moduleVolume');
+            $batteryVolume = $request->get('batteryVolume');
+            $batteryNum = $request->get('batteryNum');
+            $batteryCapacity = $request->get('batteryCapacity');
+            $AloadSite = $request->get('AloadSite');
+            $DloadTele = $request->get('DloadTele');
+            $DloadMobile = $request->get('DloadMobile');
+            $DloadUnicom = $request->get('DloadUnicom');
+            $DloadTowerGov = $request->get('DloadTowerGov');
+            $envirEquip = $request->get('envirEquip');
+            $envireEquipStatus = $request->get('envireEquipStatus');
+            $teleMainEquip = $request->get('teleMainEquip');
+            $towerDEStatus = $request->get('towerDEStatus');
+            $unreachable = $request->get('unreachable');
+            $roofControl = $request->get('roofControl');
+            $certificateCheck = $request->get('certificateCheck');
+            $directCheck = $request->get('directCheck');
+            $CUTowerView = $request->get('CUTowerView');
+            $CUHouseView = $request->get('CUHouseView');
+            $CUSupportView = $request->get('CUSupportView');
+
             $updateSiteInfo = DB::table('site_info')
                 ->where('business_code', $business_code)
                 ->update([
@@ -1086,7 +1405,59 @@ class SiteInfo extends Model
                 'land_form' => transLandForm($land_form),
                 'user_type' => transUserType($user_type),
                 'elec_introduced_type' => transElecType($elec_introduced_type),
-                'effective_date' => $effective_date
+                'effective_date' => $effective_date,
+                'city_name' => $citeName,
+                'rent_site_type' => $rentSiteType,
+                'site_property' => $siteProperty,
+                'village_site_code' => $villageSiteCode,
+                'mobile_site_name' => $mobileSiteName,
+                'unicom_site_name' => $unicomSiteName,
+                'site_net' => transSiteNet($siteNet),
+                'tower_ori_property' => transTowerOriProperty($towerOriProterty),
+                'house_occupation' => $houseOccupation,
+                'power_supply_mode' => transPowerSupplyMode($powerSupplyMode),
+                'has_gov_affairs' => $hasGovAffairs,
+                'dual_band_antenna_num' => $dualBandAntennaNum,
+                'maintain_import_scene' => $maintainImportScene,
+                'site_fee_scene' => $siteFeeScene,
+                'site_fee_begin_date' => $siteFeeBeginDate,
+                'site_fee_contract_code' => $siteFeeContractCode,
+                'BBU_location' => transBBULocation($BBULocation),
+                'RRU_location' => transRRULocation($RRULocation),
+                'site_level' => transSiteLevel($siteLevel),
+                'is_mountain_site' => transIsMountainSite($isMountainSite),
+                'SPD_level1' => transSPDLevel($SPDLevel1),
+                'SPD_level2' => transSPDLevel($SPDLevel2),
+                'SPD_level3' => transSPDLevel($SPDLevel3),
+                'NE_wire_mixed' => $NEWireMixed,
+                'is_business_earth' => transIsBusinessEarth($isBusinessEarth),
+                'earth_busbar_wire' => transEarthBusbarWire($earthBusbarWire),
+                'SPD_earth_status' => transSPDEarthStatus($SPDEarthStatus),
+                'has_power_conversion' => $hasPowerConversion,
+                'NE_voltage' => $NEVoltage,
+                'has_ge_condition' => $hasGeCondition,
+                'is_gnr_allincharge' => $isGnrAllincharge,
+                'power_cabinet_capacity' => transPowerCabinetCapacity($powerCabinetCapacity),
+                'module_volume' => $moduleVolume,
+                'battery_volume' => transBatteryVolume($batteryVolume),
+                'battery_num' => transBatteryNum($batteryNum),
+                'battery_capacity' => transBatteryCapacity($batteryCapacity),
+                'Aload_site' => $AloadSite,
+                'Dload_tele' => $DloadTele,
+                'Dload_mobile' => $DloadMobile,
+                'Dload_unicom' => $DloadUnicom,
+                'Dload_tower_gov' => $DloadTowerGov,
+                'envir_equip' => transEnvirEquip($envirEquip),
+                'envir_equip_status' => transEnvirEquipStatus($envireEquipStatus),
+                'tele_main_equip' => $teleMainEquip,
+                'tower_DE_status' => transTowerDEStatus($towerDEStatus),
+                'unreachable' => $unreachable,
+                'roof_control' => $roofControl,
+                'certificate_check' => $certificateCheck,
+                'direct_check' => $directCheck,
+                'CU_tower_view' => $CUTowerView,
+                'CU_house_view' => $CUHouseView,
+                'CU_support_view' => $CUSupportView,
 
             ]);
 

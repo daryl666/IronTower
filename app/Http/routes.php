@@ -80,6 +80,9 @@ Route::group(['middleware' => ['auth', 'permission'], 'permissions' => ['gnr_man
     Route::any('add', ['uses' => 'GnrRecController@addGnr']);
     //返回
     Route::any('back', ['uses' => 'GnrRecController@back']);
+    Route::any('withdraw/{id}', ['uses' => 'GnrRecController@withdraw']);
+    Route::any('export', ['uses' => 'ExcelController@exportGnrRec']);
+    Route::post('associatedSearch', ['uses' => 'GnrRecController@associatedSearch']);
     // Route::any('{gnrID}/editPage/{siteID}/{siteChoose}/{lastGnrTime}', ['uses' => 'GnrRecController@editPage']);
     // Route::any('update', ['uses' => 'GnrRecController@update']);
     // Route::get('delete/{id}', ['uses' => 'GnrRecController@delete']);

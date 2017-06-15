@@ -405,7 +405,8 @@
                         @foreach($gnrRecs as $gnrRec)
                             <tr>
                                 <td>
-                                    <button class="buttonNextStep" onclick="doHandlePage({{$gnrRec->id}})">填报</button>
+                                    <button class="buttonNextStep" onclick="doHandlePage({{$gnrRec->id}})">填 报</button>
+                                    <button class="buttonNextStep" onclick="doWithdraw({{$gnrRec->id}})">撤 回</button>
                                 </td>
                                 <td>{{$gnrRec->site_code}}</td>
                                 <td>{{$gnrRec->gnr_req_time}}</td>
@@ -508,6 +509,16 @@
             var url = "{{url('backend/gnrRec/handlePage')}}" + '/' + id;
             listForm.action = url;
             listForm.submit();
+        }
+
+        function doWithdraw(id) {
+            if(confirm('确认撤回发电申请吗？')){
+                var form = document.getElementById('listForm');
+                var url = "{{url('backend/gnrRec/withdraw')}}" + '/' + id;
+                form.action = url;
+                form.submit();
+            }
+
         }
 
         function doAddPage() {

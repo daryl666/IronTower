@@ -32,7 +32,9 @@
                         <a href="{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">上站记录管理</a>
                     </li>
                     <li class="inactive">
-                        @if(Auth::user()->area_level == '湖北省')                             <a href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')                             <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
+                        @if(Auth::user()->area_level == '湖北省')                             <a
+                                href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')
+                            <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
                     </li>
                     <li class="inactive">
                         <a href="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">退服原因管理</a>
@@ -306,6 +308,10 @@
                         <input type="button" id="searchBtn" class="formButton" value="搜 索"
                                onclick="doSearch()"/>
                     </td>
+                    <td>
+                        <input type="button" class="formButton" value="导 出" onclick="doExport()"
+                               @if(!empty($gnrRecs)) style="display: inline;" @endif style="display: none;"/>
+                    </td>
 
                 </div>
             </div>
@@ -328,6 +334,9 @@
                         </th>
                         <th>
                             <a href="#" class="sort">发电结果</a>
+                        </th>
+                        <th>
+                            <a href="#" class="sort">发电有效状态</a>
                         </th>
                         <th>
                             <a href="#" class="sort">发电开始时间</a>
@@ -353,19 +362,20 @@
                                 <td>{{$gnrRec->gnr_req_time}}</td>
                                 <td>{{transGnrRaiseSide($gnrRec->gnr_raise_side)}}</td>
                                 <td>{{transGnrResult($gnrRec->gnr_result)}}</td>
+                                <td>{{transGnrStatus($gnrRec->gnr_status)}}</td>
                                 <td>{{$gnrRec->gnr_start_time}}</td>
                                 <td>{{$gnrRec->gnr_stop_time}}</td>
                                 <td>{{$gnrRec->gnr_len}}</td>
                                 <td>{{$gnrRec->gnr_fee}}</td>
                             </tr>
                         @endforeach
-                            @if(isset($filter))
-                                {!! $gnrRecs
-                                ->appends(['region' => $filter['region'],
-                                'beginDate' => $filter['beginDate'],
-                                'endDate' => $filter['endDate'],
-                                'checkStatus' => $filter['checkStatus']])
-                                ->links() !!}@endif
+                        @if(isset($filter))
+                            {!! $gnrRecs
+                            ->appends(['region' => $filter['region'],
+                            'beginDate' => $filter['beginDate'],
+                            'endDate' => $filter['endDate'],
+                            'checkStatus' => $filter['checkStatus']])
+                            ->links() !!}@endif
                     @endif
 
                 </table>

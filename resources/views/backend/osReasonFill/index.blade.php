@@ -376,6 +376,8 @@
                                         <option>物业</option>
                                         <option>核心网</option>
                                         <option>高温</option>
+                                        <option>局端</option>
+                                        <option>主设备</option>
                                         <option>其他</option>
                                     </select>
                                 </td>
@@ -388,6 +390,8 @@
                                     <select name="respUnit_{{$osReason->id}}">
                                         <option>铁塔</option>
                                         <option>电信</option>
+                                        <option>移动</option>
+                                        <option>联通</option>
                                     </select>
                                 </td>
 

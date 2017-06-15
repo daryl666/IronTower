@@ -973,6 +973,558 @@
                         </input>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        站址起租标示：
+                    </th>
+                    <td>
+                        <input checked="checked" name="rentSiteType" type="radio" value="租用站址">
+                        租用站址
+                        <input name="rentSiteType" type="radio" value="自有站址">
+                        自有站址
+                        <input name="rentSiteType" type="radio" value="第三方站址">
+                        第三方站址
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        站址属性：
+                    </th>
+                    <td>
+                        <input checked="checked" name="siteProperty" type="radio" value="存量原产权">
+                        存量原产权
+                        <input name="siteProperty" type="radio" value="存量既有共享">
+                        存量既有共享
+                        <input name="siteProperty" type="radio" value="存量自改">
+                        存量自改
+                        <input name="siteProperty" type="radio" value="存量共享改造">
+                        存量共享改造
+                        <input name="siteProperty" type="radio" value="新建铁塔">
+                        新建铁塔
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        村通站号：
+                    </th>
+                    <td>
+                        <input name="villageSiteCode" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        移动站址名称：
+                    </th>
+                    <td>
+                        <input name="mobileSiteName" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        联通站址名称：
+                    </th>
+                    <td>
+                        <input name="unicomSiteName" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        站址网络：
+                    </th>
+                    <td>
+                        <input checked="checked" name="siteNet" type="radio" value="村通">
+                        村通
+                        <input name="siteNet" type="radio" value="C村">
+                        C村
+                        <input name="siteNet" type="radio" value="CDMA">
+                        CDMA
+                        <input name="siteNet" type="radio" value="C村L">
+                        C村L
+                        <input name="siteNet" type="radio" value="CL">
+                        CL
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        铁塔原产权：
+                    </th>
+                    <td>
+                        <input checked="checked" name="towerOriProperty" type="radio" value="铁塔">
+                        铁塔
+                        <input name="towerOriProperty" type="radio" value="电信">
+                        电信
+                        <input name="towerOriProperty" type="radio" value="移动">
+                        移动
+                        <input name="towerOriProperty" type="radio" value="联通">
+                        联通
+                        <input name="towerOriProperty" type="radio" value="广电">
+                        广电
+                        <input name="towerOriProperty" type="radio" value="第三方">
+                        第三方
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        机房占用：
+                    </th>
+                    <td>
+                        <input checked="checked" name="houseOccupation" type="radio" value="0">
+                        否
+                        <input name="houseOccupation" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        供电方式：
+                    </th>
+                    <td>
+                        <input checked="checked" name="powerSupplyMode" type="radio" value="直供电">
+                        直供电
+                        <input name="powerSupplyMode" type="radio" value="转供电">
+                        转供电
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        站址是否有铁塔政企业务：
+                    </th>
+                    <td>
+                        <input checked="checked" name="hasGovAffairs" type="radio" value="0">
+                        否
+                        <input name="hasGovAffairs" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        双频天线数：
+                    </th>
+                    <td>
+                        <input name="dualBandAntennaNum" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        维护/电力引入费场景：
+                    </th>
+                    <td>
+                        <input name="maintainImportScene" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        场地费场景：
+                    </th>
+                    <td>
+                        <input name="siteFeeScene" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        场地费合同起始日期：
+                    </th>
+                    <td>
+                        <input name="siteFeeBeginDate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                               readonly="true" style="width:65px;padding-left:5px" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        场地费合同编号：
+                    </th>
+                    <td>
+                        <input name="siteFeeContractCode" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        BBU安装位置：
+                    </th>
+                    <td>
+                        <input checked="checked" name="BBULocation" type="radio" value="铁塔机房">
+                        铁塔机房
+                        <input name="BBULocation" type="radio" value="自有机房">
+                        自有机房
+                        <input name="BBULocation" type="radio" value="第三方机房">
+                        第三方机房
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        RRU安装位置：
+                    </th>
+                    <td>
+                        <input checked="checked" name="RRULocation" type="radio" value="机房">
+                        机房
+                        <input name="RRULocation" type="radio" value="塔上">
+                        塔上
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        站址等级：
+                    </th>
+                    <td>
+                        <input checked="checked" name="siteLevel" type="radio" value="高等级">
+                        高等级
+                        <input name="siteLevel" type="radio" value="标准等级">
+                        标准等级
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        高山站标示：
+                    </th>
+                    <td>
+                        <input checked="checked" name="isMountainSite" type="radio" value="非高山站">
+                        非高山站
+                        <input name="isMountainSite" type="radio" value="高山站">
+                        高山站
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        一级防雷SPD状态：
+                    </th>
+                    <td>
+                        <input checked="checked" name="SPDLevel1" type="radio" value="正常">
+                        正常
+                        <input name="SPDLevel1" type="radio" value="故障">
+                        故障
+                        <input name="SPDLevel1" type="radio" value="无">
+                        无
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        二级防雷SPD状态：
+                    </th>
+                    <td>
+                        <input checked="checked" name="SPDLevel2" type="radio" value="正常">
+                        正常
+                        <input name="SPDLevel2" type="radio" value="故障">
+                        故障
+                        <input name="SPDLevel2" type="radio" value="无">
+                        无
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        三级防雷SPD状态：
+                    </th>
+                    <td>
+                        <input checked="checked" name="SPDLevel3" type="radio" value="正常">
+                        正常
+                        <input name="SPDLevel3" type="radio" value="故障">
+                        故障
+                        <input name="SPDLevel3" type="radio" value="无">
+                        无
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        零地混接：
+                    </th>
+                    <td>
+                        <input checked="checked" name="NEWireMixed" type="radio" value="0">
+                        否
+                        <input name="NEWireMixed" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        业务设备接地：
+                    </th>
+                    <td>
+                        <input checked="checked" name="isBusinessEarth" type="radio" value="未接地">
+                        未接地
+                        <input name="isBusinessEarth" type="radio" value="正常">
+                        正常
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        接地线缆/汇流排：
+                    </th>
+                    <td>
+                        <input checked="checked" name="earthBusBarWire" type="radio" value="正常">
+                        正常
+                        <input name="earthBusBarWire" type="radio" value="被盗">
+                        被盗
+                        <input name="earthBusBarWire" type="radio" value="未接地">
+                        未接地
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        防雷接地状态：
+                    </th>
+                    <td>
+                        <input checked="checked" name="SPDEarthStatus" type="radio" value="SPD正常">
+                        SPD正常
+                        <input name="SPDEarthStatus" type="radio" value="SPD故障">
+                        SPD故障
+                        <input name="SPDEarthStatus" type="radio" value="接地线被盗">
+                        接地线被盗
+                        <input name="SPDEarthStatus" type="radio" value="设备未接地">
+                        设备未接地
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        是否安装发电倒换箱：
+                    </th>
+                    <td>
+                        <input checked="checked" name="hadPowerConversion" type="radio" value="0">
+                        否
+                        <input name="hadPowerConversion" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        零地电压：
+                    </th>
+                    <td>
+                        <input name="NEVoltage" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        是否具备发电条件：
+                    </th>
+                    <td>
+                        <input checked="checked" name="hasGeCondition" type="radio" value="0">
+                        否
+                        <input name="hasGeCondition" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        是否包干发电：
+                    </th>
+                    <td>
+                        <input checked="checked" name="isGnrAllInCharge" type="radio" value="0">
+                        否
+                        <input name="isGnrAllInCharge" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        电源柜性能：
+                    </th>
+                    <td>
+                        <input checked="checked" name="powerCabinetCapacity" type="radio" value="正常">
+                        正常
+                        <input name="powerCabinetCapacity" type="radio" value="故障">
+                        故障
+                        <input name="powerCabinetCapacity" type="radio" value="容量不足">
+                        容量不足
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        模块总容量：
+                    </th>
+                    <td>
+                        <input name="moduleVolume" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        电池容量：
+                    </th>
+                    <td>
+                        <input checked="checked" name="batteryVolume" type="radio" value="300AH">
+                        300AH
+                        <input name="batteryVolume" type="radio" value="500AH">
+                        500AH
+                        <input name="batteryVolume" type="radio" value="1000AH">
+                        1000AH
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        电池组数：
+                    </th>
+                    <td>
+                        <input checked="checked" name="batteryNum" type="radio" value="1">
+                        1
+                        <input name="batteryNum" type="radio" value="2">
+                        2
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        电池性能：
+                    </th>
+                    <td>
+                        <input checked="checked" name="batteryCapability" type="radio" value="秒退">
+                        秒退
+                        <input name="batteryCapability" type="radio" value="1小时">
+                        1小时
+                        <input name="batteryCapability" type="radio" value="2小时">
+                        2小时
+                        <input name="batteryCapability" type="radio" value="3小时">
+                        3小时
+                        <input name="batteryCapability" type="radio" value="大于3小时">
+                        大于3小时
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        站址交流负荷：
+                    </th>
+                    <td>
+                        <input name="AloadSite" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        电信直流负荷：
+                    </th>
+                    <td>
+                        <input name="DloadTele" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        移动直流负荷：
+                    </th>
+                    <td>
+                        <input name="DloadMobile" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        联通直流负荷：
+                    </th>
+                    <td>
+                        <input name="DloadUnicom" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        铁塔政企业务直流负荷：
+                    </th>
+                    <td>
+                        <input name="DloadTowerGov" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        环境设备：
+                    </th>
+                    <td>
+                        <input checked="checked" name="envirEquip" type="radio" value="空调">
+                        空调
+                        <input name="envirEquip" type="radio" value="风机">
+                        风机
+                        <input name="envirEquip" type="radio" value="无">
+                        无
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        环境设备状态：
+                    </th>
+                    <td>
+                        <input checked="checked" name="envirEquipStatus" type="radio" value="故障">
+                        故障
+                        <input name="envirEquipStatus" type="radio" value="正常">
+                        正常
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        电信主设备：
+                    </th>
+                    <td>
+                        <input name="teleMainEquip" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        铁塔动环状态：
+                    </th>
+                    <td>
+                        <input checked="checked" name="towerDEStatus" type="radio" value="故障">
+                        故障
+                        <input name="towerDEStatus" type="radio" value="正常">
+                        正常
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        直接上站：
+                    </th>
+                    <td>
+                        <input name="directCheck" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        需证件上站：
+                    </th>
+                    <td>
+                        <input name="certificateCheck" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        楼顶管控：
+                    </th>
+                    <td>
+                        <input name="roofControl" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        不可抵达：
+                    </th>
+                    <td>
+                        <input name="unreachable" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        铁塔全景照片(采集/上传)：
+                    </th>
+                    <td>
+                        <input checked="checked" name="CUTowerView" type="radio" value="0">
+                        否
+                        <input name="CUTowerView" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        机房全景照片(采集/上传)：
+                    </th>
+                    <td>
+                        <input checked="checked" name="CUHouseView" type="radio" value="0">
+                        否
+                        <input name="CUHouseView" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        配套全景照片(采集/上传)：
+                    </th>
+                    <td>
+                        <input checked="checked" name="CUSupportView" type="radio" value="0">
+                        否
+                        <input name="CUSupportView" type="radio" value="1">
+                        是
+                    </td>
+                </tr>
             </table>
             <input class="formButton" onclick="doAddSuccess()" type="button" value="提交"/>
             <input class="formButton" onclick="doBack()" type="button" value="返回"/>

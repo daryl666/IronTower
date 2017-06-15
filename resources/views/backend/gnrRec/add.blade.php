@@ -5,16 +5,6 @@
 @endsection
 
 @section('script_header')
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function (event) {
-            var backBtn = document.getElementById("backBtn");
-            backBtn.addEventListener('click', function () {
-                var listForm = document.getElementById("listForm");
-                listForm.action = "{{url('backend/gnrRec/back')}}";
-
-            });
-        });
-    </script>
 @endsection
 
 @section('content')
@@ -33,7 +23,9 @@
                         <a href="{{url('backend/siteCheck?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">上站记录管理</a>
                     </li>
                     <li class="inactive">
-                        @if(Auth::user()->area_level == '湖北省')                             <a href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')                             <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
+                        @if(Auth::user()->area_level == '湖北省')                             <a
+                                href="{{url('backend/siteShield/checkShieldPage?region=').Auth::user()->area_level.'&checkStatus=2&reqType=0&beginDate=&endDate='}}">屏蔽记录管理</a>@endif                         @if(Auth::user()->area_level != '湖北省')
+                            <a href="{{url('backend/siteShield/addShieldPage')}}">屏蔽记录管理</a>@endif
                     </li>
                     <li class="inactive">
                         <a href="{{url('backend/osReasonFill?region=').Auth::user()->area_level.'&checkStatus=0&beginDate=&endDate='}}">退服原因管理</a>
@@ -79,64 +71,64 @@
 
     <body class="input managerInfo">
     {{--<div class="list">--}}
-        {{--<div>--}}
-            {{--<div class="bar">--}}
-                {{--<label style="">站址信息</label>--}}
-            {{--</div>--}}
-        {{--</div>--}}
-        {{--<table class="listTable" style="white-space:nowrap;">--}}
-            {{--<tr>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>地市</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>站址编码</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>详细地址</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>计价规则</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>发电总时长</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>发电次数</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>发电总费用（元）（不含税）</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>发电总费用（元）（含税）</a>--}}
-                {{--</th>--}}
-                {{--<th>--}}
-                    {{--<a href="#" class="sort" name="" hidefocus>最近一次发电时间</a>--}}
-                {{--</th>--}}
+    {{--<div>--}}
+    {{--<div class="bar">--}}
+    {{--<label style="">站址信息</label>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--<table class="listTable" style="white-space:nowrap;">--}}
+    {{--<tr>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>地市</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>站址编码</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>详细地址</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>计价规则</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>发电总时长</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>发电次数</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>发电总费用（元）（不含税）</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>发电总费用（元）（含税）</a>--}}
+    {{--</th>--}}
+    {{--<th>--}}
+    {{--<a href="#" class="sort" name="" hidefocus>最近一次发电时间</a>--}}
+    {{--</th>--}}
 
-            {{--</tr>--}}
-            {{--@if(isset($siteInfos))--}}
-                {{--@foreach($siteInfos as $infoSite)--}}
-                    {{--<tr>--}}
-                        {{--<td>{{$infoSite->region_name}}</td>--}}
-                        {{--<td>{{$infoSite->site_code}}</td>--}}
-                        {{--<td>{{$infoSite->site_address}}</td>--}}
-                        {{--<td>--}}
-                            {{--@if($infoSite->land_form == '山区') 五小时以内收费270元，超出部分每小时20元 @endif--}}
-                            {{--@if($infoSite->land_form == '平原') 五小时以内收费220元，超出部分每小时20元 @endif--}}
-                        {{--</td>--}}
-                        {{--<td>@if(isset($infoSite->gnr_total_len)) {{$infoSite->gnr_total_len}}@endif</td>--}}
-                        {{--<td>@if(isset($infoSite->gnr_num)) {{$infoSite->gnr_num}}@endif</td>--}}
-                        {{--<td>@if(isset($infoSite->gnr_total_fee)) {{$infoSite->gnr_total_fee}}@endif</td>--}}
-                        {{--<td>@if(isset($infoSite->gnr_total_fee)) {{$infoSite->gnr_total_fee_taxed}}@endif</td>--}}
-                        {{--<td>--}}
-                            {{--@if(isset($infoSite->last_gnr_time)) {{$infoSite->last_gnr_time}} @endif--}}
-                        {{--</td>--}}
+    {{--</tr>--}}
+    {{--@if(isset($siteInfos))--}}
+    {{--@foreach($siteInfos as $infoSite)--}}
+    {{--<tr>--}}
+    {{--<td>{{$infoSite->region_name}}</td>--}}
+    {{--<td>{{$infoSite->site_code}}</td>--}}
+    {{--<td>{{$infoSite->site_address}}</td>--}}
+    {{--<td>--}}
+    {{--@if($infoSite->land_form == '山区') 五小时以内收费270元，超出部分每小时20元 @endif--}}
+    {{--@if($infoSite->land_form == '平原') 五小时以内收费220元，超出部分每小时20元 @endif--}}
+    {{--</td>--}}
+    {{--<td>@if(isset($infoSite->gnr_total_len)) {{$infoSite->gnr_total_len}}@endif</td>--}}
+    {{--<td>@if(isset($infoSite->gnr_num)) {{$infoSite->gnr_num}}@endif</td>--}}
+    {{--<td>@if(isset($infoSite->gnr_total_fee)) {{$infoSite->gnr_total_fee}}@endif</td>--}}
+    {{--<td>@if(isset($infoSite->gnr_total_fee)) {{$infoSite->gnr_total_fee_taxed}}@endif</td>--}}
+    {{--<td>--}}
+    {{--@if(isset($infoSite->last_gnr_time)) {{$infoSite->last_gnr_time}} @endif--}}
+    {{--</td>--}}
 
-                    {{--</tr>--}}
-                {{--@endforeach--}}
-            {{--@endif--}}
-        {{--</table>--}}
+    {{--</tr>--}}
+    {{--@endforeach--}}
+    {{--@endif--}}
+    {{--</table>--}}
     {{--</div>--}}
     <form id="listForm" method="post" action="{{url('backend/gnrRec/add')}}" enctype="multipart/form-data">
         {{--<input type="hidden" name="id" value="${id}"/>--}}
@@ -362,27 +354,33 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>基站编号(*必填项)：</th>
+                    <th>cdma基站编号(*必填项)：</th>
                     <td>
-                        <input type="text" name="stationCode" id="stationCode">
+                        <input type="text" name="cdmaCode" id="cdmaCode" onkeyup="doSearch('cdmaCode')">
+                    </td>
+                </tr>
+                <tr>
+                    <th>lte基站编号(*必填项)：</th>
+                    <td>
+                        <input type="text" name="lteCode" id="lteCode" onkeyup="doSearch('lteCode')">
                     </td>
                 </tr>
                 <tr>
                     <th>基站名称(*必填项)：</th>
                     <td>
-                        <input type="text" name="stationName" id="stationName">
+                        <input type="text" name="stationName" id="stationName" onkeyup="doSearch('stationName')">
                     </td>
                 </tr>
                 <tr>
                     <th>站址编码(*必填项)：</th>
                     <td>
-                        <input type="text" name="siteCode" id="siteCode">
+                        <input type="text" name="siteCode" id="siteCode" onkeyup="doSearch('siteCode')">
                     </td>
                 </tr>
                 <tr>
                     <th>站址名称(*必填项)：</th>
                     <td>
-                        <input type="text" name="siteName" id="siteName">
+                        <input type="text" name="siteName" id="siteName" onkeyup="doSearch('siteName')">
                     </td>
                 </tr>
                 <tr>
@@ -434,19 +432,19 @@
             var stationName = $('#stationName').val();
             var siteCode = $('#siteCode').val();
             var siteName = $('#siteName').val();
-            if (stationCode == ''){
+            if (stationCode == '') {
                 alert('请输入基站编号！');
                 return;
             }
-            if (stationName == ''){
+            if (stationName == '') {
                 alert('请输入基站名称！');
                 return;
             }
-            if (siteCode == ''){
+            if (siteCode == '') {
                 alert('请输入站址编码！');
                 return;
             }
-            if (siteName == ''){
+            if (siteName == '') {
                 alert('请输入站址名称！');
                 return;
             }
@@ -475,6 +473,49 @@
             var listForm = document.getElementById("listForm");
             listForm.action = "{{url('backend/gnrRec/import')}}";
             listForm.submit();
+        }
+
+        function doSearch(type) {
+            if (type == 'cdmaCode') {
+                var cdmaCode = document.getElementById('cdmaCode').value;
+            }
+            if (type == 'lteCode') {
+                var lteCode = document.getElementById('lteCode').value;
+            }
+            if (type == 'siteCode') {
+                var siteCode = document.getElementById('siteCode').value;
+            }
+            if (type == 'stationName') {
+                var stationName = document.getElementById('stationName').value;
+            }
+            if (type == 'siteName') {
+                var siteName = document.getElementById('siteName').value;
+            }
+            var region = document.getElementById('region').value;
+
+            $.post(
+                "{{URL('backend/gnrRec/associatedSearch')}}",
+                {
+                    cdmaCode: cdmaCode,
+                    lteCode: lteCode,
+                    siteName: siteName,
+                    siteCode: siteCode,
+                    stationName: stationName,
+                    region: region,
+                    _token: '{{ csrf_token() }}'
+                },
+
+                function (data) {
+//                    var tmp = JSON.parse(data);
+                    var tmp = data;
+                    if (tmp != '') {
+                        document.getElementById('siteCode').value = tmp.towerSiteCode;
+                        document.getElementById('siteName').value = tmp.towerSiteName;
+                        document.getElementById('stationName').value = tmp.teleSiteName;
+                        document.getElementById('cdmaCode').value = tmp.cdmaCode;
+                        document.getElementById('lteCode').value = tmp.lteCode;
+                    }
+                });
         }
 
 

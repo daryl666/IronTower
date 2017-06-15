@@ -108,6 +108,18 @@
                 </tr>
                 <tr>
                     <th>
+                        发电有效状态(*必填项)：
+                    </th>
+                    <td>
+                        <select name="gnrStatus">
+                            <option>发电前退服</option>
+                            <option>发电过程中退服</option>
+                            <option>发结束后仍然退服</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         发电起始时间(*必填项)：
                     </th>
                     <td>

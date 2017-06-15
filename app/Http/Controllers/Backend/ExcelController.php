@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\FeeOutGnr;
 use App\Models\GnrRec;
 use App\Models\IronTowerBillDetail;
 use App\Models\OsReasonFill;
@@ -240,29 +241,46 @@ class ExcelController extends Controller
 
     public function exportGnrRec(Request $request)
     {
-        $region = $request->get('region_export');
-        $site_code = $request->get('siteCode_export');
-        $gnrRecs = DB::table('fee_out_gnr')->where('region_name', $region)->where('site_code', $site_code)->get();
+        $region = $request->get('region');
+        $beginDate = $request->get('beginDate');
+        $endDate = $request->get('endDate');
+        if ($region == '湖北省') {
+            $gnrRecs = FeeOutGnr::isCheck()
+                ->where('created_at', '>=', ($beginDate == null) ? '0000-00-00 00:00:00' : ($beginDate . '-01 00:00:00'))
+                ->where('created_at', '<=', ($endDate == null) ? '9999-12-31 23:59:59' : ($endDate . '-31 23:59:59'))
+                ->get();
+        } else {
+            $gnrRecs = FeeOutGnr::isCheck()
+                ->whereRegion_id(transRegion($region))
+                ->where('created_at', '>=', ($beginDate == null) ? '0000-00-00 00:00:00' : ($beginDate . '-01 00:00:00'))
+                ->where('created_at', '<=', ($endDate == null) ? '9999-12-31 23:59:59' : ($endDate . '-31 23:59:59'))
+                ->get();
+        }
+
+
         if (!empty($gnrRecs)) {
             foreach ($gnrRecs as $gnrRec) {
                 $export[] = array(
                     '地市' => $gnrRec->region_name,
                     '站址编码' => $gnrRec->site_code,
-                    '提交时间' => $gnrRec->created_at,
-                    '发电起始时间' => $gnrRec->gnr_start_time,
-                    '发电终止时间' => $gnrRec->gnr_stop_time,
-                    '发电时长' => $gnrRec->gnr_len,
+                    '发电申请时间' => $gnrRec->gnr_req_time,
+                    '发电申请发起方' => transGnrRaiseSide($gnrRec->gnr_raise_side),
+                    '发电结果' => transGnrResult($gnrRec->gnr_result),
+                    '发电有效状态' => transGnrStatus($gnrRec->gnr_status),
+                    '发电开始时间' => $gnrRec->gnr_start_time,
+                    '发电结束时间' => $gnrRec->gnr_stop_time,
+                    '发电时长（时：分）' => $gnrRec->gnr_len,
                     '发电费用（元）（不含税）' => $gnrRec->gnr_fee,
                     '发电费用（元）（含税）' => $gnrRec->gnr_fee_taxed,
-
                 );
             }
-
-            Excel::create('发电信息', function ($excel) use ($export) {
-                $excel->sheet('发电信息', function ($sheet) use ($export) {
-                    $sheet->fromArray($export);
-                });
-            })->export('xls');
+            if (!empty($export)) {
+                Excel::create('发电记录-'.$region.'-'.$beginDate.'~'.$endDate, function ($excel) use ($export) {
+                    $excel->sheet('发电信息', function ($sheet) use ($export) {
+                        $sheet->fromArray($export);
+                    });
+                })->export('xls');
+            }
         } else {
             echo "<script>history.back()</script>";
         }
@@ -1027,8 +1045,6 @@ class ExcelController extends Controller
         header("Content-Transfer-Encoding:binary");
         $write->save('php://output');
     }
-
-
 
 
 }

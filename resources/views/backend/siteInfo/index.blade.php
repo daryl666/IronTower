@@ -314,7 +314,8 @@
 
                     <td>
                         &nbsp;&nbsp;&nbsp;
-                        <input type="button" id="viewBtn" class="formButton" value="查询" hidefocus onclick="doSearch()"/>
+                        <input type="button" id="viewBtn" class="formButton" value="查 询" hidefocus
+                               onclick="doSearch()"/>
                     </td>
 
                     {{--<td style="float:left;margin-right:30px;">--}}
@@ -322,7 +323,7 @@
                     {{--</td>--}}
 
                     <td>
-                        <input type="button" class="formButton" value="导出" onclick="doExport()"
+                        <input type="button" class="formButton" value="导 出" onclick="doExport()"
                                @if(isset($infoSites)) style="display: inline;" @endif style="display: none;"/>
                     </td>
 
@@ -349,6 +350,9 @@
                     </th>
                     <th>
                         <a href="#" class="sort" name="" hidefocus>地市</a>
+                    </th>
+                    <th class="freqMode">
+                        <a href="#" class="sort" name="" hidefocus>区县</a>
                     </th>
                     @if(Auth::user()->site_view_advance == 1)
                         <th class="scanStopTime">
@@ -462,6 +466,159 @@
                         <th class="freqMode">
                             <a href="#" class="sort" name="" hidefocus>bbu安装在铁塔机房费(元)</a>
                         </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>站址起租标示</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>站址属性</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>村通站号</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>移动站址名称</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>联通站址名称</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>站址网络</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>铁塔原产权</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>机房占用</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>供电方式</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>站址是否有铁塔政企业务</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>双频天线数</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>维护/电力引入费场景</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>场地费场景</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>场地费合同起始日期</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>场地费合同编号</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>BBU安装位置</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>RRU安装位置</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>站址等级</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>高山站标示</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>一级防雷SPD状态</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>二级防雷SPD状态</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>三级防雷SPD状态</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>零地混接</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>业务设备接地</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>接地线缆/汇流排</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>防雷接地状态</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>是否安装发电倒换箱</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>零地电压</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>是否具备发电条件</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>是否包干发电</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>电源柜性能</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>模块总容量</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>电池容量</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>电池组数</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>电池性能</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>站址交流负荷</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>电信直流负荷</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>移动直流负荷</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>联通直流负荷</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>铁塔政企业务直流负荷</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>环境设备</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>环境设备状态</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>电信主设备</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>铁塔动环状态</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>直接上站</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>需证件上站</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>楼顶管控</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>不可抵达</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>铁塔全景照片(采集/上传)</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>机房全景照片(采集/上传)</a>
+                        </th>
+                        <th class="freqMode">
+                            <a href="#" class="sort" name="" hidefocus>配套全景照片(采集/上传)</a>
+                        </th>
                     @endif
                 </tr>
                 @if(isset($infoSites))
@@ -469,13 +626,16 @@
                         <tr>
                             @if(Auth::user()->site_modify == 1)
                                 <td>
-                                    <button class="buttonNextStep" onclick="doEditPage({{$infoSite->id}})">编辑</button>
+                                    <button class="buttonNextStep" onclick="doEditPage({{$infoSite->site_info_id}})">
+                                        编辑
+                                    </button>
                                 </td>
                             @endif
                             <td>{{$infoSite->site_code}}</td>
                             <td>{{$infoSite->site_name}}</td>
                             <td>{{$infoSite->established_time}}</td>
                             <td>{{$infoSite->region_name}}</td>
+                            <td>{{$infoSite->city_name}}</td>
                             @if(Auth::user()->site_view_advance)
                                 <td>{{transTowerType($infoSite->tower_type) }}</td>
                                 <td>{{transIsNewTower($infoSite->is_new_tower) }}</td>
@@ -519,13 +679,65 @@
                                 <td>{{$infoSite->fee_add}}</td>
                                 <td>{{$infoSite->fee_battery}}</td>
                                 <td>{{$infoSite->fee_bbu}}</td>
+
+                                <td>{{transRentSiteType($infoSite->rent_site_type)}}</td>
+                                <td>{{transSiteProperty($infoSite->site_property)}}</td>
+                                <td>{{$infoSite->village_site_code}}</td>
+                                <td>{{$infoSite->mobile_site_name}}</td>
+                                <td>{{$infoSite->unicom_site_name}}</td>
+                                <td>{{transSiteNet($infoSite->site_net)}}</td>
+                                <td>{{transTowerOriProperty($infoSite->tower_ori_property)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->house_occupation)}}</td>
+                                <td>{{transPowerSupplyMode($infoSite->power_supply_mode)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->has_gov_affairs)}}</td>
+                                <td>{{$infoSite->dual_band_antenna_num}}</td>
+                                <td>{{$infoSite->maintain_import_scene}}</td>
+                                <td>{{$infoSite->site_fee_scene}}</td>
+                                <td>{{$infoSite->site_fee_begin_date}}</td>
+                                <td>{{$infoSite->site_fee_contract_code}}</td>
+                                <td>{{transBBULocation($infoSite->BBU_location)}}</td>
+                                <td>{{transRRULocation($infoSite->RRU_location)}}</td>
+                                <td>{{transSiteLevel($infoSite->site_level)}}</td>
+                                <td>{{transIsMountainSite($infoSite->is_mountain_site)}}</td>
+                                <td>{{transSPDLevel($infoSite->SPD_level1)}}</td>
+                                <td>{{transSPDLevel($infoSite->SPD_level2)}}</td>
+                                <td>{{transSPDLevel($infoSite->SPD_level3)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->NE_wire_mixed)}}</td>
+                                <td>{{transIsBusinessEarth($infoSite->is_business_earth)}}</td>
+                                <td>{{transEarthBusbarWire($infoSite->earth_busbar_wire)}}</td>
+                                <td>{{transSPDEarthStatus($infoSite->SPD_earth_status)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->has_power_conversion)}}</td>
+                                <td>{{$infoSite->NE_voltage}}</td>
+                                <td>{{transWhetherOrNot($infoSite->has_ge_condition)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->is_gnr_allincharge)}}</td>
+                                <td>{{transPowerCabinetCapacity($infoSite->power_cabinet_capacity)}}</td>
+                                <td>{{$infoSite->module_volume}}</td>
+                                <td>{{transBatteryVolume($infoSite->battery_volume)}}</td>
+                                <td>{{$infoSite->battery_num}}</td>
+                                <td>{{transBatteryCapacity($infoSite->battery_capacity)}}</td>
+                                <td>{{$infoSite->Aload_site}}</td>
+                                <td>{{$infoSite->Dload_tele}}</td>
+                                <td>{{$infoSite->Dload_mobile}}</td>
+                                <td>{{$infoSite->Dload_unicom}}</td>
+                                <td>{{$infoSite->Dload_tower_gov}}</td>
+                                <td>{{transEnvirEquip($infoSite->envir_equip)}}</td>
+                                <td>{{transEnvirEquipStatus($infoSite->envir_equip_status)}}</td>
+                                <td>{{$infoSite->tele_main_equip}}</td>
+                                <td>{{$infoSite->tower_DE_status}}</td>
+                                <td>{{$infoSite->direct_check}}</td>
+                                <td>{{$infoSite->certificate_check}}</td>
+                                <td>{{$infoSite->roof_control}}</td>
+                                <td>{{$infoSite->unreachable}}</td>
+                                <td>{{transWhetherOrNot($infoSite->CU_tower_view)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->CU_house_view)}}</td>
+                                <td>{{transWhetherOrNot($infoSite->CU_support_view)}}</td>
                             @endif
 
                         </tr>
                     @endforeach
                     @if(isset($filter))
                         {!! $infoSites->appends(['region' => $filter['region']])->render() !!}
-                        @endif
+                    @endif
                 @endif
 
 
