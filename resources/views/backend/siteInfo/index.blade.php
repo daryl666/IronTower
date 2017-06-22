@@ -302,13 +302,11 @@
                     </td>
                     <td>
                         &nbsp;&nbsp;&nbsp;铁塔站址编码：
-                        <input type="text" name="siteCode"
-                               @if(isset($filter['siteCode'])) value="{{$filter['siteCode']}}" @endif>
+                        <input type="text" name="siteCode">
                     </td>
                     <td>
                         &nbsp;&nbsp;&nbsp;电信基站名称：
-                        <input type="text" name="telecomSiteName"
-                               @if(isset($filter['telecomSiteName'])) value="{{$filter['telecomSiteName']}}" @endif>
+                        <input type="text" name="telecomSiteName">
                     </td>
 
 
@@ -723,7 +721,7 @@
                                 <td>{{transEnvirEquip($infoSite->envir_equip)}}</td>
                                 <td>{{transEnvirEquipStatus($infoSite->envir_equip_status)}}</td>
                                 <td>{{$infoSite->tele_main_equip}}</td>
-                                <td>{{$infoSite->tower_DE_status}}</td>
+                                <td>{{transTowerDEStatus($infoSite->tower_DE_status)}}</td>
                                 <td>{{$infoSite->direct_check}}</td>
                                 <td>{{$infoSite->certificate_check}}</td>
                                 <td>{{$infoSite->roof_control}}</td>
@@ -768,17 +766,6 @@
         function doExport() {
             var listForm = document.getElementById("listForm");
             listForm.action = "{{url('backend/siteInfo/export')}}";
-            listForm.submit();
-        }
-
-        function doImport() {
-            var siteInfoFile = document.getElementById('siteInfoFile');
-            if (siteInfoFile.value == "") {
-                alert('请选择需要导入的文件');
-                return;
-            }
-            var listForm = document.getElementById("listForm");
-            listForm.action = "{{url('backend/siteInfo/import')}}";
             listForm.submit();
         }
 

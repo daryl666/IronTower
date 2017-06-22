@@ -1330,15 +1330,37 @@
 
         }
 
-        function doImport() {
+        function doImport(){
             var siteInfoFile = document.getElementById('siteInfoFile');
             if (siteInfoFile.value == "") {
                 alert('请选择需要导入的文件');
                 return;
             }
-            var listForm = document.getElementById("listForm");
-            listForm.action = "{{url('backend/siteInfo/import')}}";
-            listForm.submit();
+            var form = new FormData(document.getElementById("listForm"));
+//             var req = new XMLHttpRequest();
+//             req.open("post", "${pageContext.request.contextPath}/public/testupload", false);
+//             req.send(form);
+            $.ajax({
+                url:"{{url('backend/siteInfo/import')}}",
+                type:"post",
+                data:form,
+                processData:false,
+                contentType:false,
+                success:function(data){
+//                    window.clearInterval(timer);
+                    if (data.code == 1) {
+                        alert("上传成功！");
+                    }else {
+                        alert('上传失败！');
+                    }
+
+                },
+                error:function(e){
+                    alert("上传失败！");
+//                    window.clearInterval(timer);
+                }
+            });
+//            get();//此处为上传文件的进度条
         }
 
         function towerTypeChange(osel) {

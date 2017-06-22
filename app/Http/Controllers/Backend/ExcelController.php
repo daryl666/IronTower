@@ -275,7 +275,7 @@ class ExcelController extends Controller
                 );
             }
             if (!empty($export)) {
-                Excel::create('发电记录-'.$region.'-'.$beginDate.'~'.$endDate, function ($excel) use ($export) {
+                Excel::create('发电记录-' . $region . '-' . $beginDate . '~' . $endDate, function ($excel) use ($export) {
                     $excel->sheet('发电信息', function ($sheet) use ($export) {
                         $sheet->fromArray($export);
                     });
@@ -303,6 +303,12 @@ class ExcelController extends Controller
             $path = $file->move($savePath, $file_name);
             $filePath = "public/storage/app/";
 //        $reader->setOutputEncoding('UTF-8');
+//            Excel::filter('chunk')->load($filePath . $file_name)->chunk(250, function ($results) {
+//
+//                $siteInfoDB = new SiteInfo();
+//                $area_level = Auth::user()->area_level;
+//                $siteInfoDB->addInfoSiteByArray($results->toArray(), $area_level);
+//            });
             Excel::load($filePath . $file_name, function ($reader) {
 //            获取excel的第1张表
                 $reader = $reader->getSheet(0);
@@ -313,9 +319,10 @@ class ExcelController extends Controller
                 $siteInfoDB->addInfoSiteByArray($results, $area_level);
 
             });
-            return redirect('backend/siteInfo')
-                ->with('filter', $filter)
-                ->with('flag', 'add');
+            return response(['code' => 1]);
+//            return redirect('backend/siteInfo')
+//                ->with('filter', $filter)
+//                ->with('flag', 'add');
         }
     }
 

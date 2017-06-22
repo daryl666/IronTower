@@ -74,6 +74,7 @@
         </div>
         <form id="listForm" method="post" action="{{URL('backend/servBill/')}}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="month" @if (isset($month)) value="{{$month}}" @endif>
             <div id="siteInfo">
                 <table class="listTable" style="white-space:nowrap;font-size:12px;">
 

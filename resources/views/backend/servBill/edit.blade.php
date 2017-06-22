@@ -51,6 +51,7 @@
 
     <form id="listForm" method="POST" action="" style="display: inline;">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="month" @if (isset($month)) value="{{$month}}" @endif>
         <table class="inputTable tabContent">
             <tr>
                 <th>
